@@ -1,0 +1,21 @@
+Package: yasss
+Title: Yet Another Short Sequence Simulator
+Description: Simulates Primer ID MiSeq sequencing of HIV with high levels of recombination.
+Version: 0.0.1
+Author: Phillip Labuschagne <philliplab@gmail.com>,
+    Paul Edlefsen <pedlefsen@gmail.com>
+Maintainer: Phillip Labuschagne <philliplab@gmail.com>
+Depends:
+    stringdist,
+    ShortRead,
+    ggplot2
+Imports:
+    data.table,
+    BiocGenerics,
+    Biostrings
+Suggests:
+    testthat,
+    knitr
+VignetteBuilder: knitr
+License: GPL-3
+RoxygenNote: 6.0.1
