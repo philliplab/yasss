@@ -13,6 +13,9 @@ sim_pop <- function(ancestors, n_gen = NULL, n_pop = NULL){
   if (n_gen == Inf & n_pop == Inf){
     stop('Either n_gen or n_pop must be specified and at least one must be finite')
   }
+  if (n_gen < 1 | n_pop < 1){
+    stop('Neither n_gen nor n_pop may be set to less than one')
+  }
   c_gen <- 0
   c_pop <- length(ancestors)
   while (c_pop < n_pop & c_gen < n_gen){
