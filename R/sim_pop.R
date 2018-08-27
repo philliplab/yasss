@@ -5,6 +5,7 @@
 #' Details: Simulated multiple generations
 #' @param ancestors A list of DNA sequences with which to start the population. Include the same sequence multiple times to achieve a target ratio.
 #' @export 
+
 sim_pop <- function(ancestors, n_gen = NULL, n_pop = NULL){
   if (is.null(n_gen)) {n_gen <- Inf}
   if (is.null(n_pop)) {n_pop <- Inf}

@@ -11,11 +11,10 @@ Depends:
     ggplot2
 Imports:
     data.table,
-    BiocGenerics,
     Biostrings
 Suggests:
     testthat,
     knitr
 VignetteBuilder: knitr
 License: GPL-3
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.0
