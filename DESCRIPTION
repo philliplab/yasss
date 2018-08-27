@@ -7,11 +7,7 @@ Author: Phillip Labuschagne <philliplab@gmail.com>,
 Maintainer: Phillip Labuschagne <philliplab@gmail.com>
 Depends:
     stringdist,
-    ShortRead,
     ggplot2
-Imports:
-    data.table,
-    Biostrings
 Suggests:
     testthat,
     knitr
