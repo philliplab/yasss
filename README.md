@@ -70,3 +70,14 @@ At the moment six posible mutators are envisioned:
 pp stands for per position and allows the user to specify variable mutation rates for different positions.
 
 Obviously each mutator is just a special case of the mutator that comes after it. As such, the ultimate goal should be to write a single general function that produces each of the special cases. However, that requires a lot more engineering that just getting a simple one up and running right now. So I will start with the uniform mutator and implement most of the package with only that mutator and then come back to this to produce the special mutators later. Also, there might be performance issue with the most general versions that will not be an issue at all for the simpler ones. In theory the performance mismatches can be completely nuetralized by moving this operation to C++ since the main performance overhead will be the lookups.
+
+The output of a mutator is a list with the elements: 
+1) parent 
+2) child 
+3) mutation_statistics 
+4) mutation_rates
+
+The parent is the input sequence.
+The child is the produced offspring.
+The muation_statistics tracks metrics about the mutations that occurred. Initially it will be a list with a single element: n_mut
+The mutation_rates element is the matrix of mutation rates is the possibly updates mutation rate array that is used to compute the mutation probabilities. This is included to future proof the code so that the addition of indel functionality will not require mojor changes.
