@@ -25,3 +25,10 @@ test_that("sim_pop checks arguments correctly", {
   expect_error(sim_pop(ancestors = c('AAA'), n_gen = 0, n_pop = 0),
                N_GEN_N_POP_LESS_ONE)
 })
+
+test_that("sim_pop output in the correct format", {
+  x <- sim_pop(ancestors = c("AAAA", "BBBB"),
+               n_gen = 1)
+  expect_equal(class(x), 'list')
+  expect_true("seqs" %in% names(x))
+})
