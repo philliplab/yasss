@@ -18,14 +18,16 @@ sim_pop <- function(ancestors, n_gen = NULL, n_pop = NULL){
   }
   c_gen <- 0
   c_pop <- length(ancestors)
-  while (c_pop < n_pop & c_gen < n_gen){
+  while ((c_pop < n_pop) & (c_gen < n_gen)){
     the_pop <- character(length(ancestors)*2)
     the_pop[1:length(ancestors)] <- ancestors
     the_pop[(length(ancestors)+1):(2*length(ancestors))] <- ancestors
     ancestors <- the_pop
+
     c_pop <- length(ancestors)
-    n_gen <- n_gen + 1
+    c_gen <- c_gen + 1
   }
-  return(ancestors)
+  results <- list(seqs = ancestors)
+  return(results)
 }
 
