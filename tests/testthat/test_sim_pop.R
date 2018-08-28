@@ -33,7 +33,21 @@ test_that("sim_pop output in the correct format", {
   expect_true("seqs" %in% names(x))
 })
 
-test_that("sim_pop produces the correct number of sequences", {
+test_that("n_gen argument of sim_pop works", {
+  # Single ancestor
+  x <- sim_pop(ancestors = c("AAAA"),
+               n_gen = 1)
+  expect_equal(length(x$seqs), 2)
+
+  x <- sim_pop(ancestors = c("AAAA"),
+               n_gen = 2)
+  expect_equal(length(x$seqs), 4)
+
+  x <- sim_pop(ancestors = c("AAAA"),
+               n_gen = 3)
+  expect_equal(length(x$seqs), 8)
+
+  # Two ancestors
   x <- sim_pop(ancestors = c("AAAA", "BBBB"),
                n_gen = 1)
   expect_equal(length(x$seqs), 4)
@@ -45,6 +59,24 @@ test_that("sim_pop produces the correct number of sequences", {
   x <- sim_pop(ancestors = c("AAAA", "BBBB"),
                n_gen = 3)
   expect_equal(length(x$seqs), 16)
+})
 
+test_that("n_pop argument of sim_pop works", {
+  # Two ancestors
+  x <- sim_pop(ancestors = c("AAAA", "BBBB"),
+               n_pop = 1)
+  expect_equal(length(x$seqs), 2)
+
+  x <- sim_pop(ancestors = c("AAAA", "BBBB"),
+               n_pop = 2)
+  expect_equal(length(x$seqs), 2)
+
+  x <- sim_pop(ancestors = c("AAAA", "BBBB"),
+               n_pop = 3)
+  expect_equal(length(x$seqs), 4)
+  
+  x <- sim_pop(ancestors = c("AAAA", "BBBB"),
+               n_pop = 20)
+  expect_equal(length(x$seqs), 32)
 })
 
