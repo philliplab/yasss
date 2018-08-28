@@ -12,35 +12,34 @@
 #' @export
 
 mutator_checks_general <- function(fun, args){
-  fun_is_fun <- class(fun) == "function"
-  fun_has_parent_arg <- "parent" %in% names(formals(fun))
-  fun_has_mu_arg <- "mu" %in% names(formals(fun))
+  result <- list()
+  result$fun_is_fun <- class(fun) == "function"
+  result$fun_has_parent_arg <- "parent" %in% names(formals(fun))
+  result$fun_has_mu_arg <- "mu" %in% names(formals(fun))
 
-  all_mu_greater_equal_0 <- all(args$mu >= 0)
-  all_mu_less_equal_1 <- all(args$mu <= 1)
+  result$all_mu_greater_equal_0 <- all(args$mu >= 0)
+  result$all_mu_less_equal_1 <- all(args$mu <= 1)
 
   parent <- 'ACGTAC'
   tmp_args <- c(list(parent = parent), args)
   x <- try(do.call(fun, tmp_args), silent = TRUE)
 
-  mutator_runs <- !('try-error' %in% class(x))
+  result$mutator_runs <- !('try-error' %in% class(x))
 
-  output_is_list <- class(x) == 'list'
-  output_has_parent <- 'parent' %in% names(x)
-  output_has_child <- 'child' %in% names(x)
-  output_has_mutation_stats <- 'mutation_stats' %in% names(x)
-  mutation_stats_has_n_mut <- 'n_mut' %in% names(x$mutation_stats)
-  output_has_mu <- 'mu' %in% names(x)
+  if (result$mutator_runs) {
+    result$output_is_list <- class(x) == 'list'
+    result$output_has_parent <- 'parent' %in% names(x)
+    result$output_has_child <- 'child' %in% names(x)
+    result$output_has_mutation_stats <- 'mutation_stats' %in% names(x)
+    result$mutation_stats_has_n_mut <- 'n_mut' %in% names(x$mutation_stats)
+    result$output_has_mu <- 'mu' %in% names(x)
 
-  #NOTE: Might have to update this to handle indels
-  # Because might want to use this to track insertion positions
-  output_parent_correct <- parent == x$parent
-  output_child_char <- class(x$child) == 'character'
-  output_one_child <- length(x$child) == 1
+    #NOTE: Might have to update this to handle indels
+    # Because might want to use this to track insertion positions
+    result$output_parent_correct <- parent == x$parent
+    result$output_child_char <- class(x$child) == 'character'
+    result$output_one_child <- length(x$child) == 1
+  }
 
-  result <- list(fun_is_fun = fun_is_fun,
-                 fun_has_parent_arg = fun_has_parent_arg,
-                 fun_has_mu_arg = fun_has_mu_arg,
-                 output_is_list = output_is_list)
   return(result)
 }
