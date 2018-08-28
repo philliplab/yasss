@@ -57,6 +57,10 @@ The args element is a list with the actual arguments that fun will use.
 
 The arg_checker performs basic sanity checks on the arguments and is seperated from the actual function itself so that error checking and debigging can be simplified by checking the construction of the mutator at the start of the program without generating a very deep trace. (Since the calls will happen through mechanisms like do.call(mutator$fun, args) the trace will be hard to read also.
 
+A constructor lives in mutator_constructor.
+
+Each mutator has its own script and its own test file.
+
 Presently no mutator will be allowed to produce indels. Hopefully this restriction can be lifted in the future.
 
 At the moment six posible mutators are envisioned:
@@ -79,5 +83,13 @@ The output of a mutator is a list with the elements:
 
 The parent is the input sequence.
 The child is the produced offspring.
-The muation_statistics tracks metrics about the mutations that occurred. Initially it will be a list with a single element: n_mut
+The mutation_statistics tracks metrics about the mutations that occurred. Initially it will be a list with a single element: n_mut
 The mutation_rates element is the matrix of mutation rates is the possibly updates mutation rate array that is used to compute the mutation probabilities. This is included to future proof the code so that the addition of indel functionality will not require mojor changes.
+
+Overall process for developing the mutators:
+- develop the uniform mutator together with its test file.
+- There will be a whole slew of tests that are not specific to the uniform mutator. Split them out into a general mutator tests script. Use a for loop looping over all the different types of mutators to apply these general tests to each mutator.
+- After the uniform mutator is completed, write the mutator_constructor.
+
+
+
