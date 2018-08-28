@@ -82,14 +82,14 @@ The output of a mutator is a list with the elements:
 4) mutation_rates
 
 The parent is the input sequence.
+
 The child is the produced offspring.
+
 The mutation_statistics tracks metrics about the mutations that occurred. Initially it will be a list with a single element: n_mut
+
 The mutation_rates element is the matrix of mutation rates is the possibly updates mutation rate array that is used to compute the mutation probabilities. This is included to future proof the code so that the addition of indel functionality will not require mojor changes.
 
 Overall process for developing the mutators:
 - develop the uniform mutator together with its test file.
 - There will be a whole slew of tests that are not specific to the uniform mutator. Split them out into a general mutator tests script. Use a for loop looping over all the different types of mutators to apply these general tests to each mutator.
 - After the uniform mutator is completed, write the mutator_constructor.
-
-
-
