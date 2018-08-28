@@ -21,12 +21,15 @@ mutator_checks_general <- function(fun, args){
 
   parent <- 'ACGTAC'
   tmp_args <- c(list(parent = parent), args)
-  x <- do.call(fun, tmp_args)
+  x <- try(do.call(fun, tmp_args), silent = TRUE)
+
+  mutator_runs <- !('try-error' %in% class(x))
 
   output_is_list <- class(x) == 'list'
   output_has_parent <- 'parent' %in% names(x)
   output_has_child <- 'child' %in% names(x)
   output_has_mutation_stats <- 'mutation_stats' %in% names(x)
+  mutation_stats_has_n_mut <- 'n_mut' %in% names(x$mutation_stats)
   output_has_mu <- 'mu' %in% names(x)
 
   #NOTE: Might have to update this to handle indels
