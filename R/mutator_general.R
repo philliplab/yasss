@@ -12,6 +12,19 @@
 #' @export
 
 mutator_checks_general <- function(fun, args){
-  results <- list(fun_is_fun = TRUE)
+  fun_is_fun <- class(fun) == "function"
+  fun_has_parent_arg <- "parent" %in% names(formals(fun))
+  fun_has_mu_arg <- "mu" %in% names(formals(fun))
+  
+  parent <- 'ACGTAC'
+  tmp_args <- c(list(parent = parent), args)
+  x <- do.call(fun, tmp_args)
+
+  output_is_list <- class(x) == 'list'
+
+  results <- list(fun_is_fun = fun_is_fun,
+                  fun_has_parent_arg = fun_has_parent_arg,
+                  fun_has_mu_arg = fun_has_mu_arg,
+                  output_is_list = output_is_list)
   return(results)
 }
