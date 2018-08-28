@@ -1,4 +1,4 @@
-Yet Another Short Sequence Simulator
+# Yet Another Short Sequence Simulator
 
 The motivation for writing this package is:
 - We need to simulate the unusual conditions that VRC01 might generate in the AMP study
@@ -8,7 +8,7 @@ The motivation for writing this package is:
 - We want to simulate varying levels of immune pressure based on epitopes in the sequences
 - In practice, we constantly rewrite little bits of this package taylored to whatever we are currently working on
 
-Basic flow of the simulation (Mostly aspirational, will be still be useful if only two or three of these goals are achieved)
+## Basic flow of the simulation (Mostly aspirational, will be still be useful if only two or three of these goals are achieved)
 
 Simulate the growth of the quasispecies
 - Inputs
@@ -40,3 +40,33 @@ Simulate the sequencing
 -- Number of reads sequenced
 -- Length of reads
 -- (vector) per nucleotide error matrix (4x4)
+
+## Mutators
+
+Find a better place to store this documentation.
+
+To simulate the quasispecies, a function is needed that will take a parent sequence as input and produce a child sequence by possibly producing some mutations in the sequence.
+
+The constructs yasss uses to produce single children from a parent are called mutators, introduced as an S3 class into yasss.
+
+It simply is a list with three elements: fun, args and arg_checker.
+
+The fun element is a function with the argument the_seq and an arbitrary number of other arguments.
+
+The args element is a list with the actual arguments that fun will use.
+
+The arg_checker performs basic sanity checks on the arguments and is seperated from the actual function itself so that error checking and debigging can be simplified by checking the construction of the mutator at the start of the program without generating a very deep trace. (Since the calls will happen through mechanisms like do.call(mutator$fun, args) the trace will be hard to read also.
+
+Presently no mutator will be allowed to produce indels. Hopefully this restriction can be lifted in the future.
+
+At the moment six posible mutators are envisioned:
+1) uniform_mutator
+2) pp_uniform_mutator
+3) nucleotide_based_mutator
+4) pp_nucleotide_based_mutator
+5) codon_based_mutator
+6) pp_codon_based_mutator
+
+pp stands for per position and allows the user to specify variable mutation rates for different positions.
+
+Obviously each mutator is just a special case of the mutator that comes after it. As such, the ultimate goal should be to write a single general function that produces each of the special cases. However, that requires a lot more engineering that just getting a simple one up and running right now. So I will start with the uniform mutator and implement most of the package with only that mutator and then come back to this to produce the special mutators later. Also, there might be performance issue with the most general versions that will not be an issue at all for the simpler ones. In theory the performance mismatches can be completely nuetralized by moving this operation to C++ since the main performance overhead will be the lookups.
