@@ -1,3 +1,5 @@
+# Just starting - very very early version
+
 # Yet Another Short Sequence Simulator
 
 The motivation for writing this package is:
