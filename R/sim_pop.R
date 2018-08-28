@@ -23,6 +23,8 @@ sim_pop <- function(ancestors, n_gen = NULL, n_pop = NULL){
     the_pop[1:length(ancestors)] <- ancestors
     the_pop[(length(ancestors)+1):(2*length(ancestors))] <- ancestors
     ancestors <- the_pop
+    c_pop <- length(ancestors)
+    n_gen <- n_gen + 1
   }
   return(ancestors)
 }
