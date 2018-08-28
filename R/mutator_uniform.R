@@ -7,9 +7,26 @@
 #' @export
 
 mutator_uniform_fun <- function(parent, mu){
+
+  if (length(parent) != 1){
+    stop("The length of the parent argument to a mutator must be 1")
+  }
+
+  parent <- strsplit(as.character(parent), '')[[1]]
+
+  mut_spots <- which(runif(length(parent)) < mu)
+
+  child <- parent
+  for (mut_spot in mut_spots){
+    child[mut_spot] <- sample(setdiff(c('A', 'C', 'G', 'T'), child[mut_spot]), 1)
+  }
+
+  parent <- paste(parent, sep = '', collapse = '')
+  child <- paste(child, sep = '', collapse = '')
+
   result <- list(parent = parent,
-                 child = parent,
-                 mutation_stats = list(n_mut = 0),
+                 child = child,
+                 mutation_stats = list(n_mut = length(mut_spots)),
                  mu = mu)
   return(result)
 }
