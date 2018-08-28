@@ -97,3 +97,21 @@ test_that("n_pop argument of sim_pop works", {
   expect_equal(length(x$seqs), 32)
 })
 
+test_that("n_pop and n_gen arguments of sim_pop interact correctly", {
+            # Single ancestor
+  x <- sim_pop(ancestors = c("AAAA"),
+               n_pop = 1, n_gen = 1)
+  expect_equal(length(x$seqs), 1)
+
+  x <- sim_pop(ancestors = c("AAAA"),
+               n_pop = 2, n_gen = 2)
+  expect_equal(length(x$seqs), 2)
+
+  x <- sim_pop(ancestors = c("AAAA"),
+               n_pop = 3, n_gen = 1)
+  expect_equal(length(x$seqs), 2)
+  
+  x <- sim_pop(ancestors = c("AAAA"),
+               n_pop = 33, n_gen = 10)
+  expect_equal(length(x$seqs), 64)
+})
