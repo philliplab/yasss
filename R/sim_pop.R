@@ -4,9 +4,16 @@
 #'
 #' Details: Simulated multiple generations
 #' @param ancestors A list of DNA sequences with which to start the population. Include the same sequence multiple times to achieve a target ratio.
+#' @param gen_size The size of each generation. Currently only allowed to be a single integer. Default value is 2.
+#' @param n_gen The number of generations to simulate.
+#' @param n_pop Stop the simulation when the population size exceeds this number.
 #' @export 
 
-sim_pop <- function(ancestors, n_gen = NULL, n_pop = NULL){
+sim_pop <- function(ancestors, gen_size = 2, n_gen = NULL, n_pop = NULL){
+  gen_size <- round(as.numeric(gen_size), 0)
+  if (gen_size < 1 | gen_size > 1e6){
+    stop("gen_size must be between 1 and 1e6")
+  }
   if (is.null(n_gen)) {n_gen <- Inf}
   if (is.null(n_pop)) {n_pop <- Inf}
 
@@ -16,18 +23,25 @@ sim_pop <- function(ancestors, n_gen = NULL, n_pop = NULL){
   if (n_gen < 1 | n_pop < 1){
     stop('Neither n_gen nor n_pop may be set to less than one')
   }
-  c_gen <- 0
-  c_pop <- length(ancestors)
-  while ((c_pop < n_pop) & (c_gen < n_gen)){
-    the_pop <- character(length(ancestors)*2)
-    the_pop[1:length(ancestors)] <- ancestors
-    the_pop[(length(ancestors)+1):(2*length(ancestors))] <- ancestors
-    ancestors <- the_pop
+  
+  parents <- ancestors
 
-    c_pop <- length(ancestors)
+  c_gen <- 0
+  c_pop <- length(parents)
+
+  while ((c_pop < n_pop) & (c_gen < n_gen)){
+
+    # silly dummy next gen functionality
+    the_pop <- character(length(parents)*2)
+    the_pop[1:length(parents)] <- parents
+    the_pop[(length(parents)+1):(2*length(parents))] <- parents
+    parents <- the_pop
+
+
+    c_pop <- length(parents)
     c_gen <- c_gen + 1
   }
-  results <- list(seqs = ancestors)
+  results <- list(seqs = parents)
   return(results)
 }
 
