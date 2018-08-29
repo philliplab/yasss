@@ -4,7 +4,7 @@
 #'
 #' Details: Simulated multiple generations
 #' @param ancestors A list of DNA sequences with which to start the population. Include the same sequence multiple times to achieve a target ratio.
-#' @param gen_size The size of each generation. Currently only allowed to be a single integer. Default value is 2.
+#' @param gen_size The size of each generation (as a multiple of the size of the parent generation). Currently only allowed to be a single integer. Default value is 2.
 #' @param n_gen The number of generations to simulate.
 #' @param n_pop Stop the simulation when the population size exceeds this number.
 #' @export 

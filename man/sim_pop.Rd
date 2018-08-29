@@ -9,7 +9,7 @@ sim_pop(ancestors, gen_size = 2, n_gen = NULL, n_pop = NULL)
 \arguments{
 \item{ancestors}{A list of DNA sequences with which to start the population. Include the same sequence multiple times to achieve a target ratio.}
 
-\item{gen_size}{The size of each generation. Currently only allowed to be a single integer. Default value is 2.}
+\item{gen_size}{The size of each generation (as a multiple of the size of the parent generation). Currently only allowed to be a single integer. Default value is 2.}
 
 \item{n_gen}{The number of generations to simulate.}
 

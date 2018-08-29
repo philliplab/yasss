@@ -11,6 +11,9 @@ sim_next_gen(parents, gen_size)
 
 \item{gen_size}{The size of each generation. Currently only allowed to be a single integer. Default value is 2.}
 }
+\value{
+Currently, a list with a single element which is a character vector with each element being the sequence of a single offspring. In future, this should be expanded to include much more.
+}
 \description{
 Simulates the next generation by calling a mutator on each parent
 }

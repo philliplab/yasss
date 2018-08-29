@@ -2,6 +2,8 @@
 #'
 #' Simulates the next generation by calling a mutator on each parent
 #'
+#' @return Currently, a list with a single element which is a character vector with each element being the sequence of a single offspring. In future, this should be expanded to include much more.
+#'
 #' @param parents A character vector with each element being a parent sequence
 #' @param gen_size The size of each generation. Currently only allowed to be a single integer. Default value is 2.
 #' @export
@@ -9,6 +11,7 @@
 sim_next_gen <- function(parents, gen_size){
   offspring <- character(length(parents)*gen_size)
   total_offspring <- 0
+  result <- list()
   for (i in 1:length(parents)){
     for (j in 1:gen_size){
       total_offspring <- total_offspring + 1
@@ -16,5 +19,7 @@ sim_next_gen <- function(parents, gen_size){
       offspring[total_offspring] <- child
     }
   }
-  return(offspring)
+  result$offspring <- offspring
+  return(result)
 }
+
