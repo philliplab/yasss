@@ -1,19 +1,16 @@
 context("uniform_mutator")
 
-#YASSS_MUTATORS <- list(mutator_uniform = 
-#                         list(fun = mutator_uniform_fun,
-#                              args = list(mu = 0.01),
-#                              checker = c)
-#                      )
+fun <- mutator_uniform_fun
+parents <- c('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+             'ACGTACGTA',
+             paste(rep('AAACCCGGGTTT', 10), sep = '', collapse = ''),
+             paste(rep('AAACCCGGGTTT', 1000), sep = '', collapse = ''))
+
+# debugging setting
+parent <- parents[3]
 
 test_that("uniform_mutator introduces zero mutations on mu=0", {
-  fun <- mutator_uniform_fun
   args <- list(mu = 0)
-  parents <- c('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
-               'ACGTACGTA',
-               paste(rep('AAACCCGGGTTT', 10), sep = '', collapse = ''),
-               paste(rep('AAACCCGGGTTT', 1000), sep = '', collapse = ''))
-  parent <- parents[3]
 
   for (parent in parents){
     args$parent <- parent
@@ -23,7 +20,9 @@ test_that("uniform_mutator introduces zero mutations on mu=0", {
     observed_mutations <- stringdist(x$parent, x$child, method = 'hamming')
     expect_equal(observed_mutations, x$mutation_stats$n_mut)
   }
+})
 
+test_that("uniform_mutator introduces reasonable amount of mutations on mu=0.05", {
   args <- list(mu = 0.05)
 
   for (parent in parents){
@@ -34,7 +33,7 @@ test_that("uniform_mutator introduces zero mutations on mu=0", {
   }
 
   args$parent <- paste(rep('AAACCCGGGTTT', 1000), sep = '', collapse = '')
-  max_mut <- 750
+  max_mut <- 750 #computed with max(rbinom(1e10, 12000, 0.05)) + small offset
   min_mut <- 450
   
   for (i in 1:10){
