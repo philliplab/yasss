@@ -10,10 +10,15 @@
 #' @export 
 
 sim_pop <- function(ancestors, gen_size = 2, n_gen = NULL, n_pop = NULL){
-  gen_size <- round(as.numeric(gen_size), 0)
-  if (gen_size < 1 | gen_size > 1e6){
+  gen_size <- tryCatch(round(as.numeric(gen_size), 0),
+                       warning=function(w) return(list(round(as.numeric(gen_size), 0), w))
+                       )
+  if (class(gen_size) == 'list') {
+    stop("gen_size must be between 1 and 1e6")
+  } else if (gen_size < 1 | gen_size > 1e6){
     stop("gen_size must be between 1 and 1e6")
   }
+
   if (is.null(n_gen)) {n_gen <- Inf}
   if (is.null(n_pop)) {n_pop <- Inf}
 

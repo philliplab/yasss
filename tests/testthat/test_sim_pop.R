@@ -36,7 +36,9 @@ test_that("sim_pop checks arguments correctly", {
                GEN_SIZE_VALID)
   expect_error(sim_pop(ancestors = c('AAA'), gen_size = 2e7, n_gen = 3, n_pop = 50),
                GEN_SIZE_VALID)
-  expect_error(sim_pop(ancestors = c('AAA'), gen_size = 'many', n_gen = 3, n_pop = 50),
+  expect_error(
+    expect_warning(sim_pop(ancestors = c('AAA'), gen_size = 'many', n_gen = 3, n_pop = 50),
+                   "NAs introduced by coercion"),
                GEN_SIZE_VALID)
 })
 
