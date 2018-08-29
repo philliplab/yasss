@@ -2,4 +2,5 @@
 
 export(mutator_checks_general)
 export(mutator_uniform_fun)
+export(sim_next_gen)
 export(sim_pop)

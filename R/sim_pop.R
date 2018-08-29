@@ -37,6 +37,9 @@ sim_pop <- function(ancestors, gen_size = 2, n_gen = NULL, n_pop = NULL){
     the_pop[(length(parents)+1):(2*length(parents))] <- parents
     parents <- the_pop
 
+# Delete the silly section above and replace it with the commented out bit below
+#    offspring <- sim_next_gen(parents, gen_size)
+#    parents <- offspring
 
     c_pop <- length(parents)
     c_gen <- c_gen + 1
