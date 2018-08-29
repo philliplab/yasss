@@ -15,10 +15,12 @@ mutator_uniform_fun <- function(parent, mu){
   parent <- strsplit(as.character(parent), '')[[1]]
 
   mut_spots <- which(runif(length(parent)) < mu)
-
   child <- parent
-  for (mut_spot in mut_spots){
-    child[mut_spot] <- sample(setdiff(c('A', 'C', 'G', 'T'), child[mut_spot]), 1)
+
+  if (length(mut_spots > 0)){
+    for (mut_spot in mut_spots){
+      child[mut_spot] <- sample(setdiff(c('A', 'C', 'G', 'T'), child[mut_spot]), 1)
+    }
   }
 
   parent <- paste(parent, sep = '', collapse = '')
