@@ -20,7 +20,7 @@ test_that("uniform_mutator introduces zero mutations on mu=0", {
     x <- do.call(fun, args)
     expect_equal(x$parent, x$child, info = parent)
     expect_equal(x$mutation_stats$n_mut, 0, info = parent)
-    observed_mutations <- stringdist(x$parent, x$child, method = 'lv')
+    observed_mutations <- stringdist(x$parent, x$child, method = 'hamming')
     expect_equal(observed_mutations, x$mutation_stats$n_mut)
   }
 
@@ -29,7 +29,7 @@ test_that("uniform_mutator introduces zero mutations on mu=0", {
   for (parent in parents){
     args$parent <- parent
     x <- do.call(fun, args)
-    observed_mutations <- stringdist(x$parent, x$child, method = 'lv')
+    observed_mutations <- stringdist(x$parent, x$child, method = 'hamming')
     expect_equal(observed_mutations, x$mutation_stats$n_mut)
   }
 
