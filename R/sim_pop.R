@@ -40,16 +40,8 @@ sim_pop <- function(ancestors,
   c_pop <- length(parents)
 
   while ((c_pop < n_pop) & (c_gen < n_gen)){
-
-    # silly dummy next gen functionality
-    the_pop <- character(length(parents)*2)
-    the_pop[1:length(parents)] <- parents
-    the_pop[(length(parents)+1):(2*length(parents))] <- parents
-    parents <- the_pop
-
-# Delete the silly section above and replace it with the commented out bit below
-#    offspring <- sim_next_gen(parents, gen_size, mutator)
-#    parents <- offspring
+    next_gen_result <- sim_next_gen(parents, gen_size, mutator)
+    parents <- next_gen_result$offspring
 
     c_pop <- length(parents)
     c_gen <- c_gen + 1
