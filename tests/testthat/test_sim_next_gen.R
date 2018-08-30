@@ -33,3 +33,17 @@ test_that('sim_next_gen produces the correct number of offspring', {
     expect_equal(length(x$offspring), 5*gen_size)
   }
 })
+
+test_that('sim_next_gen produces mutations when called with 100% mutation rates', {
+  mutator_uniform_mu100 <- YASSS_MUTATORS$mutator_uniform
+  mutator_uniform_mu100$args$mu <- 1
+
+  x <- sim_next_gen(c('AAA'), gen_size = 2,
+                    mutator_uniform_mu100)
+  expect_false(any(x$offspring == 'AAA'))
+  expect_false('A' %in% strsplit(x$offspring[1], '')[[1]])
+  expect_false('A' %in% strsplit(x$offspring[2], '')[[1]])
+
+  expect_true(all(strsplit(x$offspring[1], '')[[1]] %in% c('C', 'G', 'T')))
+  expect_true(all(strsplit(x$offspring[2], '')[[1]] %in% c('C', 'G', 'T')))
+})
