@@ -4,7 +4,8 @@
 \alias{sim_pop}
 \title{Simulates evolution of DNA of a population}
 \usage{
-sim_pop(ancestors, gen_size = 2, n_gen = NULL, n_pop = NULL)
+sim_pop(ancestors, gen_size = 2, n_gen = NULL, n_pop = NULL,
+  mutator = list(fun = mutator_uniform_fun, args = list(mu = 0.01)))
 }
 \arguments{
 \item{ancestors}{A list of DNA sequences with which to start the population. Include the same sequence multiple times to achieve a target ratio.}
@@ -14,6 +15,8 @@ sim_pop(ancestors, gen_size = 2, n_gen = NULL, n_pop = NULL)
 \item{n_gen}{The number of generations to simulate.}
 
 \item{n_pop}{Stop the simulation when the population size exceeds this number.}
+
+\item{mutator}{A list with two elements fun and args specifying the function that mutates parents into their offspring and the list of arguments said function requires.}
 }
 \description{
 Produce a set of DNA sequences by simulation a population with multiple generations allowing mutation and recombination

@@ -7,9 +7,14 @@
 #' @param gen_size The size of each generation (as a multiple of the size of the parent generation). Currently only allowed to be a single integer. Default value is 2.
 #' @param n_gen The number of generations to simulate.
 #' @param n_pop Stop the simulation when the population size exceeds this number.
+#' @param mutator A list with two elements fun and args specifying the function that mutates parents into their offspring and the list of arguments said function requires. 
 #' @export 
 
-sim_pop <- function(ancestors, gen_size = 2, n_gen = NULL, n_pop = NULL){
+sim_pop <- function(ancestors, 
+                    gen_size = 2, n_gen = NULL, n_pop = NULL,
+                    mutator = list(fun = mutator_uniform_fun,
+                                   args = list(mu = 0.01))){
+
   gen_size <- tryCatch(round(as.numeric(gen_size), 0),
                        warning=function(w) return(list(round(as.numeric(gen_size), 0), w))
                        )
@@ -43,7 +48,7 @@ sim_pop <- function(ancestors, gen_size = 2, n_gen = NULL, n_pop = NULL){
     parents <- the_pop
 
 # Delete the silly section above and replace it with the commented out bit below
-#    offspring <- sim_next_gen(parents, gen_size)
+#    offspring <- sim_next_gen(parents, gen_size, mutator)
 #    parents <- offspring
 
     c_pop <- length(parents)
