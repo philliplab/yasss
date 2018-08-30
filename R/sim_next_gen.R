@@ -17,7 +17,11 @@ sim_next_gen <- function(parents, gen_size, mutator){
   for (i in 1:length(parents)){
     for (j in 1:gen_size){
       total_offspring <- total_offspring + 1
-      child <- parents[i]
+      mut_arg <- mutator$arg
+      mut_arg$parent <- parents[i]
+      mut_result <- do.call(mutator$fun, mut_arg)
+      child <- mut_result$child
+#      child <- parents[i]
       offspring[total_offspring] <- child
     }
   }

@@ -2,8 +2,7 @@ context("General Mutators")
 
 YASSS_MUTATORS <- list(mutator_uniform = 
                          list(fun = mutator_uniform_fun,
-                              args = list(mu = 0.01),
-                              checker = c)
+                              args = list(mu = 0.01))
                       )
 
 for (c_mutator in names(YASSS_MUTATORS)){
