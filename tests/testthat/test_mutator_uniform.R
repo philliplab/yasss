@@ -43,3 +43,24 @@ test_that("uniform_mutator introduces reasonable amount of mutations on mu=0.05"
   }
 })
 
+test_that('mutator_uniform produces mutations when called with 100% mutation rates', {
+  same_nuc_parents <- c(paste(rep('A', 60), sep = '', collapse = ''),
+                        paste(rep('C', 60), sep = '', collapse = ''),
+                        paste(rep('G', 60), sep = '', collapse = ''),
+                        paste(rep('T', 60), sep = '', collapse = ''))
+
+  args <- list(mu = 1)
+
+  for (parent in same_nuc_parents){
+    parent_letter <- unique(strsplit(parent , '')[[1]])
+    stopifnot(length(parent_letter) == 1)
+    stopifnot(nchar(parent_letter) == 1)
+    args$parent <- parent
+    x <- do.call(fun, args)
+    expect_false(x$child == parent)
+    
+    expect_false(parent_letter %in% strsplit(x$child, '')[[1]])
+
+    expect_true(all(strsplit(x$child, '')[[1]] %in% setdiff(c('A', 'C', 'G', 'T'), parent_letter)))
+  }
+})
