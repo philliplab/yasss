@@ -17,7 +17,7 @@ single integer. Default value is 2.}
 \item{gen_num}{The generation number. Defaults to 1.}
 }
 \value{
-The genealogy data.frame. Described in GH issue #6. Will require general documentation and a reference to it here.
+A genealogy data structure. TODO: link to general documentation on a genealogy. GH issue #6
 }
 \description{
 Simulates the next generation by calling a mutator on each parent

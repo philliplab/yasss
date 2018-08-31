@@ -18,9 +18,12 @@ sim_pop(ancestors, gen_size = 2, n_gen = NULL, n_pop = NULL,
 
 \item{mutator}{A list with two elements fun and args specifying the function that mutates parents into their offspring and the list of arguments said function requires.}
 }
+\value{
+A genealogy data structure. TODO: link to general documentation on a genealogy. GH issue #6.
+}
 \description{
 Produce a set of DNA sequences by simulation a population with multiple generations allowing mutation and recombination
 }
 \details{
-Details: Simulated multiple generations
+Details: Simulated multiple generations TODO - expand this
 }

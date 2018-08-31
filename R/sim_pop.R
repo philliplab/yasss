@@ -2,7 +2,10 @@
 #'
 #' Produce a set of DNA sequences by simulation a population with multiple generations allowing mutation and recombination
 #'
-#' Details: Simulated multiple generations
+#' Details: Simulated multiple generations TODO - expand this
+#'
+#' @return A genealogy data structure. TODO: link to general documentation on a genealogy. GH issue #6.
+#'
 #' @param ancestors A list of DNA sequences with which to start the population. Include the same sequence multiple times to achieve a target ratio.
 #' @param gen_size The size of each generation (as a multiple of the size of the parent generation). Currently only allowed to be a single integer. Default value is 2.
 #' @param n_gen The number of generations to simulate.
@@ -69,7 +72,6 @@ sim_pop <- function(ancestors,
     #TODO: Think about this - how will the fitness bit affect this next line?
     c_pop <- sum(genealogy$gen_num == c_gen)
   }
-  results <- list(seqs = genealogy$the_seq[genealogy$gen_num == max(genealogy$gen_num)])
-  return(results)
+  return(genealogy)
 }
 

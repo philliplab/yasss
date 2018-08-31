@@ -2,7 +2,7 @@
 #'
 #' Simulates the next generation by calling a mutator on each parent
 #'
-#' @return The genealogy data.frame. Described in GH issue #6. Will require general documentation and a reference to it here.
+#' @return A genealogy data structure. TODO: link to general documentation on a genealogy. GH issue #6
 #'
 #' @param parents A character vector with each element being a parent sequence
 #' @param gen_size The size of each generation. Currently only allowed to be a

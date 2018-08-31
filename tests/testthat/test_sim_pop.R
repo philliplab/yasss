@@ -46,89 +46,89 @@ test_that("sim_pop output in the correct format", {
   x <- sim_pop(ancestors = c("AAAA", "BBBB"), 
                gen_size = 2,
                n_gen = 1)
-  expect_equal(class(x), 'list')
-  expect_true("seqs" %in% names(x))
+  expect_equal(class(x), 'data.frame')
+  expect_true("the_seq" %in% names(x))
 })
 
 test_that("n_gen argument of sim_pop works", {
   # Single ancestor
   x <- sim_pop(ancestors = c("AAAA"), gen_size = 2,
                n_gen = 1)
-  expect_equal(length(x$seqs), 2)
+  expect_equal(length(x$the_seq[x$gen_num == max(x$gen_num)]), 2)
 
   x <- sim_pop(ancestors = c("AAAA"), gen_size = 2,
                n_gen = 2)
-  expect_equal(length(x$seqs), 4)
+  expect_equal(length(x$the_seq[x$gen_num == max(x$gen_num)]), 4)
 
   x <- sim_pop(ancestors = c("AAAA"), gen_size = 2,
                n_gen = 3)
-  expect_equal(length(x$seqs), 8)
+  expect_equal(length(x$the_seq[x$gen_num == max(x$gen_num)]), 8)
 
   # Two ancestors
   x <- sim_pop(ancestors = c("AAAA", "BBBB"), gen_size = 2,
                n_gen = 1)
-  expect_equal(length(x$seqs), 4)
+  expect_equal(length(x$the_seq[x$gen_num == max(x$gen_num)]), 4)
 
   x <- sim_pop(ancestors = c("AAAA", "BBBB"), gen_size = 2,
                n_gen = 2)
-  expect_equal(length(x$seqs), 8)
+  expect_equal(length(x$the_seq[x$gen_num == max(x$gen_num)]), 8)
 
   x <- sim_pop(ancestors = c("AAAA", "BBBB"), gen_size = 2,
                n_gen = 3)
-  expect_equal(length(x$seqs), 16)
+  expect_equal(length(x$the_seq[x$gen_num == max(x$gen_num)]), 16)
 })
 
 test_that("n_pop argument of sim_pop works", {
   # One ancestor
   x <- sim_pop(ancestors = c("AAAA"), gen_size = 2,
                n_pop = 1)
-  expect_equal(length(x$seqs), 1)
+  expect_equal(length(x$the_seq[x$gen_num == max(x$gen_num)]), 1)
 
   x <- sim_pop(ancestors = c("AAAA"), gen_size = 2,
                n_pop = 2)
-  expect_equal(length(x$seqs), 2)
+  expect_equal(length(x$the_seq[x$gen_num == max(x$gen_num)]), 2)
 
   x <- sim_pop(ancestors = c("AAAA"), gen_size = 2,
                n_pop = 3)
-  expect_equal(length(x$seqs), 4)
+  expect_equal(length(x$the_seq[x$gen_num == max(x$gen_num)]), 4)
   
   x <- sim_pop(ancestors = c("AAAA"), gen_size = 2,
                n_pop = 33)
-  expect_equal(length(x$seqs), 64)
+  expect_equal(length(x$the_seq[x$gen_num == max(x$gen_num)]), 64)
 
   # Two ancestors
   x <- sim_pop(ancestors = c("AAAA", "BBBB"), gen_size = 2,
                n_pop = 1)
-  expect_equal(length(x$seqs), 2)
+  expect_equal(length(x$the_seq[x$gen_num == max(x$gen_num)]), 2)
 
   x <- sim_pop(ancestors = c("AAAA", "BBBB"), gen_size = 2,
                n_pop = 2)
-  expect_equal(length(x$seqs), 2)
+  expect_equal(length(x$the_seq[x$gen_num == max(x$gen_num)]), 2)
 
   x <- sim_pop(ancestors = c("AAAA", "BBBB"), gen_size = 2,
                n_pop = 3)
-  expect_equal(length(x$seqs), 4)
+  expect_equal(length(x$the_seq[x$gen_num == max(x$gen_num)]), 4)
   
   x <- sim_pop(ancestors = c("AAAA", "BBBB"), gen_size = 2,
                n_pop = 20)
-  expect_equal(length(x$seqs), 32)
+  expect_equal(length(x$the_seq[x$gen_num == max(x$gen_num)]), 32)
 })
 
 test_that("n_pop and n_gen arguments of sim_pop interact correctly", {
             # Single ancestor
   x <- sim_pop(ancestors = c("AAAA"), gen_size = 2,
                n_pop = 1, n_gen = 1)
-  expect_equal(length(x$seqs), 1)
+  expect_equal(length(x$the_seq[x$gen_num == max(x$gen_num)]), 1)
 
   x <- sim_pop(ancestors = c("AAAA"), gen_size = 2,
                n_pop = 2, n_gen = 2)
-  expect_equal(length(x$seqs), 2)
+  expect_equal(length(x$the_seq[x$gen_num == max(x$gen_num)]), 2)
 
   x <- sim_pop(ancestors = c("AAAA"), gen_size = 2,
                n_pop = 3, n_gen = 1)
-  expect_equal(length(x$seqs), 2)
+  expect_equal(length(x$the_seq[x$gen_num == max(x$gen_num)]), 2)
   
   x <- sim_pop(ancestors = c("AAAA"), gen_size = 2,
                n_pop = 33, n_gen = 10)
-  expect_equal(length(x$seqs), 64)
+  expect_equal(length(x$the_seq[x$gen_num == max(x$gen_num)]), 64)
 })
