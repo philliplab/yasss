@@ -37,17 +37,39 @@ sim_pop <- function(ancestors,
   parents <- ancestors
 
   c_gen <- 0
-  c_pop <- length(parents)
+  c_pop <- length(ancestors)
+
+  genealogy <- data.frame(gen_num = c_gen,
+                          id = 1:length(ancestors),
+                          parent_id = -1,
+                          the_seq = ancestors,
+                          n_mut = NA_real_,
+                          recomb_pos = NA_real_,
+                          recomb_replaced = NA_character_,
+                          recomb_partner = NA_real_,
+                          recomb_muts = NA_real_,
+                          fitness_score = NA_real_,
+                          stringsAsFactors = FALSE
+                          )
 
   while ((c_pop < n_pop) & (c_gen < n_gen)){
-    genealogy <- sim_next_gen(parents, gen_size, 
-                              mutator, gen_num = c_gen)
-    parents <- genealogy$the_seq
-
-    c_pop <- length(parents)
     c_gen <- c_gen + 1
+    
+    new_generation <- sim_next_gen(genealogy[genealogy$gen_num == (c_gen-1), "the_seq"], 
+                                   gen_size = gen_size,
+                                   mutator, gen_num = c_gen)
+
+    # insert recomb here (act on new_generation)
+
+    # insert fitness here (act on new_generation)
+
+
+    genealogy <- rbind(genealogy, new_generation)
+
+    #TODO: Think about this - how will the fitness bit affect this next line?
+    c_pop <- sum(genealogy$gen_num == c_gen)
   }
-  results <- list(seqs = parents)
+  results <- list(seqs = genealogy$the_seq[genealogy$gen_num == max(genealogy$gen_num)])
   return(results)
 }
 
