@@ -4,7 +4,7 @@
 \alias{sim_next_gen}
 \title{Simulate the next generation}
 \usage{
-sim_next_gen(parents, gen_size, mutator)
+sim_next_gen(parents, gen_size, mutator, gen_num = 1)
 }
 \arguments{
 \item{parents}{A character vector with each element being a parent sequence}
@@ -13,6 +13,8 @@ sim_next_gen(parents, gen_size, mutator)
 single integer. Default value is 2.}
 
 \item{mutator}{A list with two elements fun and args specifying the function that mutates parents into their offspring and the list of arguments said function requires.}
+
+\item{gen_num}{The generation number. Defaults to 1.}
 }
 \value{
 Currently, a list with a single element which is a character vector with each element being the sequence of a single offspring. In future, this should be expanded to include much more.
