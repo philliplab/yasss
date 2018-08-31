@@ -58,7 +58,7 @@ sim_pop <- function(ancestors,
   while ((c_pop < n_pop) & (c_gen < n_gen)){
     c_gen <- c_gen + 1
     
-    new_generation <- sim_next_gen(genealogy[genealogy$gen_num == (c_gen-1), "the_seq"], 
+    new_generation <- sim_next_gen(genealogy[genealogy$gen_num == (c_gen-1),], 
                                    gen_size = gen_size,
                                    mutator, gen_num = c_gen)
 

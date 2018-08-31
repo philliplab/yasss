@@ -4,10 +4,10 @@
 \alias{sim_next_gen}
 \title{Simulate the next generation}
 \usage{
-sim_next_gen(parents, gen_size, mutator, gen_num = 1)
+sim_next_gen(genealogy, gen_size, mutator, gen_num = 1)
 }
 \arguments{
-\item{parents}{A character vector with each element being a parent sequence}
+\item{genealogy}{A genealogy data structure holding all the previous generations. TODO: link to general documentation. GH issue #6.}
 
 \item{gen_size}{The size of each generation. Currently only allowed to be a
 single integer. Default value is 2.}
