@@ -2,7 +2,7 @@
 #'
 #' Simulates the next generation by calling a mutator on each parent
 #'
-#' @return Currently, a list with a single element which is a character vector with each element being the sequence of a single offspring. In future, this should be expanded to include much more.
+#' @return The genealogy data.frame. Described in GH issue #6. Will require general documentation and a reference to it here.
 #'
 #' @param parents A character vector with each element being a parent sequence
 #' @param gen_size The size of each generation. Currently only allowed to be a
@@ -49,7 +49,6 @@ sim_next_gen <- function(parents, gen_size, mutator, gen_num = 1){
       genealogy <- rbind(genealogy, c_genealogy, stringsAsFactors = FALSE)
     }
   }
-  result$offspring <- genealogy$the_seq
-  return(result)
+  return(genealogy)
 }
 

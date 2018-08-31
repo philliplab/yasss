@@ -17,7 +17,7 @@ single integer. Default value is 2.}
 \item{gen_num}{The generation number. Defaults to 1.}
 }
 \value{
-Currently, a list with a single element which is a character vector with each element being the sequence of a single offspring. In future, this should be expanded to include much more.
+The genealogy data.frame. Described in GH issue #6. Will require general documentation and a reference to it here.
 }
 \description{
 Simulates the next generation by calling a mutator on each parent
