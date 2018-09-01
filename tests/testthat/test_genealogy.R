@@ -42,7 +42,7 @@ test_that('check_genealogy lets correct genealogies pass', {
   genealogy_expector(x)
 })
 
-test_that('check_genealogy flags incorrect genealogies', {
+test_that('check_genealogy flags issues with missing columns', {
   ancestors <- 'AAA'
   x <- data.frame(gen_num = 0,
                   id = 1:length(ancestors),
@@ -56,9 +56,33 @@ test_that('check_genealogy flags incorrect genealogies', {
                   fitness_score = NA_real_,
                   stringsAsFactors = FALSE
                   )
-  y <- x
-  y$gen_num <- NULL
-  genealogy_expector(y, expect_false = c('has_gen_num', 'number_of_columns', 'column_order'))
+  for (i in names(x)){
+    y <- x
+    y[,i] <- NULL
+    genealogy_expector(y, expect_false = c(paste('has', i, sep = '_'), 
+                                           'number_of_columns', 'column_order'))
+  }
+})
+
+test_that('check_genealogy flags issues with unexpected columns', {
+  ancestors <- 'AAA'
+  x <- data.frame(gen_num = 0,
+                  id = 1:length(ancestors),
+                  parent_id = -1,
+                  the_seq = ancestors,
+                  n_mut = NA_real_,
+                  recomb_pos = NA_real_,
+                  recomb_replaced = NA_character_,
+                  recomb_partner = NA_real_,
+                  recomb_muts = NA_real_,
+                  fitness_score = NA_real_,
+                  stringsAsFactors = FALSE
+                  )
+  for (i in c('col1', '1', '__A', '  ')){
+    y <- x
+    y[,i] <- 1
+    genealogy_expector(y, expect_false = c('number_of_columns', 'column_order'))
+  }
 })
 
 test_that('make_genealogy works', {
