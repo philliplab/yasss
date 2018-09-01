@@ -44,6 +44,16 @@ check_genealogy <- function(genealogy){
   results$has_recomb_muts <- 'recomb_muts' %in% names(genealogy)
   results$has_fitness_score <- 'fitness_score' %in% names(genealogy)
   results$number_of_columns <- length(names(genealogy)) == 10
-  results$column_order <- all(names(genealogy) == c("gen_num", "id", "parent_id", "the_seq", "n_mut", "recomb_pos", "recomb_replaced", "recomb_partner", "recomb_muts", "fitness_score"))
+  if (results$number_of_columns) {
+    results$column_order <- all(names(genealogy) == c("gen_num", "id",
+                                                      "parent_id", "the_seq",
+                                                      "n_mut", "recomb_pos",
+                                                      "recomb_replaced",
+                                                      "recomb_partner",
+                                                      "recomb_muts",
+                                                      "fitness_score"))
+  } else {
+    results$column_order <- FALSE
+  }
   return(results)
 }
