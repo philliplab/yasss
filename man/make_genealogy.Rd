@@ -7,8 +7,8 @@
 make_genealogy(ancestors)
 }
 \arguments{
-\item{ancestors}{If no information other than the initial ancestors are available, just pass in the character vector with the ancestors and a genealogy will be intialized.}
+\item{ancestors}{Character vector containing the sequences of the ancestors of the genealogy.}
 }
 \description{
-Makes a genealogy data structure and (not yet) checks that it is correct
+Initializes a new genealogy from the ancestor sequences.
 }
