@@ -154,7 +154,7 @@ test_that('check_genealogy flags issues with ids', {
   c_genea <- SAMPLE_GENEALOGIES[['bif_2gen']]
   m_genea <- c_genea
   m_genea$id[2] <- NA
-  genealogy_expector(m_genea, false_list = c('id_not_missing', 'id_gt_zero', 'id_no_duplicates_within_gen'))
+  genealogy_expector(m_genea, false_list = c('id_not_missing', 'id_gt_zero', 'id_no_duplicates_within_gen', 'id_is_integer'))
 
   m_genea <- c_genea
   m_genea$id[2] <- -1
@@ -163,6 +163,10 @@ test_that('check_genealogy flags issues with ids', {
   m_genea <- c_genea
   m_genea$id[3] <- 1
   genealogy_expector(m_genea, false_list = c('id_no_duplicates_within_gen'))
+  
+  m_genea <- c_genea
+  m_genea$id[3] <- 1.1
+  genealogy_expector(m_genea, false_list = c('id_is_integer'))
 })
 
 test_that('check_genealogy flags issues with parent_ids', {
@@ -175,10 +179,6 @@ test_that('check_genealogy flags issues with parent_ids', {
   m_genea <- c_genea
   m_genea$parent_id[2] <- -1
   genealogy_expector(m_genea, false_list = c('parent_id_gt_zero', 'all_parent_ids_present'))
-  
-#  m_genea <- c_genea
-#  m_genea$id[3] <- 1
-#  genealogy_expector(m_genea, false_list = c('id_no_duplicates_within_gen'))
 })
 
 test_that('make_genealogy works', {

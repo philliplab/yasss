@@ -94,14 +94,18 @@ check_genealogy <- function(genealogy){
           all(sort(c_genea$id) == sort(unique(c_genea$id)))
       }
 
+      results$id_is_integer <- all(floor(genealogy$id) == ceiling(genealogy$id))
+
     } else {
       results$id_gt_zero <- FALSE
       results$id_no_duplicates_within_gen <- FALSE
+      results$id_is_integer <- FALSE
     } # if (results$id_not_missing)
 
   } else {
     results$id_gt_zero <- FALSE
     results$id_no_duplicates_within_gen <- FALSE
+    results$id_is_integer <- FALSE
   } # results$has_id
 
   # parent_id
