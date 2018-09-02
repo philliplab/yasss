@@ -172,10 +172,10 @@ test_that('check_genealogy flags issues with parent_ids', {
   m_genea$parent_id[2] <- NA
   genealogy_expector(m_genea, false_list = c('parent_id_after_gen_zero_not_missing', 'parent_id_gt_zero'))
 
-#  m_genea <- c_genea
-#  m_genea$id[2] <- -1
-#  genealogy_expector(m_genea, false_list = c('id_gt_zero'))
-#  
+  m_genea <- c_genea
+  m_genea$parent_id[2] <- -1
+  genealogy_expector(m_genea, false_list = c('parent_id_gt_zero'))
+  
 #  m_genea <- c_genea
 #  m_genea$id[3] <- 1
 #  genealogy_expector(m_genea, false_list = c('id_no_duplicates_within_gen'))
