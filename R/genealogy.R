@@ -65,7 +65,7 @@ check_genealogy <- function(genealogy){
                                         is.nan(genealogy$gen_num) |
                                         is.null(genealogy$gen_num))
 
-    if (results$gen_num_not_missing & results$has_gen_num){
+    if (results$gen_num_not_missing){
       results$gen_num_naturals <- all(genealogy$gen_num %in% 0:max(genealogy$gen_num)) &
                                   all(0:max(genealogy$gen_num) %in% genealogy$gen_num)
     } else {
@@ -76,5 +76,51 @@ check_genealogy <- function(genealogy){
     results$gen_num_not_missing <- FALSE
     results$gen_num_naturals <- FALSE
   } # results$has_gen_num
+
+  # id
+  if (results$has_id){
+    results$id_not_missing <- !any(is.na(genealogy$id) |
+                                        is.nan(genealogy$id) |
+                                        is.null(genealogy$id))
+
+    if (results$id_not_missing){
+      results$id_gt_zero <- all(genealogy$id > 0)
+      
+      results$id_no_duplicates_within_gen <- TRUE
+      for (c_gen in unique(genealogy$gen_num)){
+        c_genea <- subset(genealogy, gen_num == c_gen)
+        results$id_no_duplicates_within_gen <- results$id_no_duplicates_within_gen &
+          length(c_genea$id) == length(unique(c_genea$id)) &
+          all(sort(c_genea$id) == sort(unique(c_genea$id)))
+      }
+
+    } else {
+      results$id_gt_zero <- FALSE
+      results$id_no_duplicates_within_gen <- FALSE
+    } # if (results$gen_num_not_missing & results$has_gen_num)
+
+  } else {
+    results$id_gt_zero <- FALSE
+    results$id_no_duplicates_within_gen <- FALSE
+  } # results$has_gen_num
+
+#test_that('check_genealogy flags issues with ids', {
+#  c_genea <- SAMPLE_GENEALOGIES[['bif_2gen']]
+#  m_genea <- c_genea
+#  m_genea$id[2] <- NA
+#  genealogy_expector(m_genea, false_list = c('id_not_missing', 'id_naturals'))
+#
+#  m_genea <- c_genea
+#  m_genea$id[2] <- -1
+#  genealogy_expector(m_genea, false_list = c('id_greater_than_zero'))
+#  
+#  m_genea <- c_genea
+#  m_genea$id[3] <- 1
+#  genealogy_expector(m_genea, false_list = c('id_no_duplicates_within_gen'))
+#})
+
+
+
+
   return(results)
 }
