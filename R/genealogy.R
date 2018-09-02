@@ -97,30 +97,21 @@ check_genealogy <- function(genealogy){
     } else {
       results$id_gt_zero <- FALSE
       results$id_no_duplicates_within_gen <- FALSE
-    } # if (results$gen_num_not_missing & results$has_gen_num)
+    } # if (results$id_not_missing)
 
   } else {
     results$id_gt_zero <- FALSE
     results$id_no_duplicates_within_gen <- FALSE
-  } # results$has_gen_num
+  } # results$has_id
 
-#test_that('check_genealogy flags issues with ids', {
-#  c_genea <- SAMPLE_GENEALOGIES[['bif_2gen']]
-#  m_genea <- c_genea
-#  m_genea$id[2] <- NA
-#  genealogy_expector(m_genea, false_list = c('id_not_missing', 'id_naturals'))
-#
-#  m_genea <- c_genea
-#  m_genea$id[2] <- -1
-#  genealogy_expector(m_genea, false_list = c('id_greater_than_zero'))
-#  
-#  m_genea <- c_genea
-#  m_genea$id[3] <- 1
-#  genealogy_expector(m_genea, false_list = c('id_no_duplicates_within_gen'))
-#})
+  # parent_id
+  if (results$has_parent_id){
+    c_genea <- subset(genealogy, is.na(parent_id) | is.nan(parent_id) | is.null(parent_id))
+    results$parent_id_after_gen_zero_not_missing <- all((unique(c_genea$gen_num) == 0) & (length(unique(c_genea$gen_num)) == 1))
+  } else {
+    results$parent_id_after_gen_zero_not_missing <- FALSE
+  } # if (result$has_parent_id)
 
-
-
-
+  #genealogy_expector(m_genea, false_list = c('parent_id_after_gen_zero_not_missing'))
   return(results)
 }
