@@ -18,12 +18,21 @@ stringsAsFactors = FALSE
   )
                            )
 
-genealogy_expector <- function(genealogy, expect_false = NULL, extra_info = ''){
+genealogy_expector <- function(genealogy, true_list = 'all', false_list = 'none', extra_info = ''){
+  if ('all' %in% true_list & 'all' %in% false_list){
+    stop('You cannot expect all columns to be both true and false')
+  }
+  if ('all' %in% true_list){
+    true_list <- setdiff(names(genealogy), false_list)
+  }
+  if ('none' %in% false_list){
+    false_list <- NULL
+  }
   y <- check_genealogy(genealogy)
-  for (i in setdiff(names(y), expect_false)){
+  for (i in true_list){
     expect_true(y[[i]], info = paste(i, extra_info, sep = ' '))
   }
-  for (i in expect_false){
+  for (i in false_list){
     expect_false(y[[i]], info = paste(i, extra_info, sep = ' '))
   }
 }
@@ -79,11 +88,20 @@ test_that('check_genealogy flags issues with missing columns', {
                   fitness_score = NA_real_,
                   stringsAsFactors = FALSE
                   )
+  column_list <- c("gen_num", "id", "parent_id", "the_seq", "n_mut",
+                   "recomb_pos", "recomb_replaced", "recomb_partner",
+                   "recomb_muts", "fitness_score")
   for (i in names(x)){
+
+
     y <- x
     y[,i] <- NULL
-    genealogy_expector(y, expect_false = c(paste('has', i, sep = '_'), 
-                                           'number_of_columns', 'column_order'))
+    
+    all_has_columns <- paste('has', column_list, sep = '_')
+    false_list <- c(paste('has', i, sep = '_'), 'number_of_columns', 'column_order')
+    true_list <- setdiff(all_has_columns, false_list)
+    
+    genealogy_expector(y, true_list = true_list, false_list = false_list)
   }
 })
 
@@ -104,7 +122,7 @@ test_that('check_genealogy flags issues with unexpected columns', {
   for (i in c('col1', '1', '__A', '  ')){
     y <- x
     y[,i] <- 1
-    genealogy_expector(y, expect_false = c('number_of_columns', 'column_order'))
+    genealogy_expector(y, false_list = c('number_of_columns', 'column_order'))
   }
 })
 
@@ -115,15 +133,15 @@ test_that('check_genealogy flags issues with gen_num', {
   c_genea <- SAMPLE_GENEALOGIES[['bif_2gen']]
   m_genea <- c_genea
   m_genea$gen_num[2] <- NA
-  genealogy_expector(m_genea, expect_false = c('gen_num_not_missing', 'gen_num_naturals'))
+  genealogy_expector(m_genea, false_list = c('gen_num_not_missing', 'gen_num_naturals'))
 
   m_genea <- c_genea
   m_genea$gen_num[2] <- -1
-  genealogy_expector(m_genea, expect_false = c('gen_num_naturals'))
+  genealogy_expector(m_genea, false_list = c('gen_num_naturals'))
   
   m_genea <- c_genea
   m_genea$gen_num[2] <- 5
-  genealogy_expector(m_genea, expect_false = c('gen_num_naturals'))
+  genealogy_expector(m_genea, false_list = c('gen_num_naturals'))
 })
 
 test_that('make_genealogy works', {
