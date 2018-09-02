@@ -32,7 +32,10 @@ make_genealogy <- function(ancestors){
 
 check_genealogy <- function(genealogy){
   results <- list()
+  # class
   results$is_data.frame <- class(genealogy) == 'data.frame'
+  
+  # columns
   results$has_gen_num <- 'gen_num' %in% names(genealogy)
   results$has_id <- 'id' %in% names(genealogy)
   results$has_parent_id <- 'parent_id' %in% names(genealogy)
@@ -55,5 +58,23 @@ check_genealogy <- function(genealogy){
   } else {
     results$column_order <- FALSE
   }
+
+  # gen_num
+  if (results$has_gen_num){
+    results$gen_num_not_missing <- !any(is.na(genealogy$gen_num) |
+                                        is.nan(genealogy$gen_num) |
+                                        is.null(genealogy$gen_num))
+
+    if (results$gen_num_not_missing & results$has_gen_num){
+      results$gen_num_naturals <- all(genealogy$gen_num %in% 0:max(genealogy$gen_num)) &
+                                  all(0:max(genealogy$gen_num) %in% genealogy$gen_num)
+    } else {
+      results$gen_num_naturals <- FALSE
+    } # if (results$gen_num_not_missing & results$has_gen_num)
+
+  } else {
+    results$gen_num_not_missing <- FALSE
+    results$gen_num_naturals <- FALSE
+  } # results$has_gen_num
   return(results)
 }

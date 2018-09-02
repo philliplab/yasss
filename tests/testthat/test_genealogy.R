@@ -16,7 +16,6 @@ fitness_score    =  c(     0.95,   0.99,   0.96),
 #==========================================================
 stringsAsFactors = FALSE
   )
-                           
                            )
 
 genealogy_expector <- function(genealogy, expect_false = NULL, extra_info = ''){
@@ -109,12 +108,22 @@ test_that('check_genealogy flags issues with unexpected columns', {
   }
 })
 
+#  results$gen_num_not_missing <- !any(is.na(genealogy$gen_num) |
+#  results$gen_num_naturals <- all(genealogy$gen_num %in% 0:max(genealogy$gen_num)) &
+
 test_that('check_genealogy flags issues with gen_num', {
-  expect_equal(1+1,2)
+  c_genea <- SAMPLE_GENEALOGIES[['bif_2gen']]
+  m_genea <- c_genea
+  m_genea$gen_num[2] <- NA
+  genealogy_expector(m_genea, expect_false = c('gen_num_not_missing', 'gen_num_naturals'))
 
-#  genealogy_expector(y, expect_false = c('gen_num may not be missing'))
-
-#  genealogy_expector(y, expect_false = c('gen_num must contain each integer between zero and max(gen_num)'))
+  m_genea <- c_genea
+  m_genea$gen_num[2] <- -1
+  genealogy_expector(m_genea, expect_false = c('gen_num_naturals'))
+  
+  m_genea <- c_genea
+  m_genea$gen_num[2] <- 5
+  genealogy_expector(m_genea, expect_false = c('gen_num_naturals'))
 })
 
 test_that('make_genealogy works', {
