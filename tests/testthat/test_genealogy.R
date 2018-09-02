@@ -18,7 +18,8 @@ stringsAsFactors = FALSE
   )
                            )
 
-genealogy_expector <- function(genealogy, true_list = 'all', false_list = 'none', extra_info = ''){
+genealogy_expector <- function(genealogy, true_list = 'all', false_list =
+                               'none', ignore_list = NULL, extra_info = ''){
   if ('all' %in% true_list & 'all' %in% false_list){
     stop('You cannot expect all columns to be both true and false')
   }
@@ -29,6 +30,8 @@ genealogy_expector <- function(genealogy, true_list = 'all', false_list = 'none'
   if ('none' %in% false_list){
     false_list <- NULL
   }
+  true_list <- setdiff(true_list, ignore_list)
+  false_list <- setdiff(false_list, ignore_list)
   for (i in true_list){
     expect_true(y[[i]], info = paste(i, extra_info, sep = ' '))
   }
@@ -134,6 +137,7 @@ test_that('check_genealogy flags issues with gen_num', {
   m_genea <- c_genea
   m_genea$gen_num[2] <- NA
   genealogy_expector(m_genea, false_list = c('gen_num_not_missing', 'gen_num_naturals'),
+                     ignore_list = "parent_id_gt_zero",
                      extra_info = "gen_num[2] is NA")
 
   m_genea <- c_genea
