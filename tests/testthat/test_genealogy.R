@@ -133,15 +133,18 @@ test_that('check_genealogy flags issues with gen_num', {
   c_genea <- SAMPLE_GENEALOGIES[['bif_2gen']]
   m_genea <- c_genea
   m_genea$gen_num[2] <- NA
-  genealogy_expector(m_genea, false_list = c('gen_num_not_missing', 'gen_num_naturals'))
+  genealogy_expector(m_genea, false_list = c('gen_num_not_missing', 'gen_num_naturals'),
+                     extra_info = "gen_num[2] is NA")
 
   m_genea <- c_genea
   m_genea$gen_num[2] <- -1
-  genealogy_expector(m_genea, false_list = c('gen_num_naturals'))
+  genealogy_expector(m_genea, false_list = c('gen_num_naturals'),
+                     extra_info = "gen_num[2] equals -1")
   
   m_genea <- c_genea
   m_genea$gen_num[2] <- 5
-  genealogy_expector(m_genea, false_list = c('gen_num_naturals'))
+  genealogy_expector(m_genea, false_list = c('gen_num_naturals'),
+                     extra_info = "gen_num[2] equals 5")
 })
 
 test_that('check_genealogy flags issues with ids', {
@@ -163,7 +166,7 @@ test_that('check_genealogy flags issues with parent_ids', {
   c_genea <- SAMPLE_GENEALOGIES[['bif_2gen']]
   m_genea <- c_genea
   m_genea$parent_id[2] <- NA
-  genealogy_expector(m_genea, false_list = c('parent_id_after_gen_zero_not_missing'))
+  genealogy_expector(m_genea, false_list = c('parent_id_after_gen_zero_not_missing', 'parent_id_gt_zero'))
 
 #  m_genea <- c_genea
 #  m_genea$id[2] <- -1
