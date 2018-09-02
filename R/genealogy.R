@@ -109,7 +109,9 @@ check_genealogy <- function(genealogy){
     c_genea <- subset(genealogy, is.na(parent_id) | is.nan(parent_id) | is.null(parent_id))
     results$parent_id_after_gen_zero_not_missing <- all((unique(c_genea$gen_num) == 0) & 
                                                         (length(unique(c_genea$gen_num)) == 1))
-    if (results$parent_id_after_gen_zero_not_missing & results$has_gen_num){
+    if (results$parent_id_after_gen_zero_not_missing & 
+        results$has_gen_num & 
+        results$gen_num_not_missing){
       if (max(genealogy$gen_num) > 0){
         c_genea <- genealogy[genealogy$gen_num > 0,]
         results$parent_id_gt_zero <- all(c_genea$parent_id > 0)

@@ -135,7 +135,7 @@ test_that('check_genealogy flags issues with gen_num', {
   m_genea <- c_genea
   m_genea$gen_num[2] <- NA
   genealogy_expector(m_genea, false_list = c('gen_num_not_missing', 'gen_num_naturals'),
-                     ignore_list = "parent_id_gt_zero",
+                     ignore_list = c("parent_id_gt_zero", "all_parent_ids_present"),
                      extra_info = "gen_num[2] is NA")
 
   m_genea <- c_genea
@@ -146,6 +146,7 @@ test_that('check_genealogy flags issues with gen_num', {
   m_genea <- c_genea
   m_genea$gen_num[2] <- 5
   genealogy_expector(m_genea, false_list = c('gen_num_naturals'),
+                     ignore_list = c("all_parent_ids_present"),
                      extra_info = "gen_num[2] equals 5")
 })
 
