@@ -22,13 +22,13 @@ genealogy_expector <- function(genealogy, true_list = 'all', false_list = 'none'
   if ('all' %in% true_list & 'all' %in% false_list){
     stop('You cannot expect all columns to be both true and false')
   }
+  y <- check_genealogy(genealogy)
   if ('all' %in% true_list){
-    true_list <- setdiff(names(genealogy), false_list)
+    true_list <- setdiff(names(y), false_list)
   }
   if ('none' %in% false_list){
     false_list <- NULL
   }
-  y <- check_genealogy(genealogy)
   for (i in true_list){
     expect_true(y[[i]], info = paste(i, extra_info, sep = ' '))
   }
