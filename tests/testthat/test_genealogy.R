@@ -95,8 +95,6 @@ test_that('check_genealogy flags issues with missing columns', {
                    "recomb_pos", "recomb_replaced", "recomb_partner",
                    "recomb_muts", "fitness_score")
   for (i in names(x)){
-
-
     y <- x
     y[,i] <- NULL
     
@@ -170,11 +168,12 @@ test_that('check_genealogy flags issues with parent_ids', {
   c_genea <- SAMPLE_GENEALOGIES[['bif_2gen']]
   m_genea <- c_genea
   m_genea$parent_id[2] <- NA
-  genealogy_expector(m_genea, false_list = c('parent_id_after_gen_zero_not_missing', 'parent_id_gt_zero'))
+  genealogy_expector(m_genea, false_list = c('parent_id_after_gen_zero_not_missing', 'parent_id_gt_zero', 'all_parent_ids_present'))
+#        results$all_parent_ids_present <- TRUE
 
   m_genea <- c_genea
   m_genea$parent_id[2] <- -1
-  genealogy_expector(m_genea, false_list = c('parent_id_gt_zero'))
+  genealogy_expector(m_genea, false_list = c('parent_id_gt_zero', 'all_parent_ids_present'))
   
 #  m_genea <- c_genea
 #  m_genea$id[3] <- 1
