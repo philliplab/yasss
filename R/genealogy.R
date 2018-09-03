@@ -323,6 +323,7 @@ check_genealogy_the_seq <- function(genealogy, results = list()){
   if (prerequisites_not_met){
     results$the_seq_not_missing <- FALSE
     results$the_seq_valid_letters <- FALSE
+    results$all_the_seq <- FALSE
     return(results)
   } else {
     results$the_seq_not_missing <- !(any(is.na(genealogy$the_seq)) | 
@@ -331,10 +332,12 @@ check_genealogy_the_seq <- function(genealogy, results = list()){
                                      any(genealogy$the_seq == ''))
     if (!results$the_seq_not_missing){
       results$the_seq_valid_letters <- FALSE
+      results$all_the_seq <- FALSE
       return(results)
     } else {
       all_lets <- unique(strsplit(paste(genealogy$the_seq, collapse = ''), '')[[1]])
       results$the_seq_valid_letters <- all(all_lets %in% c('A', 'C', 'G', 'T'))
+      results$all_the_seq <- results$the_seq_valid_letters
     }
   } # if (prerequisites_not_met)
 
