@@ -143,20 +143,25 @@ test_that('check_genealogy flags issues with gen_num', {
   c_genea <- SAMPLE_GENEALOGIES[['bif_2gen']]
   m_genea <- c_genea
   m_genea$gen_num[2] <- NA
-  genealogy_expector(m_genea, false_list = c('gen_num_not_missing', 'gen_num_naturals'),
-                     ignore_list = c("parent_id_gt_zero", "all_parent_ids_present"),
-                     extra_info = "gen_num[2] is NA")
+  genealogy_expector(m_genea, 
+                     false_list = c('gen_num_not_missing', 'gen_num_naturals'),
+                     extra_info = "gen_num[2] is NA",
+                     which_checker = "check_genealogy_gen_num",
+                     prerequisite_results = list(has_gen_num = TRUE))
 
   m_genea <- c_genea
   m_genea$gen_num[2] <- -1
   genealogy_expector(m_genea, false_list = c('gen_num_naturals'),
-                     extra_info = "gen_num[2] equals -1")
+                     extra_info = "gen_num[2] equals -1",
+                     which_checker = "check_genealogy_gen_num",
+                     prerequisite_results = list(has_gen_num = TRUE))
   
   m_genea <- c_genea
   m_genea$gen_num[2] <- 5
   genealogy_expector(m_genea, false_list = c('gen_num_naturals'),
-                     ignore_list = c("all_parent_ids_present"),
-                     extra_info = "gen_num[2] equals 5")
+                     extra_info = "gen_num[2] equals 5",
+                     which_checker = "check_genealogy_gen_num",
+                     prerequisite_results = list(has_gen_num = TRUE))
 })
 
 test_that('check_genealogy flags issues with ids', {
