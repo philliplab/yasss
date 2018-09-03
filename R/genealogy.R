@@ -46,7 +46,6 @@ check_genealogy <- function(genealogy){
 
   results <- check_genealogy_the_seq(genealogy, results)
 
-  #genealogy_expector(m_genea, false_list = c('parent_id_after_gen_zero_not_missing'))
   return(results)
 }
 
@@ -84,6 +83,18 @@ check_genealogy_structure <- function(genealogy, results = list()){
     results$has_recomb_partner <- FALSE
     results$has_recomb_muts <- FALSE
     results$has_fitness_score <- FALSE
+    
+    results$class_gen_num <- FALSE
+    results$class_id <- FALSE
+    results$class_parent_id <- FALSE
+    results$class_the_seq <- FALSE
+    results$class_n_mut <- FALSE
+    results$class_recomb_pos <- FALSE
+    results$class_recomb_replaced <- FALSE
+    results$class_recomb_partner <- FALSE
+    results$class_recomb_muts <- FALSE
+    results$class_fitness_score <- FALSE
+    
     results$number_of_columns <- FALSE
     results$column_order <- FALSE
     results$all_structure <- FALSE
@@ -94,15 +105,42 @@ check_genealogy_structure <- function(genealogy, results = list()){
     
     # column names
     results$has_gen_num <- 'gen_num' %in% names(genealogy)
+    results$class_gen_num <- class(genealogy$gen_num) %in% c('numeric', 'integer')
+    
     results$has_id <- 'id' %in% names(genealogy)
+    results$class_id <- class(genealogy$id) %in% c('numeric', 'integer')
+    
     results$has_parent_id <- 'parent_id' %in% names(genealogy)
+    results$class_parent_id <- class(genealogy$parent_id) %in% c('numeric', 'integer')
+    
     results$has_the_seq <- 'the_seq' %in% names(genealogy)
+    results$class_the_seq <- class(genealogy$the_seq) == 'character'
+    
     results$has_n_mut <- 'n_mut' %in% names(genealogy)
+    results$class_n_mut <- class(genealogy$n_mut) == 'numeric'
+    
     results$has_recomb_pos <- 'recomb_pos' %in% names(genealogy)
+    results$class_recomb_pos <- class(genealogy$recomb_pos) == 'numeric'
+    
     results$has_recomb_replaced <- 'recomb_replaced' %in% names(genealogy)
+    results$class_recomb_replaced <- class(genealogy$recomb_replaced) == 'character'
+    
     results$has_recomb_partner <- 'recomb_partner' %in% names(genealogy)
+    results$class_recomb_partner <- class(genealogy$recomb_partner) == 'numeric'
+    
     results$has_recomb_muts <- 'recomb_muts' %in% names(genealogy)
+    results$class_recomb_muts <- class(genealogy$recomb_muts) == 'numeric'
+    
     results$has_fitness_score <- 'fitness_score' %in% names(genealogy)
+    results$class_fitness_score <- class(genealogy$fitness_score) == 'numeric'
+
+    
+    
+    
+    
+
+
+
 
     # number of columns
     results$number_of_columns <- length(names(genealogy)) == 10
@@ -120,7 +158,28 @@ check_genealogy_structure <- function(genealogy, results = list()){
                                                         "recomb_partner",
                                                         "recomb_muts",
                                                         "fitness_score"))
-      results$all_structure <- results$column_order
+      results$all_structure <- (results$is_data.frame &
+                                results$has_gen_num &
+                                results$class_gen_num &
+                                results$has_id &
+                                results$class_id &
+                                results$has_parent_id &
+                                results$class_parent_id &
+                                results$has_the_seq &
+                                results$class_the_seq &
+                                results$has_n_mut &
+                                results$class_n_mut &
+                                results$has_recomb_pos &
+                                results$class_recomb_pos &
+                                results$has_recomb_replaced &
+                                results$class_recomb_replaced &
+                                results$has_recomb_partner &
+                                results$class_recomb_partner &
+                                results$has_recomb_muts &
+                                results$class_recomb_muts &
+                                results$has_fitness_score &
+                                results$class_fitness_score &
+                                results$column_order)
     } # else of if (!results$number_of_columns) 
   } # else of if (prerequisites_not_met)
   return(results)
