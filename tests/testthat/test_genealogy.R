@@ -200,12 +200,22 @@ test_that('check_genealogy flags issues with parent_ids', {
   c_genea <- SAMPLE_GENEALOGIES[['bif_2gen']]
   m_genea <- c_genea
   m_genea$parent_id[2] <- NA
-  genealogy_expector(m_genea, false_list = c('parent_id_after_gen_zero_not_missing', 'parent_id_gt_zero', 'all_parent_ids_present'))
-#        results$all_parent_ids_present <- TRUE
+  genealogy_expector(m_genea, 
+                     false_list = c('parent_id_after_gen_zero_not_missing', 'parent_id_gt_zero', 
+                                    'all_parent_ids_present'),
+                     which_checker = 'check_genealogy_parent_id',
+                     prerequisite_results = list(has_parent_id = TRUE, 
+                                                 has_gen_num = TRUE, 
+                                                 gen_num_not_missing = TRUE))
 
   m_genea <- c_genea
   m_genea$parent_id[2] <- -1
-  genealogy_expector(m_genea, false_list = c('parent_id_gt_zero', 'all_parent_ids_present'))
+  genealogy_expector(m_genea, false_list = c('parent_id_gt_zero', 
+                                             'all_parent_ids_present'),
+                     which_checker = 'check_genealogy_parent_id',
+                     prerequisite_results = list(has_parent_id = TRUE, 
+                                                 has_gen_num = TRUE, 
+                                                 gen_num_not_missing = TRUE))
 })
 
 test_that('make_genealogy works', {

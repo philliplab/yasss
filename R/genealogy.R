@@ -41,8 +41,6 @@ check_genealogy <- function(genealogy){
   
   results <- check_genealogy_parent_id(genealogy, results)
 
-
-
   #genealogy_expector(m_genea, false_list = c('parent_id_after_gen_zero_not_missing'))
   return(results)
 }
