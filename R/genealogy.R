@@ -120,7 +120,7 @@ check_genealogy_structure <- function(genealogy, results = list()){
                                                         "recomb_partner",
                                                         "recomb_muts",
                                                         "fitness_score"))
-      results$all_structure <- TRUE
+      results$all_structure <- results$column_order
     } # else of if (!results$number_of_columns) 
   } # else of if (prerequisites_not_met)
   return(results)
@@ -151,18 +151,23 @@ check_genealogy_gen_num <- function(genealogy, results = list()){
   if (prerequisites_not_met){
     results$gen_num_not_missing <- FALSE
     results$gen_num_naturals <- FALSE
+    results$all_gen_num <- FALSE
+    return(results)
   } else {
     # gen_num
     results$gen_num_not_missing <- !any(is.na(genealogy$gen_num) |
                                         is.nan(genealogy$gen_num) |
                                         is.null(genealogy$gen_num))
 
-    if (results$gen_num_not_missing){
+    if (!results$gen_num_not_missing){
+      results$gen_num_naturals <- FALSE
+      results$all_gen_num <- FALSE
+      return(results)
+    } else {
       results$gen_num_naturals <- all(genealogy$gen_num %in% 0:max(genealogy$gen_num)) &
                                   all(0:max(genealogy$gen_num) %in% genealogy$gen_num)
-    } else {
-      results$gen_num_naturals <- FALSE
-    } # if (results$gen_num_not_missing)
+      results$all_gen_num <- results$gen_num_naturals
+    } # else of if (results$gen_num_not_missing)
   }
 
   return(results)

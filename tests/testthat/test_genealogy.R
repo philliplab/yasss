@@ -159,6 +159,25 @@ test_that('check_genealogy flags issues with unexpected columns', {
     genealogy_expector(y, false_list = c('number_of_columns', 'column_order', 'all_structure'),
                        which_checker = 'check_genealogy_structure')
   }
+
+  ancestors <- 'AAA'
+  x <- data.frame(gen_num = 0,
+                  id = 1:length(ancestors),
+                  parent_id = -1,
+                  the_seq = ancestors,
+                  n_mut = NA_real_,
+                  recomb_pos = NA_real_,
+                  recomb_replaced = NA_character_,
+                  recomb_partner = NA_real_,
+                  recomb_muts = NA_real_,
+                  fitness_score = NA_real_,
+                  stringsAsFactors = FALSE
+                  )
+  y <- cbind(x, x[,3:5])
+  y[,3:5] <- NULL
+  genealogy_expector(y, false_list = c('column_order', 'all_structure'),
+                     which_checker = 'check_genealogy_structure')
+
 })
 
 #  results$gen_num_not_missing <- !any(is.na(genealogy$gen_num) |
@@ -169,21 +188,21 @@ test_that('check_genealogy flags issues with gen_num', {
   m_genea <- c_genea
   m_genea$gen_num[2] <- NA
   genealogy_expector(m_genea, 
-                     false_list = c('gen_num_not_missing', 'gen_num_naturals'),
+                     false_list = c('gen_num_not_missing', 'gen_num_naturals', 'all_gen_num'),
                      extra_info = "gen_num[2] is NA",
                      which_checker = "check_genealogy_gen_num",
                      prerequisite_results = list(has_gen_num = TRUE))
 
   m_genea <- c_genea
   m_genea$gen_num[2] <- -1
-  genealogy_expector(m_genea, false_list = c('gen_num_naturals'),
+  genealogy_expector(m_genea, false_list = c('gen_num_naturals', 'all_gen_num'),
                      extra_info = "gen_num[2] equals -1",
                      which_checker = "check_genealogy_gen_num",
                      prerequisite_results = list(has_gen_num = TRUE))
   
   m_genea <- c_genea
   m_genea$gen_num[2] <- 5
-  genealogy_expector(m_genea, false_list = c('gen_num_naturals'),
+  genealogy_expector(m_genea, false_list = c('gen_num_naturals', 'all_gen_num'),
                      extra_info = "gen_num[2] equals 5",
                      which_checker = "check_genealogy_gen_num",
                      prerequisite_results = list(has_gen_num = TRUE))
