@@ -32,32 +32,8 @@ make_genealogy <- function(ancestors){
 
 check_genealogy <- function(genealogy){
   results <- list()
-  # class
-  results$is_data.frame <- class(genealogy) == 'data.frame'
-  
-  # columns
-  results$has_gen_num <- 'gen_num' %in% names(genealogy)
-  results$has_id <- 'id' %in% names(genealogy)
-  results$has_parent_id <- 'parent_id' %in% names(genealogy)
-  results$has_the_seq <- 'the_seq' %in% names(genealogy)
-  results$has_n_mut <- 'n_mut' %in% names(genealogy)
-  results$has_recomb_pos <- 'recomb_pos' %in% names(genealogy)
-  results$has_recomb_replaced <- 'recomb_replaced' %in% names(genealogy)
-  results$has_recomb_partner <- 'recomb_partner' %in% names(genealogy)
-  results$has_recomb_muts <- 'recomb_muts' %in% names(genealogy)
-  results$has_fitness_score <- 'fitness_score' %in% names(genealogy)
-  results$number_of_columns <- length(names(genealogy)) == 10
-  if (results$number_of_columns) {
-    results$column_order <- all(names(genealogy) == c("gen_num", "id",
-                                                      "parent_id", "the_seq",
-                                                      "n_mut", "recomb_pos",
-                                                      "recomb_replaced",
-                                                      "recomb_partner",
-                                                      "recomb_muts",
-                                                      "fitness_score"))
-  } else {
-    results$column_order <- FALSE
-  }
+
+  results <- check_genealogy_structure(results, genealogy)
 
   # gen_num
   if (results$has_gen_num){
@@ -148,5 +124,73 @@ check_genealogy <- function(genealogy){
   } # if (result$has_parent_id)
 
   #genealogy_expector(m_genea, false_list = c('parent_id_after_gen_zero_not_missing'))
+  return(results)
+}
+
+#' Check the column names in a genealogy
+#'
+#' Checks that all the required column (and none but these columns) are present in a genealogy.
+#'
+#' @return
+#' @param results The list to which the results will be added and from which previous results will be drawn to check the prerequisites.
+#' @param genealogy The genealogy to check.
+#' @export
+
+check_genealogy_structure <- function(results, genealogy){
+
+  prerequisites <- NULL
+  prerequisites_not_met <- FALSE
+  for (i in names(prerequisites)){
+    if (results[[i]] == FALSE){
+      prerequisites_not_met <- TRUE
+    }
+  }
+
+  if (prerequisites_not_met){
+    results$is_data.frame <- FALSE
+    results$has_gen_num <- FALSE
+    results$has_id <- FALSE
+    results$has_parent_id <- FALSE
+    results$has_the_seq <- FALSE
+    results$has_n_mut <- FALSE
+    results$has_recomb_pos <- FALSE
+    results$has_recomb_replaced <- FALSE
+    results$has_recomb_partner <- FALSE
+    results$has_recomb_muts <- FALSE
+    results$has_fitness_score <- FALSE
+    results$number_of_columns <- FALSE
+    results$column_order <- FALSE
+  } else {
+    # class
+    results$is_data.frame <- class(genealogy) == 'data.frame'
+    
+    # column names
+    results$has_gen_num <- 'gen_num' %in% names(genealogy)
+    results$has_id <- 'id' %in% names(genealogy)
+    results$has_parent_id <- 'parent_id' %in% names(genealogy)
+    results$has_the_seq <- 'the_seq' %in% names(genealogy)
+    results$has_n_mut <- 'n_mut' %in% names(genealogy)
+    results$has_recomb_pos <- 'recomb_pos' %in% names(genealogy)
+    results$has_recomb_replaced <- 'recomb_replaced' %in% names(genealogy)
+    results$has_recomb_partner <- 'recomb_partner' %in% names(genealogy)
+    results$has_recomb_muts <- 'recomb_muts' %in% names(genealogy)
+    results$has_fitness_score <- 'fitness_score' %in% names(genealogy)
+
+    # number of columns
+    results$number_of_columns <- length(names(genealogy)) == 10
+
+    # order of columns
+    if (results$number_of_columns) {
+      results$column_order <- all(names(genealogy) == c("gen_num", "id",
+                                                        "parent_id", "the_seq",
+                                                        "n_mut", "recomb_pos",
+                                                        "recomb_replaced",
+                                                        "recomb_partner",
+                                                        "recomb_muts",
+                                                        "fitness_score"))
+    } else {
+      results$column_order <- FALSE
+    }
+  }
   return(results)
 }
