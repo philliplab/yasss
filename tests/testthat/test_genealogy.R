@@ -131,7 +131,8 @@ test_that('check_genealogy flags issues with unexpected columns', {
   for (i in c('col1', '1', '__A', '  ')){
     y <- x
     y[,i] <- 1
-    genealogy_expector(y, false_list = c('number_of_columns', 'column_order'))
+    genealogy_expector(y, false_list = c('number_of_columns', 'column_order'),
+                       which_checker = 'check_genealogy_structure')
   }
 })
 
