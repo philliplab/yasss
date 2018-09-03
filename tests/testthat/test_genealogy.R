@@ -19,7 +19,7 @@ stringsAsFactors = FALSE
                            )
 
 genealogy_expector <- function(genealogy, true_list = 'all', false_list = 'none', 
-                               ignore_list = NULL, extra_info = '',
+                               ignore_list = NULL, extra_info = NULL,
                                which_checker = 'check_genealogy',
                                prerequisite_results = list()){
   if ('all' %in% true_list & 'all' %in% false_list){
@@ -31,7 +31,11 @@ genealogy_expector <- function(genealogy, true_list = 'all', false_list = 'none'
     y <- get(which_checker)(genealogy = genealogy, results = prerequisite_results)
   }
   if ('all' %in% true_list){
-    true_list <- setdiff(names(y), false_list)
+    # An abomination that allows you to check column's existence by specifying
+    # them in the true_list
+    non_all_true_list <- true_list[true_list != 'all']
+    all_not_false <- setdiff(names(y), false_list)
+    true_list <- unique(c(non_all_true_list, all_not_false))
   }
   if ('none' %in% false_list){
     false_list <- NULL
@@ -39,12 +43,31 @@ genealogy_expector <- function(genealogy, true_list = 'all', false_list = 'none'
   true_list <- setdiff(true_list, ignore_list)
   false_list <- setdiff(false_list, ignore_list)
   for (i in true_list){
-    expect_true(y[[i]], info = paste(i, extra_info, sep = ' '))
+    expect_true(y[[i]], info = trimws(paste(i, extra_info, sep = ' ')))
   }
   for (i in false_list){
-    expect_false(y[[i]], info = paste(i, extra_info, sep = ' '))
+    expect_false(y[[i]], info = trimws(paste(i, extra_info, sep = ' ')))
   }
 }
+
+test_that('genealogy_expector works', {
+  ancestors <- 'AAA'
+  x <- data.frame(gen_num = 0,
+                  id = 1:length(ancestors),
+                  parent_id = -1,
+                  the_seq = ancestors,
+                  n_mut = NA_real_,
+                  recomb_pos = NA_real_,
+                  recomb_replaced = NA_character_,
+                  recomb_partner = NA_real_,
+                  recomb_muts = NA_real_,
+                  fitness_score = NA_real_,
+                  stringsAsFactors = FALSE
+                  )
+
+  expect_error(genealogy_expector(x, true_list = 'bonus_column'), "y\\[\\[i\\]\\] isn't true.\nbonus_column")
+  expect_error(genealogy_expector(x, true_list = c('all', 'bonus_column')), "y\\[\\[i\\]\\] isn't true.\nbonus_column")
+})
 
 test_that('check_genealogy lets correct genealogies pass', {
   ancestors <- 'AAA'
