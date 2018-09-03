@@ -1,4 +1,4 @@
-# Just starting - very very early version
+# Very very early version
 
 # Yet Another Short Sequence Simulator
 

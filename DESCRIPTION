@@ -8,7 +8,8 @@ Maintainer: Phillip Labuschagne <philliplab@gmail.com>
 Depends:
     stringdist,
     ggplot2,
-    stringdist
+    stringdist,
+    dplyr
 Suggests:
     testthat,
     knitr

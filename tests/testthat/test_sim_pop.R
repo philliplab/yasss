@@ -43,19 +43,56 @@ test_that("sim_pop checks arguments correctly", {
 })
 
 test_that("sim_pop output in the correct format", {
-  x <- sim_pop(ancestors = c("AAAA", "BBBB"), 
+  x <- sim_pop(ancestors = c("AAAA", "CCCC"), 
                gen_size = 2,
                n_gen = 1)
-  expect_equal(class(x), 'data.frame')
-  expect_true("the_seq" %in% names(x))
+
+  expect_true(all(unlist(check_genealogy(x))))
 })
 
+sim_pop_tester <- function(ancestors,
+                           gen_size = 2,
+                           n_gen = NULL,
+                           n_pop = NULL){
+  genea <- sim_pop(ancestors = ancestors, 
+                   gen_size = gen_size, 
+                   n_gen = n_gen, 
+                   n_pop = n_pop)
+  
+  expect_true(all(unlist(check_genealogy(genea))))
+
+  if (is.null(n_gen)) {n_gen <- Inf}
+
+  gen_count <- 0
+
+  if (n_gen == Inf){
+    c_pop <- length(ancestors)
+    while (c_pop < n_pop){
+      gen_count <- gen_count + 1
+      c_pop <- c_pop + (c_pop * gen_size)
+    }
+  } else {
+    gen_count <- n_gen
+    c_pop <- length(ancestors) * sum(gen_size^(0:n_gen))
+  }
+  expect_equal(nrow(genea), c_pop)
+  expect_true(all(sort(unique(genea$gen_num)) == c(0:gen_count)))
+  expect_equal(nrow(genea %>% filter(gen_num == max(gen_num))), 
+               length(ancestors)*gen_size^gen_count)
+}
+
 test_that("n_gen argument of sim_pop works", {
-  # Single ancestor
-  x <- sim_pop(ancestors = c("AAAA"), gen_size = 2,
+
+  sim_pop_tester(ancestors = c("AAAA"), gen_size = 2,
                n_gen = 1)
-  expect_equal(nrow(x), 3)
-  expect_true(all(sort(unique(x$gen_num)) == c(0, 1)))
+
+  # Single ancestor
+  genea <- sim_pop(ancestors = c("AAAA"), gen_size = 2,
+               n_gen = 1)
+  expect_equal(nrow(genea), 3)
+  expect_true(all(sort(unique(genea$gen_num)) == c(0, 1)))
+  last_gen <- genea %>% filter(gen_num == max(gen_num))
+  expect_true(nrow(last_gen) == 2)
 
   x <- sim_pop(ancestors = c("AAAA"), gen_size = 2,
                n_gen = 2)
