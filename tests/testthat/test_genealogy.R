@@ -65,8 +65,10 @@ test_that('genealogy_expector works', {
                   stringsAsFactors = FALSE
                   )
 
-  expect_error(genealogy_expector(x, true_list = 'bonus_column'), "y\\[\\[i\\]\\] isn't true.\nbonus_column")
-  expect_error(genealogy_expector(x, true_list = c('all', 'bonus_column')), "y\\[\\[i\\]\\] isn't true.\nbonus_column")
+  expect_error(genealogy_expector(x, true_list = 'bogus_column'), "y\\[\\[i\\]\\] isn't true.\nbogus_column")
+  expect_error(genealogy_expector(x, true_list = c('all', 'bogus_column')), "y\\[\\[i\\]\\] isn't true.\nbogus_column")
+  
+  expect_error(genealogy_expector(x, false_list = 'bogus_column'), "y\\[\\[i\\]\\] isn't false.\nbogus_column")
 })
 
 test_that('check_genealogy lets correct genealogies pass', {
@@ -128,7 +130,7 @@ test_that('check_genealogy flags issues with missing columns', {
     y[,i] <- NULL
     
     all_has_columns <- paste('has', column_list, sep = '_')
-    false_list <- c(paste('has', i, sep = '_'), 'number_of_columns', 'column_order')
+    false_list <- c(paste('has', i, sep = '_'), 'number_of_columns', 'column_order', 'all_structure')
     true_list <- setdiff(all_has_columns, false_list)
     
     genealogy_expector(y, true_list = true_list, false_list = false_list,
