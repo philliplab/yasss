@@ -260,6 +260,7 @@ check_genealogy_parent_id <- function(genealogy, results = list()){
     results$parent_id_after_gen_zero_not_missing <- FALSE
     results$parent_id_gt_zero <- FALSE
     results$all_parent_ids_present <- FALSE
+    results$all_parent_id <- FALSE
     return(results)
   } else {
     c_genea <- subset(genealogy, is.na(parent_id) | is.nan(parent_id) | is.null(parent_id))
@@ -268,24 +269,28 @@ check_genealogy_parent_id <- function(genealogy, results = list()){
     if (!results$parent_id_after_gen_zero_not_missing){
       results$parent_id_gt_zero <- FALSE
       results$all_parent_ids_present <- FALSE
+      results$all_parent_id <- FALSE
       return(results)
     } else {
 
       if (!(max(genealogy$gen_num) > 0)){
         results$parent_id_gt_zero <- TRUE
         results$all_parent_ids_present <- TRUE
+        results$all_parent_id <- TRUE
         return(results)
       } else {
         c_genea <- genealogy[genealogy$gen_num > 0,]
         results$parent_id_gt_zero <- all(c_genea$parent_id > 0)
       
-          results$all_parent_ids_present <- TRUE
-          for (c_gen in 1:max(genealogy$gen_num)){
-            c_all_parent_ids_present <- all(genealogy[genealogy$gen_num == c_gen, 'parent_id'] %in%
-                                         genealogy[genealogy$gen_num == (c_gen - 1), 'id'])
-            results$all_parent_ids_present <- results$all_parent_ids_present &
-                                              c_all_parent_ids_present
-          }
+        results$all_parent_ids_present <- TRUE
+        for (c_gen in 1:max(genealogy$gen_num)){
+          c_all_parent_ids_present <- all(genealogy[genealogy$gen_num == c_gen, 'parent_id'] %in%
+                                       genealogy[genealogy$gen_num == (c_gen - 1), 'id'])
+          results$all_parent_ids_present <- results$all_parent_ids_present &
+                                            c_all_parent_ids_present
+        } # for
+        results$all_parent_id <- results$parent_id_gt_zero &
+                                 results$all_parent_ids_present
       } # else of if (max(genealogy$gen_num) > 0)
 
     } # else of if (!results$parent_id_after_gen_zero_not_missing)

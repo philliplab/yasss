@@ -54,7 +54,7 @@ test_that('genealogy_expector works', {
   ancestors <- 'AAA'
   x <- data.frame(gen_num = 0,
                   id = 1:length(ancestors),
-                  parent_id = -1,
+                  parent_id = NA,
                   the_seq = ancestors,
                   n_mut = NA_real_,
                   recomb_pos = NA_real_,
@@ -250,7 +250,7 @@ test_that('check_genealogy flags issues with parent_ids', {
   m_genea$parent_id[2] <- NA
   genealogy_expector(m_genea, 
                      false_list = c('parent_id_after_gen_zero_not_missing', 'parent_id_gt_zero', 
-                                    'all_parent_ids_present'),
+                                    'all_parent_ids_present', 'all_parent_id'),
                      which_checker = 'check_genealogy_parent_id',
                      prerequisite_results = list(has_parent_id = TRUE, 
                                                  has_gen_num = TRUE, 
@@ -258,8 +258,9 @@ test_that('check_genealogy flags issues with parent_ids', {
 
   m_genea <- c_genea
   m_genea$parent_id[2] <- -1
-  genealogy_expector(m_genea, false_list = c('parent_id_gt_zero', 
-                                             'all_parent_ids_present'),
+  genealogy_expector(m_genea, 
+                     false_list = c('parent_id_gt_zero','all_parent_ids_present', 
+                                    'all_parent_id'),
                      which_checker = 'check_genealogy_parent_id',
                      prerequisite_results = list(has_parent_id = TRUE, 
                                                  has_gen_num = TRUE, 
