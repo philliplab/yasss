@@ -224,21 +224,30 @@ check_genealogy_parent_id <- function(genealogy, results = list()){
     }
   }
 
+  
   if (prerequisites_not_met){
     results$parent_id_after_gen_zero_not_missing <- FALSE
     results$parent_id_gt_zero <- FALSE
     results$all_parent_ids_present <- FALSE
+    return(results)
   } else {
-  # parent_id
     c_genea <- subset(genealogy, is.na(parent_id) | is.nan(parent_id) | is.null(parent_id))
     results$parent_id_after_gen_zero_not_missing <- all((unique(c_genea$gen_num) == 0) & 
                                                         (length(unique(c_genea$gen_num)) == 1))
-    if (results$parent_id_after_gen_zero_not_missing){
-      if (max(genealogy$gen_num) > 0){
+    if (!results$parent_id_after_gen_zero_not_missing){
+      results$parent_id_gt_zero <- FALSE
+      results$all_parent_ids_present <- FALSE
+      return(results)
+    } else {
+
+      if (!(max(genealogy$gen_num) > 0)){
+        results$parent_id_gt_zero <- TRUE
+        results$all_parent_ids_present <- TRUE
+        return(results)
+      } else {
         c_genea <- genealogy[genealogy$gen_num > 0,]
         results$parent_id_gt_zero <- all(c_genea$parent_id > 0)
       
-#        if (results$parent_id_gt_zero){
           results$all_parent_ids_present <- TRUE
           for (c_gen in 1:max(genealogy$gen_num)){
             c_all_parent_ids_present <- all(genealogy[genealogy$gen_num == c_gen, 'parent_id'] %in%
@@ -246,18 +255,9 @@ check_genealogy_parent_id <- function(genealogy, results = list()){
             results$all_parent_ids_present <- results$all_parent_ids_present &
                                               c_all_parent_ids_present
           }
- #       } else {
-  #        results$all_parent_ids_present <- FALSE
-   #     }
-      } else {
-        results$parent_id_gt_zero <- TRUE
-        results$all_parent_ids_present <- TRUE
-      } # if (nrow(c_genea) > 0)
+      } # else of if (max(genealogy$gen_num) > 0)
 
-    } else {
-      results$parent_id_gt_zero <- FALSE
-      results$all_parent_ids_present <- FALSE
-    } #if (results$parent_id_after_gen_zero_not_missing)
+    } # else of if (!results$parent_id_after_gen_zero_not_missing)
 
   } # else of if (prerequisites_not_met)
   return(results)
