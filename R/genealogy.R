@@ -51,7 +51,7 @@ check_genealogy <- function(genealogy){
 #'
 #' Checks that all the required column (and none but these columns) are present in a genealogy.
 #'
-#' @return
+#' @return A list with TRUE or FALSE indicating whether the related check passed.
 #' @param genealogy The genealogy to check.
 #' @param results The list to which the results will be added and from which previous results will be drawn to check the prerequisites.
 #' @export
@@ -119,7 +119,7 @@ check_genealogy_structure <- function(genealogy, results = list()){
 #'
 #' Checks that gen_num is not missing, is a natural number and contains all numbers between zero and the max gen_num.
 #'
-#' @return
+#' @return A list with TRUE or FALSE indicating whether the related check passed.
 #' @param genealogy The genealogy to check.
 #' @param results The list to which the results will be added and from which previous results will be drawn to check the prerequisites.
 #' @export
@@ -159,7 +159,7 @@ check_genealogy_gen_num <- function(genealogy, results = list()){
 #'
 #' Checks that gen_num is not missing, is greater than zero and is an integer.
 #'
-#' @return
+#' @return A list with TRUE or FALSE indicating whether the related check passed.
 #' @param genealogy The genealogy to check.
 #' @param results The list to which the results will be added and from which previous results will be drawn to check the prerequisites.
 #' @export
@@ -211,7 +211,7 @@ check_genealogy_id <- function(genealogy, results = list()){
 #'
 #' Checks that parent_id is not missing, is a valid integer and that it references a parent that exists.
 #'
-#' @return
+#' @return A list with TRUE or FALSE indicating whether the related check passed.
 #' @param genealogy The genealogy to check.
 #' @param results The list to which the results will be added and from which previous results will be drawn to check the prerequisites.
 #' @export
@@ -270,7 +270,7 @@ check_genealogy_parent_id <- function(genealogy, results = list()){
 #'
 #' Checks that the_seq contains only valid nucleic letters.
 #'
-#' @return
+#' @return A list with TRUE or FALSE indicating whether the related check passed.
 #' @param genealogy The genealogy to check.
 #' @param results The list to which the results will be added and from which previous results will be drawn to check the prerequisites.
 #' @export

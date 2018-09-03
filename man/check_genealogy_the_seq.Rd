@@ -11,6 +11,9 @@ check_genealogy_the_seq(genealogy, results = list())
 
 \item{results}{The list to which the results will be added and from which previous results will be drawn to check the prerequisites.}
 }
+\value{
+A list with TRUE or FALSE indicating whether the related check passed.
+}
 \description{
 Checks that the_seq contains only valid nucleic letters.
 }
