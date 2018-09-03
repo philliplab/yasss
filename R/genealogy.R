@@ -41,6 +41,8 @@ check_genealogy <- function(genealogy){
   
   results <- check_genealogy_parent_id(genealogy, results)
 
+  results <- check_genealogy_the_seq(genealogy, results)
+
   #genealogy_expector(m_genea, false_list = c('parent_id_after_gen_zero_not_missing'))
   return(results)
 }
@@ -260,5 +262,48 @@ check_genealogy_parent_id <- function(genealogy, results = list()){
     } # else of if (!results$parent_id_after_gen_zero_not_missing)
 
   } # else of if (prerequisites_not_met)
+  return(results)
+}
+
+
+#' Check the the_seq column in a genealogy
+#'
+#' Checks that the_seq contains only valid nucleic letters.
+#'
+#' @return
+#' @param genealogy The genealogy to check.
+#' @param results The list to which the results will be added and from which previous results will be drawn to check the prerequisites.
+#' @export
+
+check_genealogy_the_seq <- function(genealogy, results = list()){
+
+  prerequisites <- c("has_the_seq")
+  prerequisites_not_met <- FALSE
+  for (i in names(prerequisites)){
+    if (results[[i]] == FALSE){
+      prerequisites_not_met <- TRUE
+    }
+  }
+
+  
+  if (prerequisites_not_met){
+    results$parent_id_after_gen_zero_not_missing <- FALSE
+    results$parent_id_gt_zero <- FALSE
+    results$all_parent_ids_present <- FALSE
+    return(results)
+  } else {
+    results$the_seq_not_missing <- !(any(is.na(genealogy$the_seq)) | 
+                                     any(is.nan(genealogy$the_seq)) | 
+                                     any(is.null(genealogy$the_seq)) |
+                                     any(genealogy$the_seq == ''))
+    if (!results$the_seq_not_missing){
+      results$the_seq_valid_letters <- FALSE
+      return(results)
+    } else {
+      all_lets <- unique(strsplit(paste(c('AAA', 'CCC'), collapse = ''), '')[[1]])
+      results$the_seq_valid_letters <- all(all_lets %in% c('A', 'C', 'G', 'T'))
+    }
+  } # if (prerequisites_not_met)
+
   return(results)
 }
