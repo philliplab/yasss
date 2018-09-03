@@ -168,19 +168,32 @@ test_that('check_genealogy flags issues with ids', {
   c_genea <- SAMPLE_GENEALOGIES[['bif_2gen']]
   m_genea <- c_genea
   m_genea$id[2] <- NA
-  genealogy_expector(m_genea, false_list = c('id_not_missing', 'id_gt_zero', 'id_no_duplicates_within_gen', 'id_is_integer'))
+  genealogy_expector(m_genea, 
+                     false_list = c('id_not_missing', 'id_gt_zero', 
+                                    'id_no_duplicates_within_gen', 'id_is_integer'),
+                     which_checker = 'check_genealogy_id',
+                     prerequisite_results = list(has_is = TRUE))
 
   m_genea <- c_genea
   m_genea$id[2] <- -1
-  genealogy_expector(m_genea, false_list = c('id_gt_zero'))
+  genealogy_expector(m_genea, 
+                     false_list = c('id_gt_zero'),
+                     which_checker = 'check_genealogy_id',
+                     prerequisite_results = list(has_is = TRUE))
   
   m_genea <- c_genea
   m_genea$id[3] <- 1
-  genealogy_expector(m_genea, false_list = c('id_no_duplicates_within_gen'))
+  genealogy_expector(m_genea, 
+                     false_list = c('id_no_duplicates_within_gen'),
+                     which_checker = 'check_genealogy_id',
+                     prerequisite_results = list(has_is = TRUE))
   
   m_genea <- c_genea
   m_genea$id[3] <- 1.1
-  genealogy_expector(m_genea, false_list = c('id_is_integer'))
+  genealogy_expector(m_genea, 
+                     false_list = c('id_is_integer'),
+                     which_checker = 'check_genealogy_id',
+                     prerequisite_results = list(has_is = TRUE))
 })
 
 test_that('check_genealogy flags issues with parent_ids', {
