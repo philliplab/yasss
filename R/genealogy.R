@@ -33,7 +33,7 @@ make_genealogy <- function(ancestors){
 check_genealogy <- function(genealogy){
   results <- list()
 
-  results <- check_genealogy_structure(results, genealogy)
+  results <- check_genealogy_structure(genealogy, results)
 
   # gen_num
   if (results$has_gen_num){
@@ -132,11 +132,11 @@ check_genealogy <- function(genealogy){
 #' Checks that all the required column (and none but these columns) are present in a genealogy.
 #'
 #' @return
-#' @param results The list to which the results will be added and from which previous results will be drawn to check the prerequisites.
 #' @param genealogy The genealogy to check.
+#' @param results The list to which the results will be added and from which previous results will be drawn to check the prerequisites.
 #' @export
 
-check_genealogy_structure <- function(results, genealogy){
+check_genealogy_structure <- function(genealogy, results = list()){
 
   prerequisites <- NULL
   prerequisites_not_met <- FALSE

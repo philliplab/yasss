@@ -4,12 +4,12 @@
 \alias{check_genealogy_structure}
 \title{Check the column names in a genealogy}
 \usage{
-check_genealogy_structure(results, genealogy)
+check_genealogy_structure(genealogy, results = list())
 }
 \arguments{
-\item{results}{The list to which the results will be added and from which previous results will be drawn to check the prerequisites.}
-
 \item{genealogy}{The genealogy to check.}
+
+\item{results}{The list to which the results will be added and from which previous results will be drawn to check the prerequisites.}
 }
 \description{
 Checks that all the required column (and none but these columns) are present in a genealogy.

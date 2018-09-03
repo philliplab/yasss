@@ -18,13 +18,18 @@ stringsAsFactors = FALSE
   )
                            )
 
-genealogy_expector <- function(genealogy, true_list = 'all', false_list =
-                               'none', ignore_list = NULL, extra_info = '',
-                               which_checker = 'check_genealogy'){
+genealogy_expector <- function(genealogy, true_list = 'all', false_list = 'none', 
+                               ignore_list = NULL, extra_info = '',
+                               which_checker = 'check_genealogy',
+                               prerequisite_results = list()){
   if ('all' %in% true_list & 'all' %in% false_list){
     stop('You cannot expect all columns to be both true and false')
   }
-  y <- get(which_checker)(genealogy)
+  if (which_checker == 'check_genealogy'){
+    y <- get(which_checker)(genealogy = genealogy)
+  } else {
+    y <- get(which_checker)(genealogy = genealogy, results = prerequisite_results)
+  }
   if ('all' %in% true_list){
     true_list <- setdiff(names(y), false_list)
   }
@@ -103,7 +108,9 @@ test_that('check_genealogy flags issues with missing columns', {
     false_list <- c(paste('has', i, sep = '_'), 'number_of_columns', 'column_order')
     true_list <- setdiff(all_has_columns, false_list)
     
-    genealogy_expector(y, true_list = true_list, false_list = false_list)
+    genealogy_expector(y, true_list = true_list, false_list = false_list,
+                       which_checker = "check_genealogy_structure",
+                       prerequisite_results = list())
   }
 })
 
