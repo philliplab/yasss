@@ -54,43 +54,52 @@ test_that("n_gen argument of sim_pop works", {
   # Single ancestor
   x <- sim_pop(ancestors = c("AAAA"), gen_size = 2,
                n_gen = 1)
-  expect_equal(length(x$the_seq[x$gen_num == max(x$gen_num)]), 2)
+  expect_equal(nrow(x), 3)
+  expect_true(all(sort(unique(x$gen_num)) == c(0, 1)))
 
   x <- sim_pop(ancestors = c("AAAA"), gen_size = 2,
                n_gen = 2)
-  expect_equal(length(x$the_seq[x$gen_num == max(x$gen_num)]), 4)
+  expect_equal(nrow(x), 7)
+  expect_true(all(sort(unique(x$gen_num)) == c(0, 1, 2)))
 
   x <- sim_pop(ancestors = c("AAAA"), gen_size = 2,
                n_gen = 3)
-  expect_equal(length(x$the_seq[x$gen_num == max(x$gen_num)]), 8)
+  expect_equal(nrow(x), 15)
+  expect_true(all(sort(unique(x$gen_num)) == c(0, 1, 2, 3)))
 
   # Two ancestors
-  x <- sim_pop(ancestors = c("AAAA", "BBBB"), gen_size = 2,
+  x <- sim_pop(ancestors = c("AAAA", "CCCC"), gen_size = 2,
                n_gen = 1)
-  expect_equal(length(x$the_seq[x$gen_num == max(x$gen_num)]), 4)
+  expect_equal(nrow(x), 6)
+  expect_true(all(sort(unique(x$gen_num)) == c(0, 1)))
 
-  x <- sim_pop(ancestors = c("AAAA", "BBBB"), gen_size = 2,
+  x <- sim_pop(ancestors = c("AAAA", "CCCC"), gen_size = 2,
                n_gen = 2)
-  expect_equal(length(x$the_seq[x$gen_num == max(x$gen_num)]), 8)
+  expect_equal(nrow(x), 14)
+  expect_true(all(sort(unique(x$gen_num)) == c(0, 1, 2)))
 
-  x <- sim_pop(ancestors = c("AAAA", "BBBB"), gen_size = 2,
+  x <- sim_pop(ancestors = c("AAAA", "CCCC"), gen_size = 2,
                n_gen = 3)
-  expect_equal(length(x$the_seq[x$gen_num == max(x$gen_num)]), 16)
+  expect_equal(nrow(x), 30)
+  expect_true(all(sort(unique(x$gen_num)) == c(0, 1, 2, 3)))
 })
 
 test_that("n_pop argument of sim_pop works", {
   # One ancestor
   x <- sim_pop(ancestors = c("AAAA"), gen_size = 2,
                n_pop = 1)
-  expect_equal(length(x$the_seq[x$gen_num == max(x$gen_num)]), 1)
+  expect_equal(nrow(x), 1)
+  expect_true(all(sort(unique(x$gen_num)) == c(0)))
 
   x <- sim_pop(ancestors = c("AAAA"), gen_size = 2,
                n_pop = 2)
-  expect_equal(length(x$the_seq[x$gen_num == max(x$gen_num)]), 2)
+  expect_equal(nrow(x), 3)
+  expect_true(all(sort(unique(x$gen_num)) == 0:1))
 
   x <- sim_pop(ancestors = c("AAAA"), gen_size = 2,
                n_pop = 3)
-  expect_equal(length(x$the_seq[x$gen_num == max(x$gen_num)]), 4)
+  expect_equal(nrow(x), 7)
+  expect_true(all(sort(unique(x$gen_num)) == 0:2))
   
   x <- sim_pop(ancestors = c("AAAA"), gen_size = 2,
                n_pop = 33)

@@ -58,7 +58,11 @@ sim_pop <- function(ancestors,
   while ((c_pop < n_pop) & (c_gen < n_gen)){
     c_gen <- c_gen + 1
     
-    new_generation <- sim_next_gen(genealogy[genealogy$gen_num == (c_gen-1),], 
+#    new_generation <- sim_next_gen(genealogy[genealogy$gen_num == (c_gen-1),], 
+#                                   gen_size = gen_size,
+#                                   mutator, gen_num = c_gen)
+#
+    new_generation <- sim_next_gen(genealogy, 
                                    gen_size = gen_size,
                                    mutator, gen_num = c_gen)
 
@@ -66,8 +70,8 @@ sim_pop <- function(ancestors,
 
     # insert fitness here (act on new_generation)
 
-
-    genealogy <- rbind(genealogy, new_generation)
+#    genealogy <- rbind(genealogy, new_generation)
+    genealogy <- new_generation
 
     #TODO: Think about this - how will the fitness bit affect this next line?
     c_pop <- sum(genealogy$gen_num == c_gen)
