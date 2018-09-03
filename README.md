@@ -10,7 +10,20 @@ The motivation for writing this package is:
 - We want to simulate varying levels of immune pressure based on epitopes in the sequences
 - In practice, we constantly rewrite little bits of this package taylored to whatever we are currently working on
 
-## Basic flow of the simulation (Mostly aspirational, will be still be useful if only two or three of these goals are achieved)
+## Simulation of the quasispecies
+
+- Call sim_pop with arguments providing all simulation parameters.
+- Construct a genealogy data structure.
+- While loop repeating until n_gen or pop_size reached.
+-- Call sim_next_gen with many arguments (including the genealogy)
+--- Loop over number of parents
+---- Get number of offspring for this parent
+----- Loop over number of offspring for current parent
+------ Produce a child by calling the mutator on the parent
+------ Append into the genealogy data structure
+-- Next to implement: Compute fitness of individuals
+
+## Some ideas about the simulation process. (Currently the plan is just to simulate the growth of the quasispecies. The PCR and sequencing stuff was just me think aloud.)
 
 Simulate the growth of the quasispecies
 - Inputs
