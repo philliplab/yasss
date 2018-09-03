@@ -19,11 +19,12 @@ stringsAsFactors = FALSE
                            )
 
 genealogy_expector <- function(genealogy, true_list = 'all', false_list =
-                               'none', ignore_list = NULL, extra_info = ''){
+                               'none', ignore_list = NULL, extra_info = '',
+                               which_checker = 'check_genealogy'){
   if ('all' %in% true_list & 'all' %in% false_list){
     stop('You cannot expect all columns to be both true and false')
   }
-  y <- check_genealogy(genealogy)
+  y <- get(which_checker)(genealogy)
   if ('all' %in% true_list){
     true_list <- setdiff(names(y), false_list)
   }
