@@ -214,28 +214,32 @@ test_that('check_genealogy flags issues with ids', {
   m_genea$id[2] <- NA
   genealogy_expector(m_genea, 
                      false_list = c('id_not_missing', 'id_gt_zero', 
-                                    'id_no_duplicates_within_gen', 'id_is_integer'),
+                                    'id_no_duplicates_within_gen', 'id_is_integer',
+                                    'all_id'),
                      which_checker = 'check_genealogy_id',
                      prerequisite_results = list(has_is = TRUE))
 
   m_genea <- c_genea
   m_genea$id[2] <- -1
   genealogy_expector(m_genea, 
-                     false_list = c('id_gt_zero'),
+                     false_list = c('id_gt_zero',
+                                    'all_id'),
                      which_checker = 'check_genealogy_id',
                      prerequisite_results = list(has_is = TRUE))
   
   m_genea <- c_genea
   m_genea$id[3] <- 1
   genealogy_expector(m_genea, 
-                     false_list = c('id_no_duplicates_within_gen'),
+                     false_list = c('id_no_duplicates_within_gen',
+                                    'all_id'),
                      which_checker = 'check_genealogy_id',
                      prerequisite_results = list(has_is = TRUE))
   
   m_genea <- c_genea
   m_genea$id[3] <- 1.1
   genealogy_expector(m_genea, 
-                     false_list = c('id_is_integer'),
+                     false_list = c('id_is_integer',
+                                    'all_id'),
                      which_checker = 'check_genealogy_id',
                      prerequisite_results = list(has_is = TRUE))
 })

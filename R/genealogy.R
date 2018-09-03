@@ -199,6 +199,7 @@ check_genealogy_id <- function(genealogy, results = list()){
     results$id_no_duplicates_within_gen <- FALSE
     results$id_is_integer <- FALSE
     results$id_not_missing <- FALSE
+    results$all_id <- FALSE
     return(results)
   } else {
   # id
@@ -210,6 +211,7 @@ check_genealogy_id <- function(genealogy, results = list()){
       results$id_gt_zero <- FALSE
       results$id_no_duplicates_within_gen <- FALSE
       results$id_is_integer <- FALSE
+      results$all_id <- FALSE
       return(results)
     } else {
 
@@ -224,6 +226,9 @@ check_genealogy_id <- function(genealogy, results = list()){
       }
 
       results$id_is_integer <- all(floor(genealogy$id) == ceiling(genealogy$id))
+      results$all_id <- results$id_gt_zero & 
+        results$id_no_duplicates_within_gen & 
+        results$id_is_integer
     } # else of if (!results$id_not_missing)
   } # else of if (prerequisites_not_met)
   return(results)
@@ -251,7 +256,6 @@ check_genealogy_parent_id <- function(genealogy, results = list()){
     }
   }
 
-  
   if (prerequisites_not_met){
     results$parent_id_after_gen_zero_not_missing <- FALSE
     results$parent_id_gt_zero <- FALSE
@@ -373,6 +377,4 @@ check_genealogy_n_mut <- function(genealogy, results = list()){
 
   return(results)
 }
-
-
 
