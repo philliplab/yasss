@@ -218,6 +218,41 @@ test_that('check_genealogy flags issues with parent_ids', {
                                                  gen_num_not_missing = TRUE))
 })
 
+test_that('check_genealogy flags issues with the_seq', {
+  c_genea <- SAMPLE_GENEALOGIES[['bif_2gen']]
+  m_genea <- c_genea
+  m_genea$the_seq[2] <- NA
+  genealogy_expector(m_genea, 
+                     false_list = c('the_seq_not_missing', 'the_seq_valid_letters'),
+                     which_checker = 'check_genealogy_the_seq',
+                     prerequisite_results = list(has_the_seq = TRUE),
+                     extra_info = 'm_genea$the_seq[2] <- NA')
+
+  m_genea <- c_genea
+  m_genea$the_seq[1] <- ''
+  genealogy_expector(m_genea, 
+                     false_list = c('the_seq_not_missing', 'the_seq_valid_letters'),
+                     which_checker = 'check_genealogy_the_seq',
+                     prerequisite_results = list(has_the_seq = TRUE),
+                     extra_info = 'm_genea$the_seq[1] <- ""')
+
+  m_genea <- c_genea
+  m_genea$the_seq[3] <- 'W'
+  genealogy_expector(m_genea, 
+                     false_list = c('the_seq_valid_letters'),
+                     which_checker = 'check_genealogy_the_seq',
+                     prerequisite_results = list(has_the_seq = TRUE),
+                     extra_info = 'm_genea$the_seq[3] <- "W"')
+
+  m_genea <- c_genea
+  m_genea$the_seq[2] <- 'AACGTCCGT?'
+  genealogy_expector(m_genea, 
+                     false_list = c('the_seq_valid_letters'),
+                     which_checker = 'check_genealogy_the_seq',
+                     prerequisite_results = list(has_the_seq = TRUE),
+                     extra_info = 'm_genea$the_seq[2] <- "AACGTCCGT?"')
+})
+
 test_that('make_genealogy works', {
   x <- make_genealogy(ancestors = c('AAA'))
   genealogy_expector(x)

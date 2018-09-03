@@ -285,11 +285,9 @@ check_genealogy_the_seq <- function(genealogy, results = list()){
     }
   }
 
-  
   if (prerequisites_not_met){
-    results$parent_id_after_gen_zero_not_missing <- FALSE
-    results$parent_id_gt_zero <- FALSE
-    results$all_parent_ids_present <- FALSE
+    results$the_seq_not_missing <- FALSE
+    results$the_seq_valid_letters <- FALSE
     return(results)
   } else {
     results$the_seq_not_missing <- !(any(is.na(genealogy$the_seq)) | 
@@ -300,7 +298,7 @@ check_genealogy_the_seq <- function(genealogy, results = list()){
       results$the_seq_valid_letters <- FALSE
       return(results)
     } else {
-      all_lets <- unique(strsplit(paste(c('AAA', 'CCC'), collapse = ''), '')[[1]])
+      all_lets <- unique(strsplit(paste(genealogy$the_seq, collapse = ''), '')[[1]])
       results$the_seq_valid_letters <- all(all_lets %in% c('A', 'C', 'G', 'T'))
     }
   } # if (prerequisites_not_met)
