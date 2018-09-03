@@ -37,36 +37,7 @@ check_genealogy <- function(genealogy){
 
   results <- check_genealogy_gen_num(genealogy, results)
 
-  # id
-  if (results$has_id){
-    results$id_not_missing <- !any(is.na(genealogy$id) |
-                                        is.nan(genealogy$id) |
-                                        is.null(genealogy$id))
-
-    if (results$id_not_missing){
-      results$id_gt_zero <- all(genealogy$id > 0)
-      
-      results$id_no_duplicates_within_gen <- TRUE
-      for (c_gen in unique(genealogy$gen_num)){
-        c_genea <- subset(genealogy, gen_num == c_gen)
-        results$id_no_duplicates_within_gen <- results$id_no_duplicates_within_gen &
-          length(c_genea$id) == length(unique(c_genea$id)) &
-          all(sort(c_genea$id) == sort(unique(c_genea$id)))
-      }
-
-      results$id_is_integer <- all(floor(genealogy$id) == ceiling(genealogy$id))
-
-    } else {
-      results$id_gt_zero <- FALSE
-      results$id_no_duplicates_within_gen <- FALSE
-      results$id_is_integer <- FALSE
-    } # if (results$id_not_missing)
-
-  } else {
-    results$id_gt_zero <- FALSE
-    results$id_no_duplicates_within_gen <- FALSE
-    results$id_is_integer <- FALSE
-  } # results$has_id
+  results <- check_genealogy_id(genealogy, results)
 
   # parent_id
   if (results$has_parent_id){
@@ -215,5 +186,58 @@ check_genealogy_gen_num <- function(genealogy, results = list()){
     } # if (results$gen_num_not_missing)
   }
 
+  return(results)
+}
+
+
+#' Check the id column in a genealogy
+#'
+#' Checks that gen_num is not missing, is greater than zero and is an integer.
+#'
+#' @return
+#' @param genealogy The genealogy to check.
+#' @param results The list to which the results will be added and from which previous results will be drawn to check the prerequisites.
+#' @export
+
+check_genealogy_id <- function(genealogy, results = list()){
+
+  prerequisites <- "has_id"
+  prerequisites_not_met <- FALSE
+  for (i in names(prerequisites)){
+    if (results[[i]] == FALSE){
+      prerequisites_not_met <- TRUE
+    }
+  }
+
+  if (prerequisites_not_met){
+    results$id_gt_zero <- FALSE
+    results$id_no_duplicates_within_gen <- FALSE
+    results$id_is_integer <- FALSE
+    results$id_not_missing <- FALSE
+  } else {
+  # id
+    results$id_not_missing <- !any(is.na(genealogy$id) |
+                                        is.nan(genealogy$id) |
+                                        is.null(genealogy$id))
+
+    if (results$id_not_missing){
+      results$id_gt_zero <- all(genealogy$id > 0)
+      
+      results$id_no_duplicates_within_gen <- TRUE
+      for (c_gen in unique(genealogy$gen_num)){
+        c_genea <- subset(genealogy, gen_num == c_gen)
+        results$id_no_duplicates_within_gen <- results$id_no_duplicates_within_gen &
+          length(c_genea$id) == length(unique(c_genea$id)) &
+          all(sort(c_genea$id) == sort(unique(c_genea$id)))
+      }
+
+      results$id_is_integer <- all(floor(genealogy$id) == ceiling(genealogy$id))
+
+    } else {
+      results$id_gt_zero <- FALSE
+      results$id_no_duplicates_within_gen <- FALSE
+      results$id_is_integer <- FALSE
+    } # if (results$id_not_missing)
+  } # else of if (prerequisites_not_met)
   return(results)
 }
