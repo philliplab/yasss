@@ -35,23 +35,7 @@ check_genealogy <- function(genealogy){
 
   results <- check_genealogy_structure(genealogy, results)
 
-  # gen_num
-  if (results$has_gen_num){
-    results$gen_num_not_missing <- !any(is.na(genealogy$gen_num) |
-                                        is.nan(genealogy$gen_num) |
-                                        is.null(genealogy$gen_num))
-
-    if (results$gen_num_not_missing){
-      results$gen_num_naturals <- all(genealogy$gen_num %in% 0:max(genealogy$gen_num)) &
-                                  all(0:max(genealogy$gen_num) %in% genealogy$gen_num)
-    } else {
-      results$gen_num_naturals <- FALSE
-    } # if (results$gen_num_not_missing & results$has_gen_num)
-
-  } else {
-    results$gen_num_not_missing <- FALSE
-    results$gen_num_naturals <- FALSE
-  } # results$has_gen_num
+  results <- check_genealogy_gen_num(genealogy, results)
 
   # id
   if (results$has_id){
@@ -192,5 +176,44 @@ check_genealogy_structure <- function(genealogy, results = list()){
       results$column_order <- FALSE
     }
   }
+  return(results)
+}
+
+#' Check the gen_num column in a genealogy
+#'
+#' Checks that gen_num is not missing, is a natural number and contains all numbers between zero and the max gen_num.
+#'
+#' @return
+#' @param genealogy The genealogy to check.
+#' @param results The list to which the results will be added and from which previous results will be drawn to check the prerequisites.
+#' @export
+
+check_genealogy_gen_num <- function(genealogy, results = list()){
+
+  prerequisites <- "has_gen_num"
+  prerequisites_not_met <- FALSE
+  for (i in names(prerequisites)){
+    if (results[[i]] == FALSE){
+      prerequisites_not_met <- TRUE
+    }
+  }
+
+  if (prerequisites_not_met){
+    results$gen_num_not_missing <- FALSE
+    results$gen_num_naturals <- FALSE
+  } else {
+    # gen_num
+    results$gen_num_not_missing <- !any(is.na(genealogy$gen_num) |
+                                        is.nan(genealogy$gen_num) |
+                                        is.null(genealogy$gen_num))
+
+    if (results$gen_num_not_missing){
+      results$gen_num_naturals <- all(genealogy$gen_num %in% 0:max(genealogy$gen_num)) &
+                                  all(0:max(genealogy$gen_num) %in% genealogy$gen_num)
+    } else {
+      results$gen_num_naturals <- FALSE
+    } # if (results$gen_num_not_missing)
+  }
+
   return(results)
 }
