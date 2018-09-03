@@ -2,7 +2,8 @@
 #'
 #' Initializes a new genealogy from the ancestor sequences.
 #'
-#' @param ancestors Character vector containing the sequences of the ancestors of the genealogy.
+#' @param ancestors Character vector containing the sequences of the ancestors
+#' of the genealogy.
 #' @export
 
 make_genealogy <- function(ancestors){
@@ -23,7 +24,9 @@ make_genealogy <- function(ancestors){
 
 #' Check genealogy
 #'
-#' Checks a genealogy for correctness by ensuring that all the columns are present and that they do not violate any of the structural requirements (like referencing a parent that does not exist)
+#' Checks a genealogy for correctness by ensuring that all the columns are
+#' present and that they do not violate any of the structural requirements
+#' (like referencing a parent that does not exist)
 #'
 #' @return A list with TRUE or FALSE indicating whether the related check passed.
 #'
@@ -49,11 +52,14 @@ check_genealogy <- function(genealogy){
 
 #' Check the column names in a genealogy
 #'
-#' Checks that all the required column (and none but these columns) are present in a genealogy.
+#' Checks that all the required column (and none but these columns) are present
+#' in a genealogy.
 #'
-#' @return A list with TRUE or FALSE indicating whether the related check passed.
+#' @return A list with TRUE or FALSE indicating whether the related check
+#' passed.
 #' @param genealogy The genealogy to check.
-#' @param results The list to which the results will be added and from which previous results will be drawn to check the prerequisites.
+#' @param results The list to which the results will be added and from which
+#' previous results will be drawn to check the prerequisites.
 #' @export
 
 check_genealogy_structure <- function(genealogy, results = list()){
@@ -80,6 +86,8 @@ check_genealogy_structure <- function(genealogy, results = list()){
     results$has_fitness_score <- FALSE
     results$number_of_columns <- FALSE
     results$column_order <- FALSE
+    results$all_structure <- FALSE
+    return(results)
   } else {
     # class
     results$is_data.frame <- class(genealogy) == 'data.frame'
@@ -100,7 +108,11 @@ check_genealogy_structure <- function(genealogy, results = list()){
     results$number_of_columns <- length(names(genealogy)) == 10
 
     # order of columns
-    if (results$number_of_columns) {
+    if (!results$number_of_columns) {
+      results$column_order <- FALSE
+      results$all_structure <- FALSE
+      return(results)
+    } else {
       results$column_order <- all(names(genealogy) == c("gen_num", "id",
                                                         "parent_id", "the_seq",
                                                         "n_mut", "recomb_pos",
@@ -108,20 +120,22 @@ check_genealogy_structure <- function(genealogy, results = list()){
                                                         "recomb_partner",
                                                         "recomb_muts",
                                                         "fitness_score"))
-    } else {
-      results$column_order <- FALSE
-    }
-  }
+      results$all_structure <- TRUE
+    } # else of if (!results$number_of_columns) 
+  } # else of if (prerequisites_not_met)
   return(results)
 }
 
 #' Check the gen_num column in a genealogy
 #'
-#' Checks that gen_num is not missing, is a natural number and contains all numbers between zero and the max gen_num.
+#' Checks that gen_num is not missing, is a natural number and contains all
+#' numbers between zero and the max gen_num.
 #'
-#' @return A list with TRUE or FALSE indicating whether the related check passed.
+#' @return A list with TRUE or FALSE indicating whether the related check
+#' passed.
 #' @param genealogy The genealogy to check.
-#' @param results The list to which the results will be added and from which previous results will be drawn to check the prerequisites.
+#' @param results The list to which the results will be added and from which
+#' previous results will be drawn to check the prerequisites.
 #' @export
 
 check_genealogy_gen_num <- function(genealogy, results = list()){
@@ -154,14 +168,15 @@ check_genealogy_gen_num <- function(genealogy, results = list()){
   return(results)
 }
 
-
 #' Check the id column in a genealogy
 #'
 #' Checks that gen_num is not missing, is greater than zero and is an integer.
 #'
-#' @return A list with TRUE or FALSE indicating whether the related check passed.
+#' @return A list with TRUE or FALSE indicating whether the related check
+#' passed.
 #' @param genealogy The genealogy to check.
-#' @param results The list to which the results will be added and from which previous results will be drawn to check the prerequisites.
+#' @param results The list to which the results will be added and from which
+#' previous results will be drawn to check the prerequisites.
 #' @export
 
 check_genealogy_id <- function(genealogy, results = list()){
@@ -209,11 +224,14 @@ check_genealogy_id <- function(genealogy, results = list()){
 
 #' Check the parent_id column in a genealogy
 #'
-#' Checks that parent_id is not missing, is a valid integer and that it references a parent that exists.
+#' Checks that parent_id is not missing, is a valid integer and that it
+#' references a parent that exists.
 #'
-#' @return A list with TRUE or FALSE indicating whether the related check passed.
+#' @return A list with TRUE or FALSE indicating whether the related check
+#' passed.
 #' @param genealogy The genealogy to check.
-#' @param results The list to which the results will be added and from which previous results will be drawn to check the prerequisites.
+#' @param results The list to which the results will be added and from which
+#' previous results will be drawn to check the prerequisites.
 #' @export
 
 check_genealogy_parent_id <- function(genealogy, results = list()){
@@ -265,14 +283,15 @@ check_genealogy_parent_id <- function(genealogy, results = list()){
   return(results)
 }
 
-
 #' Check the the_seq column in a genealogy
 #'
 #' Checks that the_seq contains only valid nucleic letters.
 #'
-#' @return A list with TRUE or FALSE indicating whether the related check passed.
+#' @return A list with TRUE or FALSE indicating whether the related check
+#' passed.
 #' @param genealogy The genealogy to check.
-#' @param results The list to which the results will be added and from which previous results will be drawn to check the prerequisites.
+#' @param results The list to which the results will be added and from which
+#' previous results will be drawn to check the prerequisites.
 #' @export
 
 check_genealogy_the_seq <- function(genealogy, results = list()){
@@ -305,3 +324,48 @@ check_genealogy_the_seq <- function(genealogy, results = list()){
 
   return(results)
 }
+
+#' Check the n_mut column in a genealogy
+#'
+#' Checks that n_mut contains only valid nucleic letters.
+#'
+#' @return A list with TRUE or FALSE indicating whether the related check
+#' passed.
+#' @param genealogy The genealogy to check.
+#' @param results The list to which the results will be added and from which
+#' previous results will be drawn to check the prerequisites.
+#' @export
+
+check_genealogy_n_mut <- function(genealogy, results = list()){
+
+  prerequisites <- c("has_the_seq")
+  prerequisites_not_met <- FALSE
+  for (i in names(prerequisites)){
+    if (results[[i]] == FALSE){
+      prerequisites_not_met <- TRUE
+    }
+  }
+
+  if (prerequisites_not_met){
+    results$the_seq_not_missing <- FALSE
+    results$the_seq_valid_letters <- FALSE
+    return(results)
+  } else {
+    results$the_seq_not_missing <- !(any(is.na(genealogy$the_seq)) | 
+                                     any(is.nan(genealogy$the_seq)) | 
+                                     any(is.null(genealogy$the_seq)) |
+                                     any(genealogy$the_seq == ''))
+    if (!results$the_seq_not_missing){
+      results$the_seq_valid_letters <- FALSE
+      return(results)
+    } else {
+      all_lets <- unique(strsplit(paste(genealogy$the_seq, collapse = ''), '')[[1]])
+      results$the_seq_valid_letters <- all(all_lets %in% c('A', 'C', 'G', 'T'))
+    }
+  } # if (prerequisites_not_met)
+
+  return(results)
+}
+
+
+

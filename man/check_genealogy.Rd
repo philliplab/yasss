@@ -13,5 +13,7 @@ check_genealogy(genealogy)
 A list with TRUE or FALSE indicating whether the related check passed.
 }
 \description{
-Checks a genealogy for correctness by ensuring that all the columns are present and that they do not violate any of the structural requirements (like referencing a parent that does not exist)
+Checks a genealogy for correctness by ensuring that all the columns are
+present and that they do not violate any of the structural requirements
+(like referencing a parent that does not exist)
 }

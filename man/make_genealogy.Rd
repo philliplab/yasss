@@ -7,7 +7,8 @@
 make_genealogy(ancestors)
 }
 \arguments{
-\item{ancestors}{Character vector containing the sequences of the ancestors of the genealogy.}
+\item{ancestors}{Character vector containing the sequences of the ancestors
+of the genealogy.}
 }
 \description{
 Initializes a new genealogy from the ancestor sequences.

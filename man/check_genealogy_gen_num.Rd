@@ -9,11 +9,14 @@ check_genealogy_gen_num(genealogy, results = list())
 \arguments{
 \item{genealogy}{The genealogy to check.}
 
-\item{results}{The list to which the results will be added and from which previous results will be drawn to check the prerequisites.}
+\item{results}{The list to which the results will be added and from which
+previous results will be drawn to check the prerequisites.}
 }
 \value{
-A list with TRUE or FALSE indicating whether the related check passed.
+A list with TRUE or FALSE indicating whether the related check
+passed.
 }
 \description{
-Checks that gen_num is not missing, is a natural number and contains all numbers between zero and the max gen_num.
+Checks that gen_num is not missing, is a natural number and contains all
+numbers between zero and the max gen_num.
 }

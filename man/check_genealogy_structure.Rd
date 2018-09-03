@@ -9,11 +9,14 @@ check_genealogy_structure(genealogy, results = list())
 \arguments{
 \item{genealogy}{The genealogy to check.}
 
-\item{results}{The list to which the results will be added and from which previous results will be drawn to check the prerequisites.}
+\item{results}{The list to which the results will be added and from which
+previous results will be drawn to check the prerequisites.}
 }
 \value{
-A list with TRUE or FALSE indicating whether the related check passed.
+A list with TRUE or FALSE indicating whether the related check
+passed.
 }
 \description{
-Checks that all the required column (and none but these columns) are present in a genealogy.
+Checks that all the required column (and none but these columns) are present
+in a genealogy.
 }
