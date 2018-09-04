@@ -16,3 +16,4 @@ test_that("A small simulation with a moderate uniform mutator yields reasonable 
   expect_true(min(x[-1,'n_mut']) > 0)
   expect_true(max(x[-1,'n_mut']) < 20)
 })
+

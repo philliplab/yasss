@@ -10,6 +10,13 @@ The motivation for writing this package is:
 - We want to simulate varying levels of immune pressure based on epitopes in the sequences
 - In practice, we constantly rewrite little bits of this package taylored to whatever we are currently working on
 
+## Getting started
+
+```
+library(yasss)
+example(sim_pop)
+```
+
 ## Simulation of the quasispecies
 
 - Call sim_pop with arguments providing all simulation parameters.

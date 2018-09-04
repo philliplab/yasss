@@ -11,6 +11,25 @@
 #' @param n_gen The number of generations to simulate.
 #' @param n_pop Stop the simulation when the population size exceeds this number.
 #' @param mutator A list with two elements fun and args specifying the function that mutates parents into their offspring and the list of arguments said function requires. 
+#' 
+#' @examples
+#' 
+#' # Five generations, ancestor 60 As, mutation rate 10% per base per generation
+#' x <- sim_pop(ancestors = paste(rep("A", 60), collapse = ''),
+#'              gen_size = 2,
+#'              n_gen = 5,
+#'              n_pop = Inf,
+#'              mutator = list(fun = mutator_uniform_fun,
+#'                             args = list(mu = 0.1)))
+#' # Prints sequences of current generation
+#' x %>% filter(gen_num == max(gen_num)) %>% select('the_seq')
+#'
+#' # Plots a histogram of the number of mutations between each parent
+#' # and its offspring in the last generation
+#' \dontrun{
+#' ggplot(subset(x, gen_num == max(gen_num)), aes(n_mut)) + 
+#'   geom_histogram(binwidth = 1)
+#' }
 #' @export 
 
 sim_pop <- function(ancestors, 
