@@ -67,25 +67,16 @@ sim_pop_tester <- function(ancestors,
 
   gen_count <- 0
 
+  total_pop <- length(ancestors)
   c_pop <- length(ancestors)
   while (c_pop < n_pop & gen_count < n_gen){
     gen_count <- gen_count + 1
-    c_pop <- c_pop + (c_pop * gen_size)
+    c_pop <- (c_pop * gen_size)
+    total_pop <- total_pop + c_pop
   }
 
-#  if (n_gen == Inf){
-#    c_pop <- length(ancestors)
-#    while (c_pop < n_pop){
-#      gen_count <- gen_count + 1
-#      c_pop <- c_pop + (c_pop * gen_size)
-#    }
-#  } else {
-#    gen_count <- n_gen
-#    c_pop <- length(ancestors) * sum(gen_size^(0:n_gen))
-#  }
-
   # Correct number of individuals who ever lived
-  expect_equal(nrow(genea), c_pop)
+  expect_equal(nrow(genea), total_pop)
   # Correct number of generations
   expect_true(all(sort(unique(genea$gen_num)) == c(0:gen_count)))
   # Correct number of individuals in last generation
