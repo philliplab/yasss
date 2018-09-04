@@ -5,7 +5,7 @@ test_that("A small simulation with a moderate uniform mutator yields reasonable 
                gen_size = 2,
                n_gen = 5,
                n_pop = Inf,
-               mutator = list(fun = mutator_uniform_fun,
+               mutator = list(fun = "mutator_uniform_fun",
                               args = list(mu = 0.1)))
 
   expect_true(all(unlist(check_genealogy(x))))

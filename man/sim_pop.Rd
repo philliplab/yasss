@@ -5,7 +5,7 @@
 \title{Simulates evolution of DNA of a population}
 \usage{
 sim_pop(ancestors, gen_size = 2, n_gen = NULL, n_pop = NULL,
-  mutator = list(fun = mutator_uniform_fun, args = list(mu = 0.01)))
+  mutator = list(fun = "mutator_uniform_fun", args = list(mu = 0.01)))
 }
 \arguments{
 \item{ancestors}{A list of DNA sequences with which to start the population. Include the same sequence multiple times to achieve a target ratio.}

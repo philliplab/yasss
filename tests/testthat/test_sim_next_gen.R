@@ -1,7 +1,7 @@
 context('sim_next_gen')
 
 YASSS_MUTATORS <- list(mutator_uniform = 
-                         list(fun = mutator_uniform_fun,
+                         list(fun = "mutator_uniform_fun",
                               args = list(mu = 0.01))
                       )
 

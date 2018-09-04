@@ -38,7 +38,8 @@ sim_next_gen <- function(genealogy, gen_size, mutator, gen_num = 1){
       total_offspring <- total_offspring + 1
       mut_arg <- mutator$arg
       mut_arg$parent <- parents[i, 'the_seq']
-      mut_result <- do.call(mutator$fun, mut_arg)
+      mut_fun <- get(mutator$fun)
+      mut_result <- do.call(mut_fun, mut_arg)
       child <- mut_result$child
       c_genealogy <- data.frame(gen_num = gen_num,
                                 id = total_offspring,

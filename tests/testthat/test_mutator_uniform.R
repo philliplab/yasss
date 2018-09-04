@@ -1,6 +1,6 @@
 context("uniform_mutator")
 
-fun <- mutator_uniform_fun
+fun <- get("mutator_uniform_fun")
 parents <- c('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
              'ACGTACGTA',
              paste(rep('AAACCCGGGTTT', 10), sep = '', collapse = ''),

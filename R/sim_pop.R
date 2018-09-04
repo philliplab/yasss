@@ -34,7 +34,7 @@
 
 sim_pop <- function(ancestors, 
                     gen_size = 2, n_gen = NULL, n_pop = NULL,
-                    mutator = list(fun = mutator_uniform_fun,
+                    mutator = list(fun = "mutator_uniform_fun",
                                    args = list(mu = 0.01))){
 
   gen_size <- tryCatch(round(as.numeric(gen_size), 0),

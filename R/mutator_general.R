@@ -8,12 +8,14 @@
 #' errors are flagged before the main loop is initiated.
 #'
 #' @param fun The mutator function
-#' @param args A list of arguments with which the mutator such run 'normally'. i.e. a per base mutation rate between 0% and 5%.
+#' @param args A list of arguments with which the mutator such run 'normally'. i.e. a per base mutation rate between 0% and 5%. This will be used to call the mutator on dummy data during the checks.
 #' @export
 
 mutator_checks_general <- function(fun, args){
   result <- list()
-  result$fun_is_fun <- class(fun) == "function"
+  result$fun_is_character <- class(fun) == "character"
+  fun <- get(fun)
+  result$fun_is_getable <- class(fun) == "function"
   result$fun_has_parent_arg <- "parent" %in% names(formals(fun))
   result$fun_has_mu_arg <- "mu" %in% names(formals(fun))
 
