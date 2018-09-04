@@ -8,13 +8,19 @@
 #' @export
 
 assign_fitness <- function(genealogy, fitness_evaluator){
+
+  last_generation <- genealogy %>% filter(gen_num == max(gen_num))
+  all_non_last_generation <- genealogy %>% filter(gen_num != max(gen_num))
+
   args <- fitness_evaluator$args
-  args$the_seq <- genealogy$the_seq
+  args$the_seq <- last_generation$the_seq
   fit_fun <- get(fitness_evaluator$fun)
   x <- do.call(fit_fun, args)
   #TODO: remove this line if there are performance issues
-  stopifnot(all(x$the_seq == genealogy$the_seq))
-  genealogy$fitness <- x$fitness
+  stopifnot(all(x$the_seq == last_generation$the_seq))
+  last_generation$fitness_score <- x$fitness
+
+  genealogy <- rbind(all_non_last_generation, last_generation)
 
   return(genealogy)
 }
