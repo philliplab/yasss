@@ -63,19 +63,26 @@ sim_pop_tester <- function(ancestors,
   expect_true(all(unlist(check_genealogy(genea))))
 
   if (is.null(n_gen)) {n_gen <- Inf}
+  if (is.null(n_pop)) {n_pop <- Inf}
 
   gen_count <- 0
 
-  if (n_gen == Inf){
-    c_pop <- length(ancestors)
-    while (c_pop < n_pop){
-      gen_count <- gen_count + 1
-      c_pop <- c_pop + (c_pop * gen_size)
-    }
-  } else {
-    gen_count <- n_gen
-    c_pop <- length(ancestors) * sum(gen_size^(0:n_gen))
+  c_pop <- length(ancestors)
+  while (c_pop < n_pop & gen_count < n_gen){
+    gen_count <- gen_count + 1
+    c_pop <- c_pop + (c_pop * gen_size)
   }
+
+#  if (n_gen == Inf){
+#    c_pop <- length(ancestors)
+#    while (c_pop < n_pop){
+#      gen_count <- gen_count + 1
+#      c_pop <- c_pop + (c_pop * gen_size)
+#    }
+#  } else {
+#    gen_count <- n_gen
+#    c_pop <- length(ancestors) * sum(gen_size^(0:n_gen))
+#  }
 
   # Correct number of individuals who ever lived
   expect_equal(nrow(genea), c_pop)
@@ -113,6 +120,16 @@ test_that("n_gen argument of sim_pop works", {
 })
 
 test_that("n_pop argument of sim_pop works", {
+  # One ancestor
+  sim_pop_tester(ancestors = c("AAAA"), gen_size = 2,
+               n_pop = 1)
+  sim_pop_tester(ancestors = c("AAAA"), gen_size = 2,
+               n_pop = 2)
+  sim_pop_tester(ancestors = c("AAAA"), gen_size = 2,
+               n_pop = 3)
+  sim_pop_tester(ancestors = c("AAAA"), gen_size = 2,
+               n_pop = 33)
+
   # One ancestor
   x <- sim_pop(ancestors = c("AAAA"), gen_size = 2,
                n_pop = 1)
