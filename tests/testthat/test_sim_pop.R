@@ -121,59 +121,46 @@ test_that("n_pop argument of sim_pop works", {
   sim_pop_tester(ancestors = c("AAAA"), gen_size = 2,
                n_pop = 33)
 
-  # One ancestor
-  x <- sim_pop(ancestors = c("AAAA"), gen_size = 2,
-               n_pop = 1)
-  expect_equal(nrow(x), 1)
-  expect_true(all(sort(unique(x$gen_num)) == c(0)))
-
-  x <- sim_pop(ancestors = c("AAAA"), gen_size = 2,
-               n_pop = 2)
-  expect_equal(nrow(x), 3)
-  expect_true(all(sort(unique(x$gen_num)) == 0:1))
-
-  x <- sim_pop(ancestors = c("AAAA"), gen_size = 2,
-               n_pop = 3)
-  expect_equal(nrow(x), 7)
-  expect_true(all(sort(unique(x$gen_num)) == 0:2))
-  
-  x <- sim_pop(ancestors = c("AAAA"), gen_size = 2,
-               n_pop = 33)
-  expect_equal(length(x$the_seq[x$gen_num == max(x$gen_num)]), 64)
-
   # Two ancestors
-  x <- sim_pop(ancestors = c("AAAA", "BBBB"), gen_size = 2,
+  sim_pop_tester(ancestors = c("AAAA", "CCCC"), gen_size = 2,
                n_pop = 1)
-  expect_equal(length(x$the_seq[x$gen_num == max(x$gen_num)]), 2)
-
-  x <- sim_pop(ancestors = c("AAAA", "BBBB"), gen_size = 2,
+  sim_pop_tester(ancestors = c("AAAA", "CCCC"), gen_size = 2,
                n_pop = 2)
-  expect_equal(length(x$the_seq[x$gen_num == max(x$gen_num)]), 2)
-
-  x <- sim_pop(ancestors = c("AAAA", "BBBB"), gen_size = 2,
+  sim_pop_tester(ancestors = c("AAAA", "CCCC"), gen_size = 2,
                n_pop = 3)
-  expect_equal(length(x$the_seq[x$gen_num == max(x$gen_num)]), 4)
-  
-  x <- sim_pop(ancestors = c("AAAA", "BBBB"), gen_size = 2,
+  sim_pop_tester(ancestors = c("AAAA", "CCCC"), gen_size = 2,
                n_pop = 20)
-  expect_equal(length(x$the_seq[x$gen_num == max(x$gen_num)]), 32)
 })
 
 test_that("n_pop and n_gen arguments of sim_pop interact correctly", {
-            # Single ancestor
-  x <- sim_pop(ancestors = c("AAAA"), gen_size = 2,
+  # Single ancestor
+  sim_pop_tester(ancestors = c("AAAA"), gen_size = 2,
                n_pop = 1, n_gen = 1)
-  expect_equal(length(x$the_seq[x$gen_num == max(x$gen_num)]), 1)
-
-  x <- sim_pop(ancestors = c("AAAA"), gen_size = 2,
+  sim_pop_tester(ancestors = c("AAAA"), gen_size = 2,
                n_pop = 2, n_gen = 2)
-  expect_equal(length(x$the_seq[x$gen_num == max(x$gen_num)]), 2)
-
-  x <- sim_pop(ancestors = c("AAAA"), gen_size = 2,
+  sim_pop_tester(ancestors = c("AAAA"), gen_size = 2,
                n_pop = 3, n_gen = 1)
-  expect_equal(length(x$the_seq[x$gen_num == max(x$gen_num)]), 2)
-  
-  x <- sim_pop(ancestors = c("AAAA"), gen_size = 2,
+  sim_pop_tester(ancestors = c("AAAA"), gen_size = 2,
                n_pop = 33, n_gen = 10)
-  expect_equal(length(x$the_seq[x$gen_num == max(x$gen_num)]), 64)
+  
+  # Dual ancestor
+  sim_pop_tester(ancestors = c("AAAA", "TTTT"), gen_size = 2,
+               n_pop = 1, n_gen = 1)
+  sim_pop_tester(ancestors = c("AAAA", "TTTT"), gen_size = 2,
+               n_pop = 2, n_gen = 2)
+  sim_pop_tester(ancestors = c("AAAA", "TTTT"), gen_size = 2,
+               n_pop = 3, n_gen = 1)
+  sim_pop_tester(ancestors = c("AAAA", "TTTT"), gen_size = 2,
+               n_pop = 33, n_gen = 10)
+
+  # And a few bigger ones
+  sim_pop_tester(ancestors = c("AAAA"), gen_size = 3,
+               n_pop = 100, n_gen = 5)
+  sim_pop_tester(ancestors = c("AAAA", "TTTT"), gen_size = 3,
+               n_pop = 200, n_gen = 8)
+  sim_pop_tester(ancestors = c("AAAA", "TTTT", "CCCC"), gen_size = 2,
+               n_pop = 200, n_gen = 10)
+# Pretty slow
+#  sim_pop_tester(ancestors = c("AAAA", "TTTT", "CCCC"), gen_size = 5,
+#               n_pop = 3000, n_gen = 10)
 })
