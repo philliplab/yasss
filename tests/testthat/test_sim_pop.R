@@ -59,6 +59,7 @@ sim_pop_tester <- function(ancestors,
                    n_gen = n_gen, 
                    n_pop = n_pop)
   
+  # correct genealogy structure
   expect_true(all(unlist(check_genealogy(genea))))
 
   if (is.null(n_gen)) {n_gen <- Inf}
@@ -75,50 +76,40 @@ sim_pop_tester <- function(ancestors,
     gen_count <- n_gen
     c_pop <- length(ancestors) * sum(gen_size^(0:n_gen))
   }
+
+  # Correct number of individuals who ever lived
   expect_equal(nrow(genea), c_pop)
+  # Correct number of generations
   expect_true(all(sort(unique(genea$gen_num)) == c(0:gen_count)))
+  # Correct number of individuals in last generation
   expect_equal(nrow(genea %>% filter(gen_num == max(gen_num))), 
                length(ancestors)*gen_size^gen_count)
 }
 
 test_that("n_gen argument of sim_pop works", {
-
-  sim_pop_tester(ancestors = c("AAAA"), gen_size = 2,
-               n_gen = 1)
-
   # Single ancestor
-  genea <- sim_pop(ancestors = c("AAAA"), gen_size = 2,
-               n_gen = 1)
-  expect_equal(nrow(genea), 3)
-  expect_true(all(sort(unique(genea$gen_num)) == c(0, 1)))
-  last_gen <- genea %>% filter(gen_num == max(gen_num))
-  expect_true(nrow(last_gen) == 2)
-
-  x <- sim_pop(ancestors = c("AAAA"), gen_size = 2,
-               n_gen = 2)
-  expect_equal(nrow(x), 7)
-  expect_true(all(sort(unique(x$gen_num)) == c(0, 1, 2)))
-
-  x <- sim_pop(ancestors = c("AAAA"), gen_size = 2,
-               n_gen = 3)
-  expect_equal(nrow(x), 15)
-  expect_true(all(sort(unique(x$gen_num)) == c(0, 1, 2, 3)))
+  sim_pop_tester(ancestors = c("AAAA"), gen_size = 2,
+                 n_gen = 1)
+  sim_pop_tester(ancestors = c("AAAA"), gen_size = 2,
+                 n_gen = 2)
+  sim_pop_tester(ancestors = c("AAAA"), gen_size = 2,
+                 n_gen = 3)
 
   # Two ancestors
-  x <- sim_pop(ancestors = c("AAAA", "CCCC"), gen_size = 2,
+  sim_pop_tester(ancestors = c("AAAA", "CCCC"), gen_size = 2,
                n_gen = 1)
-  expect_equal(nrow(x), 6)
-  expect_true(all(sort(unique(x$gen_num)) == c(0, 1)))
-
-  x <- sim_pop(ancestors = c("AAAA", "CCCC"), gen_size = 2,
+  sim_pop_tester(ancestors = c("AAAA", "CCCC"), gen_size = 2,
                n_gen = 2)
-  expect_equal(nrow(x), 14)
-  expect_true(all(sort(unique(x$gen_num)) == c(0, 1, 2)))
-
-  x <- sim_pop(ancestors = c("AAAA", "CCCC"), gen_size = 2,
+  sim_pop_tester(ancestors = c("AAAA", "CCCC"), gen_size = 2,
                n_gen = 3)
-  expect_equal(nrow(x), 30)
-  expect_true(all(sort(unique(x$gen_num)) == c(0, 1, 2, 3)))
+
+  # Three ancestors
+  sim_pop_tester(ancestors = c("AAAA", "CCCC", "GGGG"), gen_size = 2,
+               n_gen = 1)
+  sim_pop_tester(ancestors = c("AAAA", "CCCC", "GGGG"), gen_size = 2,
+               n_gen = 2)
+  sim_pop_tester(ancestors = c("AAAA", "CCCC", "GGGG"), gen_size = 2,
+               n_gen = 3)
 })
 
 test_that("n_pop argument of sim_pop works", {
