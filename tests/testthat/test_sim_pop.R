@@ -50,7 +50,7 @@ test_that("sim_pop output in the correct format", {
   expect_true(all(unlist(check_genealogy(x))))
 })
 
-sim_pop_tester <- function(ancestors,
+sim_pop_expector <- function(ancestors,
                            gen_size = 2,
                            n_gen = NULL,
                            n_pop = NULL){
@@ -86,82 +86,82 @@ sim_pop_tester <- function(ancestors,
 
 test_that("n_gen argument of sim_pop works", {
   # Single ancestor
-  sim_pop_tester(ancestors = c("AAAA"), gen_size = 2,
+  sim_pop_expector(ancestors = c("AAAA"), gen_size = 2,
                  n_gen = 1)
-  sim_pop_tester(ancestors = c("AAAA"), gen_size = 2,
+  sim_pop_expector(ancestors = c("AAAA"), gen_size = 2,
                  n_gen = 2)
-  sim_pop_tester(ancestors = c("AAAA"), gen_size = 2,
+  sim_pop_expector(ancestors = c("AAAA"), gen_size = 2,
                  n_gen = 3)
 
   # Two ancestors
-  sim_pop_tester(ancestors = c("AAAA", "CCCC"), gen_size = 2,
+  sim_pop_expector(ancestors = c("AAAA", "CCCC"), gen_size = 2,
                n_gen = 1)
-  sim_pop_tester(ancestors = c("AAAA", "CCCC"), gen_size = 2,
+  sim_pop_expector(ancestors = c("AAAA", "CCCC"), gen_size = 2,
                n_gen = 2)
-  sim_pop_tester(ancestors = c("AAAA", "CCCC"), gen_size = 2,
+  sim_pop_expector(ancestors = c("AAAA", "CCCC"), gen_size = 2,
                n_gen = 3)
 
   # Three ancestors
-  sim_pop_tester(ancestors = c("AAAA", "CCCC", "GGGG"), gen_size = 2,
+  sim_pop_expector(ancestors = c("AAAA", "CCCC", "GGGG"), gen_size = 2,
                n_gen = 1)
-  sim_pop_tester(ancestors = c("AAAA", "CCCC", "GGGG"), gen_size = 2,
+  sim_pop_expector(ancestors = c("AAAA", "CCCC", "GGGG"), gen_size = 2,
                n_gen = 2)
-  sim_pop_tester(ancestors = c("AAAA", "CCCC", "GGGG"), gen_size = 2,
+  sim_pop_expector(ancestors = c("AAAA", "CCCC", "GGGG"), gen_size = 2,
                n_gen = 3)
 })
 
 test_that("n_pop argument of sim_pop works", {
   # One ancestor
-  sim_pop_tester(ancestors = c("AAAA"), gen_size = 2,
+  sim_pop_expector(ancestors = c("AAAA"), gen_size = 2,
                n_pop = 1)
-  sim_pop_tester(ancestors = c("AAAA"), gen_size = 2,
+  sim_pop_expector(ancestors = c("AAAA"), gen_size = 2,
                n_pop = 2)
-  sim_pop_tester(ancestors = c("AAAA"), gen_size = 2,
+  sim_pop_expector(ancestors = c("AAAA"), gen_size = 2,
                n_pop = 3)
-  sim_pop_tester(ancestors = c("AAAA"), gen_size = 2,
+  sim_pop_expector(ancestors = c("AAAA"), gen_size = 2,
                n_pop = 33)
 
   # Two ancestors
-  sim_pop_tester(ancestors = c("AAAA", "CCCC"), gen_size = 2,
+  sim_pop_expector(ancestors = c("AAAA", "CCCC"), gen_size = 2,
                n_pop = 1)
-  sim_pop_tester(ancestors = c("AAAA", "CCCC"), gen_size = 2,
+  sim_pop_expector(ancestors = c("AAAA", "CCCC"), gen_size = 2,
                n_pop = 2)
-  sim_pop_tester(ancestors = c("AAAA", "CCCC"), gen_size = 2,
+  sim_pop_expector(ancestors = c("AAAA", "CCCC"), gen_size = 2,
                n_pop = 3)
-  sim_pop_tester(ancestors = c("AAAA", "CCCC"), gen_size = 2,
+  sim_pop_expector(ancestors = c("AAAA", "CCCC"), gen_size = 2,
                n_pop = 20)
 })
 
 test_that("n_pop and n_gen arguments of sim_pop interact correctly", {
   # Single ancestor
-  sim_pop_tester(ancestors = c("AAAA"), gen_size = 2,
+  sim_pop_expector(ancestors = c("AAAA"), gen_size = 2,
                n_pop = 1, n_gen = 1)
-  sim_pop_tester(ancestors = c("AAAA"), gen_size = 2,
+  sim_pop_expector(ancestors = c("AAAA"), gen_size = 2,
                n_pop = 2, n_gen = 2)
-  sim_pop_tester(ancestors = c("AAAA"), gen_size = 2,
+  sim_pop_expector(ancestors = c("AAAA"), gen_size = 2,
                n_pop = 3, n_gen = 1)
-  sim_pop_tester(ancestors = c("AAAA"), gen_size = 2,
+  sim_pop_expector(ancestors = c("AAAA"), gen_size = 2,
                n_pop = 33, n_gen = 10)
   
   # Dual ancestor
-  sim_pop_tester(ancestors = c("AAAA", "TTTT"), gen_size = 2,
+  sim_pop_expector(ancestors = c("AAAA", "TTTT"), gen_size = 2,
                n_pop = 1, n_gen = 1)
-  sim_pop_tester(ancestors = c("AAAA", "TTTT"), gen_size = 2,
+  sim_pop_expector(ancestors = c("AAAA", "TTTT"), gen_size = 2,
                n_pop = 2, n_gen = 2)
-  sim_pop_tester(ancestors = c("AAAA", "TTTT"), gen_size = 2,
+  sim_pop_expector(ancestors = c("AAAA", "TTTT"), gen_size = 2,
                n_pop = 3, n_gen = 1)
-  sim_pop_tester(ancestors = c("AAAA", "TTTT"), gen_size = 2,
+  sim_pop_expector(ancestors = c("AAAA", "TTTT"), gen_size = 2,
                n_pop = 33, n_gen = 10)
 
   # And a few bigger ones
-  sim_pop_tester(ancestors = c("AAAA"), gen_size = 3,
+  sim_pop_expector(ancestors = c("AAAA"), gen_size = 3,
                n_pop = 100, n_gen = 5)
 #TODO: Uncomment
-#  sim_pop_tester(ancestors = c("AAAA", "TTTT"), gen_size = 3,
+#  sim_pop_expector(ancestors = c("AAAA", "TTTT"), gen_size = 3,
 #               n_pop = 200, n_gen = 8)
-#  sim_pop_tester(ancestors = c("AAAA", "TTTT", "CCCC"), gen_size = 2,
+#  sim_pop_expector(ancestors = c("AAAA", "TTTT", "CCCC"), gen_size = 2,
 #               n_pop = 200, n_gen = 10)
 # Pretty slow
-#  sim_pop_tester(ancestors = c("AAAA", "TTTT", "CCCC"), gen_size = 5,
+#  sim_pop_expector(ancestors = c("AAAA", "TTTT", "CCCC"), gen_size = 5,
 #               n_pop = 3000, n_gen = 10)
 })
