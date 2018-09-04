@@ -1,6 +1,6 @@
 #' General mutation checker
 #'
-#' Performs basic sanity checks on a mutator and its candidate set.
+#' Performs basic sanity checks on a mutator and its candidate argument set.
 #'
 #' Since mutators are custom functions that are only used in deeply nested code
 #' and called with mechanisms like do.call, it makes debugging them really

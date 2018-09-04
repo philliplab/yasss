@@ -12,7 +12,7 @@ mutator_checks_general(fun, args)
 \item{args}{A list of arguments with which the mutator such run 'normally'. i.e. a per base mutation rate between 0% and 5%.}
 }
 \description{
-Performs basic sanity checks on a mutator and its candidate set.
+Performs basic sanity checks on a mutator and its candidate argument set.
 }
 \details{
 Since mutators are custom functions that are only used in deeply nested code
