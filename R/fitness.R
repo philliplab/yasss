@@ -69,52 +69,16 @@ check_fitness_evaluator <- function(fun, args){
 
 check_fitness_evaluator_result <- function(fitness_evaluation, input_args){
 
-
-  x <- fitness_evaluation
-  tmp_args <- input_args
-
   result <- list()
-  result$output_is_list <- class(x) == 'list'
-  result$has_the_seq <- "the_seq" %in% names(x)
-  result$has_fitness_score <- "fitness_score" %in% names(x)
-  result$the_seq_length <- length(x$the_seq) == length(tmp_args$the_seq)
-  result$the_seq_order <- all(x$the_seq == tmp_args$the_seq)
-  result$fitness_score_numeric <- class(x$fitness_score) == "numeric"
-  result$fitness_score_non_na <- (!any(is.na(x$fitness_score))) &
-                                 (!any(is.nan(x$fitness_score)))
+  result$output_is_list <- class(fitness_evaluation) == 'list'
+  result$has_the_seq <- "the_seq" %in% names(fitness_evaluation)
+  result$has_fitness_score <- "fitness_score" %in% names(fitness_evaluation)
+  result$the_seq_length <- length(fitness_evaluation$the_seq) == length(input_args$the_seq)
+  result$the_seq_order <- all(fitness_evaluation$the_seq == input_args$the_seq)
+  result$fitness_score_numeric <- class(fitness_evaluation$fitness_score) == "numeric"
+  result$fitness_score_non_na <- (!any(is.na(fitness_evaluation$fitness_score))) &
+                                 (!any(is.nan(fitness_evaluation$fitness_score)))
 
   return(result)
 }
 
-#mutator_checks_general <- function(fun, args){
-#  result <- list()
-#  result$fun_is_fun <- class(fun) == "function"
-#  result$fun_has_parent_arg <- "parent" %in% names(formals(fun))
-#  result$fun_has_mu_arg <- "mu" %in% names(formals(fun))
-#
-#  result$all_mu_greater_equal_0 <- all(args$mu >= 0)
-#  result$all_mu_less_equal_1 <- all(args$mu <= 1)
-#
-#  parent <- 'ACGTAC'
-#  tmp_args <- c(list(parent = parent), args)
-#  x <- try(do.call(fun, tmp_args), silent = TRUE)
-#
-#  result$mutator_runs <- !('try-error' %in% class(x))
-#
-#  if (result$mutator_runs) {
-#    result$output_is_list <- class(x) == 'list'
-#    result$output_has_parent <- 'parent' %in% names(x)
-#    result$output_has_child <- 'child' %in% names(x)
-#    result$output_has_mutation_stats <- 'mutation_stats' %in% names(x)
-#    result$mutation_stats_has_n_mut <- 'n_mut' %in% names(x$mutation_stats)
-#    result$output_has_mu <- 'mu' %in% names(x)
-#
-#    #NOTE: Might have to update this to handle indels
-#    # Because might want to use this to track insertion positions
-#    result$output_parent_correct <- parent == x$parent
-#    result$output_child_char <- class(x$child) == 'character'
-#    result$output_one_child <- length(x$child) == 1
-#  }
-#
-#  return(result)
-#}
