@@ -38,8 +38,10 @@ x <- sim_pop(ancestors = paste(rep("A", 60), collapse = ''),
              gen_size = 2,
              n_gen = 5,
              n_pop = Inf,
-             mutator = list(fun = mutator_uniform_fun,
-                            args = list(mu = 0.1)))
+             mutator = list(fun = "mutator_uniform_fun",
+                            args = list(mu = 0.1)),
+             fitness_evaluator = list(fun = "fitness_evaluator_uniform_fun",
+                                      args = NULL))
 # Prints sequences of current generation
 x \%>\% filter(gen_num == max(gen_num)) \%>\% select('the_seq')
 

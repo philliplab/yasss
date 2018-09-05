@@ -82,3 +82,46 @@ check_fitness_evaluator_result <- function(fitness_evaluation, input_args){
   return(result)
 }
 
+#' Retrieves the fit offspring with fit ancestry
+#'
+#' Selects all the individuals from the last generation in a genealogy that are themselves fit and whose entire ancestry was also fit.
+#'
+#' @param genealogy The genealogy from which the fit individuals must be selected
+#' @param fitness_score The minimun fitness score an individual must have to have survived.
+#' @export
+
+get_fit_offspring <- function(genealogy, fitness_score){
+  f_genealogy <- as.data.frame(matrix(nrow = nrow(genealogy), ncol = length(names(genealogy))))
+  names(f_genealogy) <- names(genealogy)
+  
+  for (i in names(f_genealogy)){
+    class(f_genealogy[,i]) <- class(genealogy[,i])
+  }
+  total_fit <- 0
+  row_tracker <- 0
+  fit_parents <- NULL
+
+  for (c_gen_num in sort(unique(genealogy$gen_num))){
+    next_fit_parents <- NULL
+    c_genea <- genealogy %>% filter(gen_num == c_gen_num)
+    for (c_id in c_genea$id){
+      is_fit <- FALSE
+      row_tracker <- row_tracker + 1
+      c_indiv <- c_genea %>% filter(id == c_id)
+      if (c_indiv$fitness_score > fitness_score){
+        if (is.na(c_indiv$parent_id)){
+          is_fit <- TRUE
+        } else {
+          is_fit <- c_indiv$parent_id %in% fit_parents
+        }
+      }
+      if (is_fit){
+        total_fit <- total_fit + 1
+        f_genealogy[total_fit,] <- genealogy[row_tracker,]
+        next_fit_parents <- c(next_fit_parents, c_indiv$id)
+      }
+    }
+    fit_parents <- next_fit_parents
+  }
+  return(f_genealogy[1:total_fit,])
+}
