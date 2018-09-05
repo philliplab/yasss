@@ -430,8 +430,8 @@ check_genealogy_n_mut <- function(genealogy, result = list()){
     result$n_mut_not_missing <- FALSE
     result$n_mut_is_integer <- FALSE
     result$n_mut_calc <- FALSE
-    result$all_n_mut <- FALSE
     result$n_mut_first_gen_NA <- FALSE
+    result$all_n_mut <- FALSE
     return(result)
   } else {
     # The ancestors are not compared to anything, so n_mut is NA
@@ -443,8 +443,8 @@ check_genealogy_n_mut <- function(genealogy, result = list()){
       result$n_mut_not_missing <- TRUE
       result$n_mut_is_integer <- TRUE
       result$n_mut_calc <- TRUE
-      result$all_n_mut <- TRUE
       result$n_mut_first_gen_NA <- TRUE
+      result$all_n_mut <- TRUE
     } else {
       result$n_mut_not_missing <- !(any(is.na(non_first_gen$n_mut)) | 
                                     any(is.nan(non_first_gen$n_mut)) | 
@@ -457,10 +457,11 @@ check_genealogy_n_mut <- function(genealogy, result = list()){
         return(result)
       } else {
         result$n_mut_is_integer <- all(floor(non_first_gen$n_mut) == ceiling(non_first_gen$n_mut))
+        result$n_mut_calc <- TRUE
         for (i in 1:nrow(genealogy)){
-          result$n_mut_calc <- TRUE
           if (!is.na(genealogy[i,'parent_id'])){
 #            compare the_seq to the_seq of parent
+#            print(c(i, result$n_mut_calc))
             c_the_seq <- genealogy[i,'the_seq']
             c_gen_num <- genealogy[i,'gen_num']
             c_parent_id <- genealogy[i, 'parent_id']
@@ -477,8 +478,9 @@ check_genealogy_n_mut <- function(genealogy, result = list()){
               break
             }
             result$n_mut_calc <- stringdist(c_the_seq, p_the_seq, method = 'hamming') == c_n_mut
+#            print(c(i, result$n_mut_calc))
           }
-        }
+        } # for
         result$all_n_mut <- result$n_mut_is_integer & 
                             result$n_mut_calc & 
                             result$n_mut_first_gen_NA

@@ -1,7 +1,7 @@
 context("fitness_evaluator_uniform")
 
 test_that("fitness_evaluator_uniform works", {
-  fe <- list(fun = 'fitness_evaluator_uniform',
+  fe <- list(fun = 'fitness_evaluator_uniform_fun',
              args = NULL)
 
   # debugging

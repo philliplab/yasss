@@ -10,7 +10,8 @@
 #' @param gen_size The size of each generation (as a multiple of the size of the parent generation). Currently only allowed to be a single integer. Default value is 2.
 #' @param n_gen The number of generations to simulate.
 #' @param n_pop Stop the simulation when the population size exceeds this number.
-#' @param mutator A list with two elements fun and args specifying the function that mutates parents into their offspring and the list of arguments said function requires. 
+#' @param mutator A list with two elements fun and args specifying the name of the function that mutates parents into their offspring and the list of arguments said function requires. 
+#' @param fitness_evaluator A list with two elements fun and args, specifying the name of the function that evaluates the fitness of each sequence and the list of arguments the function requires.
 #' 
 #' @examples
 #' 
@@ -35,7 +36,9 @@
 sim_pop <- function(ancestors, 
                     gen_size = 2, n_gen = NULL, n_pop = NULL,
                     mutator = list(fun = "mutator_uniform_fun",
-                                   args = list(mu = 0.01))){
+                                   args = list(mu = 0.01)),
+                    fitness_evaluator = list(fun = "fitness_evaluator_uniform_fun",
+                                             args = NULL)){
 
   gen_size <- tryCatch(round(as.numeric(gen_size), 0),
                        warning=function(w) return(list(round(as.numeric(gen_size), 0), w))
@@ -63,7 +66,7 @@ sim_pop <- function(ancestors,
 
   genealogy <- data.frame(gen_num = c_gen,
                           id = 1:length(ancestors),
-                          parent_id = -1,
+                          parent_id = NA_real_,
                           the_seq = ancestors,
                           n_mut = NA_real_,
                           recomb_pos = NA_real_,
@@ -73,6 +76,7 @@ sim_pop <- function(ancestors,
                           fitness_score = NA_real_,
                           stringsAsFactors = FALSE
                           )
+  genealogy <- assign_fitness(genealogy, fitness_evaluator = fitness_evaluator)
 
   while ((c_pop < n_pop) & (c_gen < n_gen)){
     c_gen <- c_gen + 1
@@ -88,6 +92,7 @@ sim_pop <- function(ancestors,
     # insert recomb here (act on new_generation)
 
     # insert fitness here (act on new_generation)
+    new_generation <- assign_fitness(new_generation, fitness_evaluator = fitness_evaluator)
 
 #    genealogy <- rbind(genealogy, new_generation)
     genealogy <- new_generation

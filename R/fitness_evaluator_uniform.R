@@ -6,7 +6,7 @@
 #' @param the_seq All the sequences to which fitnesses must be assigned.
 #' @export
 
-fitness_evaluator_uniform <- function(the_seq){
+fitness_evaluator_uniform_fun <- function(the_seq){
   stopifnot(class(the_seq) == "character")
   fitness_score <- runif(length(the_seq))
   return(list(fitness_score = fitness_score,

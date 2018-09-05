@@ -1,8 +1,15 @@
 context("fitness general")
 
 test_that("check_fitness_evaluator works", {
-  fe <- list(fun = 'fitness_evaluator_uniform',
+  fe <- list(fun = 'fitness_evaluator_uniform_fun',
              args = NULL)
+  #debugging
+  #TODO:delete
+  if (FALSE){
+    fun <- fe$fun
+    args <- fe$args
+  }
+
   x <- check_fitness_evaluator(fe$fun, fe$args)
   for (i in names(x)){
     expect_true(x[[i]], info = i)
@@ -10,7 +17,7 @@ test_that("check_fitness_evaluator works", {
 })
 
 test_that("assign_fitness works", {
-  fe <- list(fun = 'fitness_evaluator_uniform',
+  fe <- list(fun = 'fitness_evaluator_uniform_fun',
              args = NULL)
 
   x <- check_fitness_evaluator(fe$fun, fe$args)
@@ -23,7 +30,7 @@ test_that("assign_fitness works", {
   y <- assign_fitness(x, fe)
 
   z <- check_genealogy(y)
-  for (i in names(z)){
+  for (i in setdiff(names(z), c("n_mut_calc", "all_n_mut"))){
     expect_true(z[[i]], info = i)
   }
   

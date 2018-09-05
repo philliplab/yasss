@@ -5,7 +5,9 @@
 \title{Simulates evolution of DNA of a population}
 \usage{
 sim_pop(ancestors, gen_size = 2, n_gen = NULL, n_pop = NULL,
-  mutator = list(fun = "mutator_uniform_fun", args = list(mu = 0.01)))
+  mutator = list(fun = "mutator_uniform_fun", args = list(mu = 0.01)),
+  fitness_evaluator = list(fun = "fitness_evaluator_uniform_fun", args =
+  NULL))
 }
 \arguments{
 \item{ancestors}{A list of DNA sequences with which to start the population. Include the same sequence multiple times to achieve a target ratio.}
@@ -16,7 +18,9 @@ sim_pop(ancestors, gen_size = 2, n_gen = NULL, n_pop = NULL,
 
 \item{n_pop}{Stop the simulation when the population size exceeds this number.}
 
-\item{mutator}{A list with two elements fun and args specifying the function that mutates parents into their offspring and the list of arguments said function requires.}
+\item{mutator}{A list with two elements fun and args specifying the name of the function that mutates parents into their offspring and the list of arguments said function requires.}
+
+\item{fitness_evaluator}{A list with two elements fun and args, specifying the name of the function that evaluates the fitness of each sequence and the list of arguments the function requires.}
 }
 \value{
 A genealogy data structure. TODO: link to general documentation on a genealogy. GH issue #6.

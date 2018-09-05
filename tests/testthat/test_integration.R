@@ -8,7 +8,11 @@ test_that("A small simulation with a moderate uniform mutator yields reasonable 
                mutator = list(fun = "mutator_uniform_fun",
                               args = list(mu = 0.1)))
 
-  expect_true(all(unlist(check_genealogy(x))))
+  y <- check_genealogy(x)
+  for (i in names(y)){
+    expect_true(y[[i]], info = i)
+  }
+
   for (i in nrow(x)){
     y <- table(strsplit(x[i,'the_seq'], '')[[1]])
     expect_true("A" %in% names(y)[y == max(y)])
