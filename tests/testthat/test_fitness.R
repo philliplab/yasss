@@ -1,4 +1,13 @@
-context("assign_fitness")
+context("fitness general")
+
+test_that("check_fitness_evaluator works", {
+  fe <- list(fun = 'fitness_evaluator_uniform',
+             args = NULL)
+  x <- check_fitness_evaluator(fe$fun, fe$args)
+  for (i in names(x)){
+    expect_true(x[[i]], info = i)
+  }
+})
 
 test_that("assign_fitness works", {
   fe <- list(fun = 'fitness_evaluator_uniform',
@@ -25,3 +34,4 @@ test_that("assign_fitness works", {
   expect_true(all(!is.na(y_last$fitness_score)))
   expect_true(all(y_last$fitness_score > 0 & y_last$fitness_score < 1))
 })
+
