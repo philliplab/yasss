@@ -1,4 +1,4 @@
-context('genealogy')
+context('General Genealogy')
 
 SAMPLE_GENEALOGIES <- list(
   bif_2gen = data.frame(

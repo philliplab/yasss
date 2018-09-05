@@ -1,4 +1,4 @@
-context("Fitness: General")
+context("General Fitness")
 
 
 SAMPLE_GENEALOGIES <- list(

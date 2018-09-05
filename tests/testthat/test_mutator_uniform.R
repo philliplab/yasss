@@ -1,4 +1,4 @@
-context("uniform_mutator")
+context("mutator_uniform")
 
 fun <- get("mutator_uniform_fun")
 parents <- c('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
