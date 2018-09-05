@@ -4,13 +4,13 @@
 \alias{check_genealogy_gen_num}
 \title{Check the gen_num column in a genealogy}
 \usage{
-check_genealogy_gen_num(genealogy, results = list())
+check_genealogy_gen_num(genealogy, result = list())
 }
 \arguments{
 \item{genealogy}{The genealogy to check.}
 
-\item{results}{The list to which the results will be added and from which
-previous results will be drawn to check the prerequisites.}
+\item{result}{The list to which the result will be added and from which
+previous result will be drawn to check the prerequisites.}
 }
 \value{
 A list with TRUE or FALSE indicating whether the related check

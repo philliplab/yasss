@@ -4,13 +4,13 @@
 \alias{check_genealogy_the_seq}
 \title{Check the the_seq column in a genealogy}
 \usage{
-check_genealogy_the_seq(genealogy, results = list())
+check_genealogy_the_seq(genealogy, result = list())
 }
 \arguments{
 \item{genealogy}{The genealogy to check.}
 
-\item{results}{The list to which the results will be added and from which
-previous results will be drawn to check the prerequisites.}
+\item{result}{The list to which the result will be added and from which
+previous result will be drawn to check the prerequisites.}
 }
 \value{
 A list with TRUE or FALSE indicating whether the related check

@@ -21,14 +21,14 @@ stringsAsFactors = FALSE
 genealogy_expector <- function(genealogy, true_list = 'all', false_list = 'none', 
                                ignore_list = NULL, extra_info = NULL,
                                which_checker = 'check_genealogy',
-                               prerequisite_results = list()){
+                               prerequisite_result = list()){
   if ('all' %in% true_list & 'all' %in% false_list){
     stop('You cannot expect all columns to be both true and false')
   }
   if (which_checker == 'check_genealogy'){
     y <- get(which_checker)(genealogy = genealogy)
   } else {
-    y <- get(which_checker)(genealogy = genealogy, results = prerequisite_results)
+    y <- get(which_checker)(genealogy = genealogy, result = prerequisite_result)
   }
   if ('all' %in% true_list){
     # An abomination that allows you to check column's existence by specifying
@@ -135,7 +135,7 @@ test_that('check_genealogy flags issues with missing columns', {
     
     genealogy_expector(y, true_list = true_list, false_list = false_list,
                        which_checker = "check_genealogy_structure",
-                       prerequisite_results = list())
+                       prerequisite_result = list())
   }
 })
 
@@ -173,7 +173,7 @@ test_that('check_genealogy flags issues with incorrect column data types', {
     
     genealogy_expector(y, true_list = true_list, false_list = false_list,
                        which_checker = "check_genealogy_structure",
-                       prerequisite_results = list())
+                       prerequisite_result = list())
   }
 })
 
@@ -229,21 +229,21 @@ test_that('check_genealogy flags issues with gen_num', {
                      false_list = c('gen_num_not_missing', 'gen_num_naturals', 'all_gen_num'),
                      extra_info = "gen_num[2] is NA",
                      which_checker = "check_genealogy_gen_num",
-                     prerequisite_results = list(has_gen_num = TRUE))
+                     prerequisite_result = list(has_gen_num = TRUE))
 
   m_genea <- c_genea
   m_genea$gen_num[2] <- -1
   genealogy_expector(m_genea, false_list = c('gen_num_naturals', 'all_gen_num'),
                      extra_info = "gen_num[2] equals -1",
                      which_checker = "check_genealogy_gen_num",
-                     prerequisite_results = list(has_gen_num = TRUE))
+                     prerequisite_result = list(has_gen_num = TRUE))
   
   m_genea <- c_genea
   m_genea$gen_num[2] <- 5
   genealogy_expector(m_genea, false_list = c('gen_num_naturals', 'all_gen_num'),
                      extra_info = "gen_num[2] equals 5",
                      which_checker = "check_genealogy_gen_num",
-                     prerequisite_results = list(has_gen_num = TRUE))
+                     prerequisite_result = list(has_gen_num = TRUE))
 })
 
 test_that('check_genealogy flags issues with ids', {
@@ -255,7 +255,7 @@ test_that('check_genealogy flags issues with ids', {
                                     'id_no_duplicates_within_gen', 'id_is_integer',
                                     'all_id'),
                      which_checker = 'check_genealogy_id',
-                     prerequisite_results = list(has_is = TRUE))
+                     prerequisite_result = list(has_is = TRUE))
 
   m_genea <- c_genea
   m_genea$id[2] <- -1
@@ -263,7 +263,7 @@ test_that('check_genealogy flags issues with ids', {
                      false_list = c('id_gt_zero',
                                     'all_id'),
                      which_checker = 'check_genealogy_id',
-                     prerequisite_results = list(has_is = TRUE))
+                     prerequisite_result = list(has_is = TRUE))
   
   m_genea <- c_genea
   m_genea$id[3] <- 1
@@ -271,7 +271,7 @@ test_that('check_genealogy flags issues with ids', {
                      false_list = c('id_no_duplicates_within_gen',
                                     'all_id'),
                      which_checker = 'check_genealogy_id',
-                     prerequisite_results = list(has_is = TRUE))
+                     prerequisite_result = list(has_is = TRUE))
   
   m_genea <- c_genea
   m_genea$id[3] <- 1.1
@@ -279,7 +279,7 @@ test_that('check_genealogy flags issues with ids', {
                      false_list = c('id_is_integer',
                                     'all_id'),
                      which_checker = 'check_genealogy_id',
-                     prerequisite_results = list(has_is = TRUE))
+                     prerequisite_result = list(has_is = TRUE))
 })
 
 test_that('check_genealogy flags issues with parent_ids', {
@@ -290,7 +290,7 @@ test_that('check_genealogy flags issues with parent_ids', {
                      false_list = c('parent_id_after_gen_zero_not_missing', 'parent_id_gt_zero', 
                                     'all_parent_ids_present', 'all_parent_id'),
                      which_checker = 'check_genealogy_parent_id',
-                     prerequisite_results = list(has_parent_id = TRUE, 
+                     prerequisite_result = list(has_parent_id = TRUE, 
                                                  has_gen_num = TRUE, 
                                                  gen_num_not_missing = TRUE))
 
@@ -300,7 +300,7 @@ test_that('check_genealogy flags issues with parent_ids', {
                      false_list = c('parent_id_gt_zero','all_parent_ids_present', 
                                     'all_parent_id'),
                      which_checker = 'check_genealogy_parent_id',
-                     prerequisite_results = list(has_parent_id = TRUE, 
+                     prerequisite_result = list(has_parent_id = TRUE, 
                                                  has_gen_num = TRUE, 
                                                  gen_num_not_missing = TRUE))
 })
@@ -313,7 +313,7 @@ test_that('check_genealogy flags issues with the_seq', {
                      false_list = c('the_seq_not_missing', 'the_seq_valid_letters', 
                                     'all_the_seq'),
                      which_checker = 'check_genealogy_the_seq',
-                     prerequisite_results = list(has_the_seq = TRUE),
+                     prerequisite_result = list(has_the_seq = TRUE),
                      extra_info = 'm_genea$the_seq[2] <- NA')
 
   m_genea <- c_genea
@@ -322,7 +322,7 @@ test_that('check_genealogy flags issues with the_seq', {
                      false_list = c('the_seq_not_missing', 'the_seq_valid_letters',
                                     'all_the_seq'),
                      which_checker = 'check_genealogy_the_seq',
-                     prerequisite_results = list(has_the_seq = TRUE),
+                     prerequisite_result = list(has_the_seq = TRUE),
                      extra_info = 'm_genea$the_seq[1] <- ""')
 
   m_genea <- c_genea
@@ -330,7 +330,7 @@ test_that('check_genealogy flags issues with the_seq', {
   genealogy_expector(m_genea, 
                      false_list = c('the_seq_valid_letters', 'all_the_seq'),
                      which_checker = 'check_genealogy_the_seq',
-                     prerequisite_results = list(has_the_seq = TRUE),
+                     prerequisite_result = list(has_the_seq = TRUE),
                      extra_info = 'm_genea$the_seq[3] <- "W"')
 
   m_genea <- c_genea
@@ -338,7 +338,7 @@ test_that('check_genealogy flags issues with the_seq', {
   genealogy_expector(m_genea, 
                      false_list = c('the_seq_valid_letters', 'all_the_seq'),
                      which_checker = 'check_genealogy_the_seq',
-                     prerequisite_results = list(has_the_seq = TRUE),
+                     prerequisite_result = list(has_the_seq = TRUE),
                      extra_info = 'm_genea$the_seq[2] <- "AACGTCCGT?"')
 })
 
