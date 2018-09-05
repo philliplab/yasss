@@ -8,7 +8,7 @@
 
 fitness_evaluator_uniform <- function(the_seq){
   stopifnot(class(the_seq) == "character")
-  fitness <- runif(length(the_seq))
-  return(list(fitness = fitness,
+  fitness_score <- runif(length(the_seq))
+  return(list(fitness_score = fitness_score,
               the_seq = the_seq))
 }

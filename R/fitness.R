@@ -18,7 +18,7 @@ assign_fitness <- function(genealogy, fitness_evaluator){
   x <- do.call(fit_fun, args)
   #TODO: remove this line if there are performance issues
   stopifnot(all(x$the_seq == last_generation$the_seq))
-  last_generation$fitness_score <- x$fitness
+  last_generation$fitness_score <- x$fitness_score
 
   genealogy <- rbind(all_non_last_generation, last_generation)
 
@@ -43,6 +43,25 @@ check_fitness_evaluator <- function(fun, args){
   result$fun_is_character <- class(fun) == "character"
   fun <- get(fun)
   result$fun_is_getable <- class(fun) == "function"
+  result$has_the_seq_arg <- "the_seq" %in% names(formals(fun))
+
+  the_seq <- c('AAAAAA', 'CCCCCC', 'GGGGGG')
+  tmp_args <- args
+  tmp_args$the_seq <- the_seq
+  x <- try(do.call(fun, tmp_args), silent = TRUE)
+  result$fitness_evaluator_runs <- !('try-error' %in% class(x))
+
+  if (result$fitness_evaluator_runs){
+    result$output_is_list <- class(x) == 'list'
+    result$has_the_seq <- "the_seq" %in% names(x)
+    result$has_fitness_score <- "fitness_score" %in% names(x)
+    result$the_seq_length <- length(x$the_seq) == length(tmp_args$the_seq)
+    result$the_seq_order <- all(x$the_seq == tmp_args$the_seq)
+    result$fitness_score_numeric <- class(x$fitness_score) == "numeric"
+    result$fitness_score_non_na <- (!any(is.na(x$fitness_score))) &
+                                   (!any(is.nan(x$fitness_score)))
+  }
+
   return(result)
 }
 

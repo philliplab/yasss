@@ -4,6 +4,13 @@ test_that("fitness_evaluator_uniform works", {
   fe <- list(fun = 'fitness_evaluator_uniform',
              args = NULL)
 
+  # debugging
+  #TODO: delete
+  if (FALSE){
+    fun <- fe$fun
+    args <- fe$args
+  }
+
   x <- check_fitness_evaluator(fe$fun, fe$args)
   for (i in names(x)){
     expect_true(x[[i]], info = i)
@@ -15,7 +22,7 @@ test_that("fitness_evaluator_uniform works", {
   args$the_seq = x$the_seq
   y <- do.call(fit_fun, args)
   expect_equal(class(y), "list")
-  expect_true("fitness" %in% names(y))
+  expect_true("fitness_score" %in% names(y))
   expect_true("the_seq" %in% names(y))
   expect_equal(class(y$fitness), "numeric")
   expect_equal(class(y$the_seq), "character")
@@ -29,7 +36,7 @@ test_that("fitness_evaluator_uniform works", {
   args$the_seq = x$the_seq
   y <- do.call(fit_fun, args)
   expect_equal(class(y), "list")
-  expect_true("fitness" %in% names(y))
+  expect_true("fitness_score" %in% names(y))
   expect_true("the_seq" %in% names(y))
   expect_equal(class(y$fitness), "numeric")
   expect_equal(class(y$the_seq), "character")
