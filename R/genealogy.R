@@ -480,6 +480,9 @@ check_genealogy_n_mut <- function(genealogy, result = list()){
             result$n_mut_calc <- result$n_mut_calc & 
               stringdist(c_the_seq, p_the_seq, method = 'hamming') == c_n_mut
 #            print(c(i, result$n_mut_calc))
+            if (!result$n_mut_calc){
+              break
+            }
           }
         } # for
         result$all_n_mut <- result$n_mut_is_integer & 
