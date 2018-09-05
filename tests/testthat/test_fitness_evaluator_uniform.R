@@ -22,12 +22,6 @@ test_that("fitness_evaluator_uniform works", {
   args$the_seq = x$the_seq
   y <- do.call(fit_fun, args)
   check_fitness_evaluator_result(y, args)
-#  expect_equal(class(y), "list")
-#  expect_true("fitness_score" %in% names(y))
-#  expect_true("the_seq" %in% names(y))
-#  expect_equal(class(y$fitness), "numeric")
-#  expect_equal(class(y$the_seq), "character")
-#  expect_true(all(y$the_seq == x$the_seq))
   
   x <- sim_pop('AAAAAAAAA', gen_size = 2, n_pop = 15,
                mutator = list(fun = "mutator_uniform_fun",
@@ -37,11 +31,4 @@ test_that("fitness_evaluator_uniform works", {
   args$the_seq = x$the_seq
   y <- do.call(fit_fun, args)
   check_fitness_evaluator_result(y, args)
-
-#  expect_equal(class(y), "list")
-#  expect_true("fitness_score" %in% names(y))
-#  expect_true("the_seq" %in% names(y))
-#  expect_equal(class(y$fitness), "numeric")
-#  expect_equal(class(y$the_seq), "character")
-#  expect_true(all(y$the_seq == x$the_seq))
 })
