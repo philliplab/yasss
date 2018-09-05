@@ -342,16 +342,30 @@ test_that('check_genealogy flags issues with the_seq', {
                      extra_info = 'm_genea$the_seq[2] <- "AACGTCCGT?"')
 })
 
-#test_that('check_genealogy flags issues with n_mut', {
-#  c_genea <- SAMPLE_GENEALOGIES[['bif_2gen']]
-#  m_genea <- c_genea
-#  genealogy_expector(m_genea, 
-#                     false_list = c('the_seq_not_missing', 'the_seq_valid_letters', 
-#                                    'all_the_seq'),
-#                     which_checker = 'check_genealogy_the_seq',
-#                     prerequisite_result = list(has_the_seq = TRUE),
-#                     extra_info = 'm_genea$the_seq[2] <- NA')
-#})
+test_that('check_genealogy flags issues with n_mut', {
+  c_genea <- SAMPLE_GENEALOGIES[['bif_2gen']]
+  m_genea <- c_genea
+  m_genea$n_mut[2] <- NA
+
+  genealogy_expector(m_genea, 
+                     false_list = c('n_mut_not_missing', 'all_n_mut',
+                                    'n_mut_is_integer', 'n_mut_calc'),
+                     which_checker = 'check_genealogy_n_mut',
+                     prerequisite_result = list(has_the_seq = TRUE),
+                     extra_info = 'm_genea$the_seq[2] <- NA')
+
+  m_genea <- c_genea
+  m_genea$n_mut[2] <- 1.5
+
+  genealogy_expector(m_genea, 
+                     false_list = c('all_n_mut',
+                                    'n_mut_is_integer', 'n_mut_calc'),
+                     which_checker = 'check_genealogy_n_mut',
+                     prerequisite_result = list(has_the_seq = TRUE),
+                     extra_info = 'm_genea$the_seq[2] <- 1.5')
+
+
+})
 
 test_that('make_genealogy works', {
   x <- make_genealogy(ancestors = c('AAA'))
