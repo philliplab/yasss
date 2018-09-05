@@ -9,7 +9,7 @@
 make_genealogy <- function(ancestors){
   genealogy <- data.frame(gen_num = 0,
                           id = 1:length(ancestors),
-                          parent_id = -1,
+                          parent_id = NA_real_,
                           the_seq = ancestors,
                           n_mut = NA_real_,
                           recomb_pos = NA_real_,
@@ -318,12 +318,16 @@ check_genealogy_parent_id <- function(genealogy, result = list()){
   }
 
   if (prerequisites_not_met){
-    result$parent_id_after_gen_zero_not_missing <- FALSE
+    rresult$all_gen_zero_parent_id_is_na <- FALSE
+    esult$parent_id_after_gen_zero_not_missing <- FALSE
     result$parent_id_gt_zero <- FALSE
     result$all_parent_ids_present <- FALSE
     result$all_parent_id <- FALSE
     return(result)
   } else {
+    c_genea <- subset(genealogy, gen_num == 0)
+    result$all_gen_zero_parent_id_is_na <- all(is.na(c_genea$parent_id))
+
     c_genea <- subset(genealogy, is.na(parent_id) | is.nan(parent_id) | is.null(parent_id))
     result$parent_id_after_gen_zero_not_missing <- all((unique(c_genea$gen_num) == 0) & 
                                                         (length(unique(c_genea$gen_num)) == 1))
@@ -351,7 +355,8 @@ check_genealogy_parent_id <- function(genealogy, result = list()){
                                             c_all_parent_ids_present
         } # for
         result$all_parent_id <- result$parent_id_gt_zero &
-                                 result$all_parent_ids_present
+                                 result$all_parent_ids_present &
+                                 result$all_gen_zero_parent_id_is_na
       } # else of if (max(genealogy$gen_num) > 0)
 
     } # else of if (!result$parent_id_after_gen_zero_not_missing)

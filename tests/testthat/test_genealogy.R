@@ -75,7 +75,7 @@ test_that('check_genealogy lets correct genealogies pass', {
   ancestors <- 'AAA'
   x <- data.frame(gen_num = 0,
                   id = 1:length(ancestors),
-                  parent_id = -1,
+                  parent_id = NA_real_,
                   the_seq = ancestors,
                   n_mut = NA_real_,
                   recomb_pos = NA_real_,
@@ -90,7 +90,7 @@ test_that('check_genealogy lets correct genealogies pass', {
   ancestors <- c('AAA', 'GGG', 'TTT')
   x <- data.frame(gen_num = 0,
                   id = 1:length(ancestors),
-                  parent_id = -1,
+                  parent_id = NA_real_,
                   the_seq = ancestors,
                   n_mut = NA_real_,
                   recomb_pos = NA_real_,
@@ -112,7 +112,7 @@ test_that('check_genealogy flags issues with missing columns', {
   ancestors <- 'AAA'
   x <- data.frame(gen_num = 0,
                   id = 1:length(ancestors),
-                  parent_id = -1,
+                  parent_id = NA_real_,
                   the_seq = ancestors,
                   n_mut = NA_real_,
                   recomb_pos = NA_real_,
@@ -143,7 +143,7 @@ test_that('check_genealogy flags issues with incorrect column data types', {
   ancestors <- 'AAA'
   x <- data.frame(gen_num = 0,
                   id = 1:length(ancestors),
-                  parent_id = -1,
+                  parent_id = NA_real_,
                   the_seq = ancestors,
                   n_mut = NA_real_,
                   recomb_pos = NA_real_,
@@ -181,7 +181,7 @@ test_that('check_genealogy flags issues with unexpected columns', {
   ancestors <- 'AAA'
   x <- data.frame(gen_num = 0,
                   id = 1:length(ancestors),
-                  parent_id = -1,
+                  parent_id = NA_real_,
                   the_seq = ancestors,
                   n_mut = NA_real_,
                   recomb_pos = NA_real_,
@@ -201,7 +201,7 @@ test_that('check_genealogy flags issues with unexpected columns', {
   ancestors <- 'AAA'
   x <- data.frame(gen_num = 0,
                   id = 1:length(ancestors),
-                  parent_id = -1,
+                  parent_id = NA_real_,
                   the_seq = ancestors,
                   n_mut = NA_real_,
                   recomb_pos = NA_real_,
