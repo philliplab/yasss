@@ -52,19 +52,39 @@ check_fitness_evaluator <- function(fun, args){
   result$fitness_evaluator_runs <- !('try-error' %in% class(x))
 
   if (result$fitness_evaluator_runs){
-    result$output_is_list <- class(x) == 'list'
-    result$has_the_seq <- "the_seq" %in% names(x)
-    result$has_fitness_score <- "fitness_score" %in% names(x)
-    result$the_seq_length <- length(x$the_seq) == length(tmp_args$the_seq)
-    result$the_seq_order <- all(x$the_seq == tmp_args$the_seq)
-    result$fitness_score_numeric <- class(x$fitness_score) == "numeric"
-    result$fitness_score_non_na <- (!any(is.na(x$fitness_score))) &
-                                   (!any(is.nan(x$fitness_score)))
+    specific_result <- check_fitness_evaluator_result(x, tmp_args)
+    result <- c(result, specific_result)
   }
 
   return(result)
 }
 
+#' General checks for the result of a fitness evaluator
+#'
+#' General checks that should be satisfied by all fitness_evaluators. No checks specific to the mechanism by which the fitness_score was computed.
+#'
+#' @return A list with a series of boolean elements indicating whether a specific check passed or failed.
+#' @param fitness_evaluation The result returned by a fitness_evaluator
+#' @param input_args The arguments that were used to all the fitness_evaluator
+
+check_fitness_evaluator_result <- function(fitness_evaluation, input_args){
+
+
+  x <- fitness_evaluation
+  tmp_args <- input_args
+
+  result <- list()
+  result$output_is_list <- class(x) == 'list'
+  result$has_the_seq <- "the_seq" %in% names(x)
+  result$has_fitness_score <- "fitness_score" %in% names(x)
+  result$the_seq_length <- length(x$the_seq) == length(tmp_args$the_seq)
+  result$the_seq_order <- all(x$the_seq == tmp_args$the_seq)
+  result$fitness_score_numeric <- class(x$fitness_score) == "numeric"
+  result$fitness_score_non_na <- (!any(is.na(x$fitness_score))) &
+                                 (!any(is.nan(x$fitness_score)))
+
+  return(result)
+}
 
 #mutator_checks_general <- function(fun, args){
 #  result <- list()
