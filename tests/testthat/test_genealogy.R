@@ -342,6 +342,17 @@ test_that('check_genealogy flags issues with the_seq', {
                      extra_info = 'm_genea$the_seq[2] <- "AACGTCCGT?"')
 })
 
+#test_that('check_genealogy flags issues with n_mut', {
+#  c_genea <- SAMPLE_GENEALOGIES[['bif_2gen']]
+#  m_genea <- c_genea
+#  genealogy_expector(m_genea, 
+#                     false_list = c('the_seq_not_missing', 'the_seq_valid_letters', 
+#                                    'all_the_seq'),
+#                     which_checker = 'check_genealogy_the_seq',
+#                     prerequisite_result = list(has_the_seq = TRUE),
+#                     extra_info = 'm_genea$the_seq[2] <- NA')
+#})
+
 test_that('make_genealogy works', {
   x <- make_genealogy(ancestors = c('AAA'))
   genealogy_expector(x)

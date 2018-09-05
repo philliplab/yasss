@@ -46,7 +46,7 @@ check_genealogy <- function(genealogy){
 
   result <- check_genealogy_the_seq(genealogy, result)
 
-#  result <- check_genealogy_n_mut(genealogy, result)
+  result <- check_genealogy_n_mut(genealogy, result)
 
   return(result)
 }
@@ -431,43 +431,60 @@ check_genealogy_n_mut <- function(genealogy, result = list()){
     result$n_mut_is_integer <- FALSE
     result$n_mut_calc <- FALSE
     result$all_n_mut <- FALSE
+    result$n_mut_first_gen_NA <- FALSE
     return(result)
   } else {
-    result$n_mut_not_missing <- !(any(is.na(genealogy$n_mut)) | 
-                                   any(is.nan(genealogy$n_mut)) | 
-                                   any(is.null(genealogy$n_mut)))
-    if (!result$n_mut_not_missing){
-      result$n_mut_is_integer <- FALSE
-      result$all_n_mut <- FALSE
-      result$n_mut_calc <- FALSE
-      return(result)
+    # The ancestors are not compared to anything, so n_mut is NA
+    first_gen <- genealogy %>% filter(gen_num == min(gen_num))
+    result$n_mut_first_gen_NA <- all(is.na(first_gen$n_mut))
+    
+    non_first_gen <- genealogy %>% filter(gen_num != min(gen_num))
+    if (nrow(non_first_gen) == 0){
+      result$n_mut_not_missing <- TRUE
+      result$n_mut_is_integer <- TRUE
+      result$n_mut_calc <- TRUE
+      result$all_n_mut <- TRUE
+      result$n_mut_first_gen_NA <- TRUE
     } else {
-      result$n_mut_is_integer <- all(floor(genealogy$n_mut) == ceiling(genealogy$n_mut))
-      for (i in 1:nrow(genealogy)){
-        result$n_mut_calc <- TRUE
-        if (!is.na(genealogy[i,'parent_id'])){
-#          compare the_seq to the_seq of parent
-          c_the_seq <- genealogy[i,'the_seq']
-          c_gen_num <- genealogy[i,'gen_num']
-          c_parent_id <- genealogy[i, 'parent_id']
-          c_n_mut <- genealogy[i, 'n_mut']
-          p_the_seq <- genealogy %>% filter(gen_num == (c_gen_num - 1) &
-                                            id == c_parent_id)
-          p_the_seq <- p_the_seq$the_seq
-          if (length(p_the_seq) != 1){
-            result$n_mut_calc <- FALSE
-            break
+      result$n_mut_not_missing <- !(any(is.na(non_first_gen$n_mut)) | 
+                                    any(is.nan(non_first_gen$n_mut)) | 
+                                    any(is.null(non_first_gen$n_mut)))
+  
+      if (!result$n_mut_not_missing){
+        result$n_mut_is_integer <- FALSE
+        result$all_n_mut <- FALSE
+        result$n_mut_calc <- FALSE
+        return(result)
+      } else {
+        result$n_mut_is_integer <- all(floor(non_first_gen$n_mut) == ceiling(non_first_gen$n_mut))
+        for (i in 1:nrow(genealogy)){
+          result$n_mut_calc <- TRUE
+          if (!is.na(genealogy[i,'parent_id'])){
+#            compare the_seq to the_seq of parent
+            c_the_seq <- genealogy[i,'the_seq']
+            c_gen_num <- genealogy[i,'gen_num']
+            c_parent_id <- genealogy[i, 'parent_id']
+            c_n_mut <- genealogy[i, 'n_mut']
+            p_the_seq <- genealogy %>% filter(gen_num == (c_gen_num - 1) &
+                                              id == c_parent_id)
+            p_the_seq <- p_the_seq$the_seq
+            if (length(p_the_seq) != 1){
+              result$n_mut_calc <- FALSE
+              break
+            }
+            if (nchar(p_the_seq) != nchar(c_the_seq)){
+              result$n_mut_calc <- FALSE
+              break
+            }
+            result$n_mut_calc <- stringdist(c_the_seq, p_the_seq, method = 'hamming') == c_n_mut
           }
-          if (nchar(p_the_seq) != nchar(c_the_seq)){
-            result$n_mut_calc <- FALSE
-            break
-          }
-          result$n_mut_calc <- stringdist(c_the_seq, p_the_seq, method = 'hd') == c_n_mut
         }
-      }
-      result$all_n_mut <- result$n_mut_is_integer & result$n_mut_calc
-    }
-  } # if (prerequisites_not_met)
+        result$all_n_mut <- result$n_mut_is_integer & 
+                            result$n_mut_calc & 
+                            result$n_mut_first_gen_NA
+      } # else of if(!result$n_mut_not_missing)
+    } # else of if(nrow(non_first_gen) == 0)
+  } # else of if (prerequisites_not_met)
 
   return(result)
 }
