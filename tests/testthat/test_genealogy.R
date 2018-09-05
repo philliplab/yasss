@@ -15,8 +15,38 @@ recomb_muts      =  c(  NA_real_,       NA_real_,       NA_real_),
 fitness_score    =  c(  0.98,           0.99,           0.96),
 #==========================================================
 stringsAsFactors = FALSE
+  ),
+  ances_only_1 = data.frame(
+#==========================================================
+gen_num = 0,
+id = 1,
+parent_id = NA_real_,
+the_seq = 'AAA',
+n_mut = NA_real_,
+recomb_pos = NA_real_,
+recomb_replaced = NA_character_,
+recomb_partner = NA_real_,
+recomb_muts = NA_real_,
+fitness_score = NA_real_,
+#==========================================================
+stringsAsFactors = FALSE
+  ),
+  ances_only_3 = data.frame(
+#==========================================================
+gen_num = 0,
+id = 1:3,
+parent_id = NA_real_,
+the_seq = c('AAA', 'CCC', 'GGG'),
+n_mut = NA_real_,
+recomb_pos = NA_real_,
+recomb_replaced = NA_character_,
+recomb_partner = NA_real_,
+recomb_muts = NA_real_,
+fitness_score = NA_real_,
+#==========================================================
+stringsAsFactors = FALSE
   )
-                           )
+)
 
 genealogy_expector <- function(genealogy, true_list = 'all', false_list = 'none', 
                                ignore_list = NULL, extra_info = NULL,
@@ -52,18 +82,7 @@ genealogy_expector <- function(genealogy, true_list = 'all', false_list = 'none'
 
 test_that('genealogy_expector works', {
   ancestors <- 'AAA'
-  x <- data.frame(gen_num = 0,
-                  id = 1:length(ancestors),
-                  parent_id = NA_real_,
-                  the_seq = ancestors,
-                  n_mut = NA_real_,
-                  recomb_pos = NA_real_,
-                  recomb_replaced = NA_character_,
-                  recomb_partner = NA_real_,
-                  recomb_muts = NA_real_,
-                  fitness_score = NA_real_,
-                  stringsAsFactors = FALSE
-                  )
+  x <- SAMPLE_GENEALOGIES[['ances_only_1']]
 
   expect_error(genealogy_expector(x, true_list = 'bogus_column'), "y\\[\\[i\\]\\] isn't true.\nbogus_column")
   expect_error(genealogy_expector(x, true_list = c('all', 'bogus_column')), "y\\[\\[i\\]\\] isn't true.\nbogus_column")
@@ -72,36 +91,6 @@ test_that('genealogy_expector works', {
 })
 
 test_that('check_genealogy lets correct genealogies pass', {
-  ancestors <- 'AAA'
-  x <- data.frame(gen_num = 0,
-                  id = 1:length(ancestors),
-                  parent_id = NA_real_,
-                  the_seq = ancestors,
-                  n_mut = NA_real_,
-                  recomb_pos = NA_real_,
-                  recomb_replaced = NA_character_,
-                  recomb_partner = NA_real_,
-                  recomb_muts = NA_real_,
-                  fitness_score = NA_real_,
-                  stringsAsFactors = FALSE
-                  )
-  genealogy_expector(x)
-
-  ancestors <- c('AAA', 'GGG', 'TTT')
-  x <- data.frame(gen_num = 0,
-                  id = 1:length(ancestors),
-                  parent_id = NA_real_,
-                  the_seq = ancestors,
-                  n_mut = NA_real_,
-                  recomb_pos = NA_real_,
-                  recomb_replaced = NA_character_,
-                  recomb_partner = NA_real_,
-                  recomb_muts = NA_real_,
-                  fitness_score = NA_real_,
-                  stringsAsFactors = FALSE
-                  )
-  genealogy_expector(x)
-
   for (c_name in names(SAMPLE_GENEALOGIES)){
     c_genea <- SAMPLE_GENEALOGIES[[c_name]]
     genealogy_expector(c_genea, extra_info = c_name)
@@ -109,19 +98,7 @@ test_that('check_genealogy lets correct genealogies pass', {
 })
 
 test_that('check_genealogy flags issues with missing columns', {
-  ancestors <- 'AAA'
-  x <- data.frame(gen_num = 0,
-                  id = 1:length(ancestors),
-                  parent_id = NA_real_,
-                  the_seq = ancestors,
-                  n_mut = NA_real_,
-                  recomb_pos = NA_real_,
-                  recomb_replaced = NA_character_,
-                  recomb_partner = NA_real_,
-                  recomb_muts = NA_real_,
-                  fitness_score = NA_real_,
-                  stringsAsFactors = FALSE
-                  )
+  x <- SAMPLE_GENEALOGIES[['ances_only_1']]
   column_list <- c("gen_num", "id", "parent_id", "the_seq", "n_mut",
                    "recomb_pos", "recomb_replaced", "recomb_partner",
                    "recomb_muts", "fitness_score")
@@ -140,19 +117,7 @@ test_that('check_genealogy flags issues with missing columns', {
 })
 
 test_that('check_genealogy flags issues with incorrect column data types', {
-  ancestors <- 'AAA'
-  x <- data.frame(gen_num = 0,
-                  id = 1:length(ancestors),
-                  parent_id = NA_real_,
-                  the_seq = ancestors,
-                  n_mut = NA_real_,
-                  recomb_pos = NA_real_,
-                  recomb_replaced = NA_character_,
-                  recomb_partner = NA_real_,
-                  recomb_muts = NA_real_,
-                  fitness_score = NA_real_,
-                  stringsAsFactors = FALSE
-                  )
+  x <- SAMPLE_GENEALOGIES[['ances_only_1']]
   column_list <- c("gen_num", "id", "parent_id", "the_seq", "n_mut",
                    "recomb_pos", "recomb_replaced", "recomb_partner",
                    "recomb_muts", "fitness_score")
@@ -178,19 +143,7 @@ test_that('check_genealogy flags issues with incorrect column data types', {
 })
 
 test_that('check_genealogy flags issues with unexpected columns', {
-  ancestors <- 'AAA'
-  x <- data.frame(gen_num = 0,
-                  id = 1:length(ancestors),
-                  parent_id = NA_real_,
-                  the_seq = ancestors,
-                  n_mut = NA_real_,
-                  recomb_pos = NA_real_,
-                  recomb_replaced = NA_character_,
-                  recomb_partner = NA_real_,
-                  recomb_muts = NA_real_,
-                  fitness_score = NA_real_,
-                  stringsAsFactors = FALSE
-                  )
+  x <- SAMPLE_GENEALOGIES[['ances_only_1']]
   for (i in c('col1', '1', '__A', '  ')){
     y <- x
     y[,i] <- 1
@@ -198,19 +151,7 @@ test_that('check_genealogy flags issues with unexpected columns', {
                        which_checker = 'check_genealogy_structure')
   }
 
-  ancestors <- 'AAA'
-  x <- data.frame(gen_num = 0,
-                  id = 1:length(ancestors),
-                  parent_id = NA_real_,
-                  the_seq = ancestors,
-                  n_mut = NA_real_,
-                  recomb_pos = NA_real_,
-                  recomb_replaced = NA_character_,
-                  recomb_partner = NA_real_,
-                  recomb_muts = NA_real_,
-                  fitness_score = NA_real_,
-                  stringsAsFactors = FALSE
-                  )
+  x <- SAMPLE_GENEALOGIES[['ances_only_1']]
   y <- cbind(x, x[,3:5])
   y[,3:5] <- NULL
   genealogy_expector(y, false_list = c('column_order', 'all_structure'),
