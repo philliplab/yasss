@@ -364,7 +364,14 @@ test_that('check_genealogy flags issues with n_mut', {
                      prerequisite_result = list(has_the_seq = TRUE),
                      extra_info = 'm_genea$the_seq[2] <- 1.5')
 
+  m_genea <- c_genea
+  m_genea$n_mut[2] <- 5
 
+  genealogy_expector(m_genea, 
+                     false_list = c('all_n_mut', 'n_mut_calc'),
+                     which_checker = 'check_genealogy_n_mut',
+                     prerequisite_result = list(has_the_seq = TRUE),
+                     extra_info = 'm_genea$the_seq[2] <- 5')
 })
 
 test_that('make_genealogy works', {
