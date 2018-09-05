@@ -416,7 +416,7 @@ check_genealogy_the_seq <- function(genealogy, results = list()){
 
 check_genealogy_n_mut <- function(genealogy, results = list()){
 
-  prerequisites <- c("has_the_seq")
+  prerequisites <- c("has_n_mut", "all_the_seq", "all_parent_id")
   prerequisites_not_met <- FALSE
   for (i in names(prerequisites)){
     if (results[[i]] == FALSE){
@@ -425,20 +425,45 @@ check_genealogy_n_mut <- function(genealogy, results = list()){
   }
 
   if (prerequisites_not_met){
-    results$the_seq_not_missing <- FALSE
-    results$the_seq_valid_letters <- FALSE
+    results$n_mut_not_missing <- FALSE
+    results$n_mut_is_integer <- FALSE
+    result$n_mut_calc <- FALSE
+    results$all_n_mut <- FALSE
     return(results)
   } else {
-    results$the_seq_not_missing <- !(any(is.na(genealogy$the_seq)) | 
-                                     any(is.nan(genealogy$the_seq)) | 
-                                     any(is.null(genealogy$the_seq)) |
-                                     any(genealogy$the_seq == ''))
-    if (!results$the_seq_not_missing){
-      results$the_seq_valid_letters <- FALSE
+    results$n_mut_not_missing <- !(any(is.na(genealogy$n_mut)) | 
+                                   any(is.nan(genealogy$n_mut)) | 
+                                   any(is.null(genealogy$n_mut)))
+    if (!results$n_mut_not_missing){
+      results$n_mut_is_integer <- FALSE
+      results$all_n_mut <- FALSE
+      result$n_mut_calc <- FALSE
       return(results)
     } else {
-      all_lets <- unique(strsplit(paste(genealogy$the_seq, collapse = ''), '')[[1]])
-      results$the_seq_valid_letters <- all(all_lets %in% c('A', 'C', 'G', 'T'))
+      results$n_mut_is_integer <- all(floor(genealogy$n_mut) == ceiling(genealogy$n_mut))
+      for (i in 1:nrow(genealogy)){
+        result$n_mut_calc <- TRUE
+        if (!is.na(genealogy[i,'parent_id'])){
+#          compare the_seq to the_seq of parent
+          c_the_seq <- genealogy[i,'the_seq']
+          c_gen_num <- genealogy[i,'gen_num']
+          c_parent_id <- genealogy[i, 'parent_id']
+          c_n_mut <- genealogy[i, 'n_mut']
+          p_the_seq <- genealogy %>% filter(gen_num == (c_gen_num - 1) &
+                                            id == c_parent_id)
+          p_the_seq <- p_the_seq$the_seq
+          if (length(p_the_seq) != 1){
+            result$n_mut_calc <- FALSE
+            break
+          }
+          if (nchar(p_the_seq) != nchar(c_the_seq)){
+            result$n_mut_calc <- FALSE
+            break
+          }
+          result$n_mut_calc <- stringdist(c_the_seq, p_the_seq, method = 'hd') == c_n_mut
+        }
+      }
+      results$all_n_mut <- results$n_mut_is_integer & result$n_mut_calc
     }
   } # if (prerequisites_not_met)
 
