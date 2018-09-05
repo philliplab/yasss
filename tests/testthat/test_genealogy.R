@@ -12,7 +12,7 @@ recomb_pos       =  c(  NA_real_,       NA_real_,       NA_real_),
 recomb_replaced  =  c(  NA_character_,  NA_character_,  NA_character_),
 recomb_partner   =  c(  NA_real_,       NA_real_,       NA_real_),
 recomb_muts      =  c(  NA_real_,       NA_real_,       NA_real_),
-fitness_score    =  c(  0.95,           0.99,           0.96),
+fitness_score    =  c(  0.98,           0.99,           0.96),
 #==========================================================
 stringsAsFactors = FALSE
   )

@@ -123,5 +123,9 @@ get_fit_offspring <- function(genealogy, fitness_score){
     }
     fit_parents <- next_fit_parents
   }
-  return(f_genealogy[1:total_fit,])
+  if (total_fit > 0){
+    return(f_genealogy[1:total_fit,])
+  } else {
+    return(f_genealogy[0,])
+  }
 }
