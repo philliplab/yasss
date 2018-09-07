@@ -98,30 +98,6 @@ test_that("n_gen argument of sim_pop works", {
                    n_gen = c_n_gen)
     }
   }
-
-#  # Single ancestor
-#  sim_pop_expector(ancestors = c("AAAA"), r0 = 2,
-#                 n_gen = 1)
-#  sim_pop_expector(ancestors = c("AAAA"), r0 = 2,
-#                 n_gen = 2)
-#  sim_pop_expector(ancestors = c("AAAA"), r0 = 2,
-#                 n_gen = 3)
-#
-#  # Two ancestors
-#  sim_pop_expector(ancestors = c("AAAA", "CCCC"), r0 = 2,
-#               n_gen = 1)
-#  sim_pop_expector(ancestors = c("AAAA", "CCCC"), r0 = 2,
-#               n_gen = 2)
-#  sim_pop_expector(ancestors = c("AAAA", "CCCC"), r0 = 2,
-#               n_gen = 3)
-#
-#  # Three ancestors
-#  sim_pop_expector(ancestors = c("AAAA", "CCCC", "GGGG"), r0 = 2,
-#               n_gen = 1)
-#  sim_pop_expector(ancestors = c("AAAA", "CCCC", "GGGG"), r0 = 2,
-#               n_gen = 2)
-#  sim_pop_expector(ancestors = c("AAAA", "CCCC", "GGGG"), r0 = 2,
-#               n_gen = 3)
 })
 
 test_that("n_pop argument of sim_pop works", {
@@ -144,46 +120,25 @@ test_that("n_pop argument of sim_pop works", {
 })
 
 test_that("n_pop and n_gen arguments of sim_pop interact correctly", {
-#  ancestors_list <- list(one = "AAAA",
-#                         two = c("AAAA", "CCCC"))
-#  n_pop_n_gen_df <- data.frame(
-#    n_pop = c(1,2,3,33
-#                               )
-#  for (ancestors_id in names(ancestors_list)){
-#    c_ancestors <- ancestors_list[[ancestors_id]]
-#    for (c_n_pop in c(1,2,3,33)){
-##TODO: Maybe one day add in an info argument for sim_pop_expector, and then uncomment this
-##      ancestors_for_info <- paste(c_ancestors, collapste = ', ')
-##      c_info <- paste("Varying n_pop: n_pop = ", c_n_pop, 
-##                      "; Ancestors = ", ancestors_for_info, sep = '')
-##      sim_pop_expector(ancestors = c_ancestors, r0 = 2,
-##                   n_pop = c_n_pop, 
-##                   info = c_info)
+  ancestors_list <- list(one = "AAAA",
+                         two = c("AAAA", "CCCC"))
+  for (ancestors_id in names(ancestors_list)){
+    c_ancestors <- ancestors_list[[ancestors_id]]
+    for (c_n_pop in c(1,2,3,9,50)){
+      for (c_n_gen in 1:4){
+#TODO: Maybe one day add in an info argument for sim_pop_expector, and then uncomment this
+#      ancestors_for_info <- paste(c_ancestors, collapste = ', ')
+#      c_info <- paste("Varying n_pop: n_pop = ", c_n_pop, 
+#                      "; Ancestors = ", ancestors_for_info, sep = '')
 #      sim_pop_expector(ancestors = c_ancestors, r0 = 2,
-#                   n_pop = c_n_pop)
-#    }
-#  }
-
-  # Single ancestor
-  sim_pop_expector(ancestors = c("AAAA"), r0 = 2,
-               n_pop = 1, n_gen = 1)
-  sim_pop_expector(ancestors = c("AAAA"), r0 = 2,
-               n_pop = 2, n_gen = 2)
-  sim_pop_expector(ancestors = c("AAAA"), r0 = 2,
-               n_pop = 3, n_gen = 1)
-  sim_pop_expector(ancestors = c("AAAA"), r0 = 2,
-               n_pop = 33, n_gen = 10)
+#                   n_pop = c_n_pop, 
+#                   info = c_info)
+        sim_pop_expector(ancestors = c_ancestors, r0 = 2,
+                     n_pop = c_n_pop, n_gen = c_n_gen)
+      }
+    }
+  }
   
-  # Dual ancestor
-  sim_pop_expector(ancestors = c("AAAA", "TTTT"), r0 = 2,
-               n_pop = 1, n_gen = 1)
-  sim_pop_expector(ancestors = c("AAAA", "TTTT"), r0 = 2,
-               n_pop = 2, n_gen = 2)
-  sim_pop_expector(ancestors = c("AAAA", "TTTT"), r0 = 2,
-               n_pop = 3, n_gen = 1)
-  sim_pop_expector(ancestors = c("AAAA", "TTTT"), r0 = 2,
-               n_pop = 33, n_gen = 10)
-
   # And a few bigger ones
   sim_pop_expector(ancestors = c("AAAA"), r0 = 3,
                n_pop = 100, n_gen = 5)
