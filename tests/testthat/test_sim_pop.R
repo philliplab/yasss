@@ -105,25 +105,38 @@ test_that("n_gen argument of sim_pop works", {
 })
 
 test_that("n_pop argument of sim_pop works", {
-  # One ancestor
-  sim_pop_expector(ancestors = c("AAAA"), r0 = 2,
-               n_pop = 1)
-  sim_pop_expector(ancestors = c("AAAA"), r0 = 2,
-               n_pop = 2)
-  sim_pop_expector(ancestors = c("AAAA"), r0 = 2,
-               n_pop = 3)
-  sim_pop_expector(ancestors = c("AAAA"), r0 = 2,
-               n_pop = 33)
 
-  # Two ancestors
-  sim_pop_expector(ancestors = c("AAAA", "CCCC"), r0 = 2,
-               n_pop = 1)
-  sim_pop_expector(ancestors = c("AAAA", "CCCC"), r0 = 2,
-               n_pop = 2)
-  sim_pop_expector(ancestors = c("AAAA", "CCCC"), r0 = 2,
-               n_pop = 3)
-  sim_pop_expector(ancestors = c("AAAA", "CCCC"), r0 = 2,
-               n_pop = 20)
+  ancestors_list <- list(one = "AAAA",
+                         two = c("AAAA", "CCCC"))
+  for (ancestors_id in names(ancestors_list)){
+    c_ancestors <- ancestors_list[[ancestors_id]]
+    for (c_n_pop in c(1,2,3,33)){
+      sim_pop_expector(ancestors = c_ancestors, r0 = 2,
+                   n_pop = c_n_pop)
+    }
+  }
+
+
+
+#  # One ancestor
+#  sim_pop_expector(ancestors = c("AAAA"), r0 = 2,
+#               n_pop = 1)
+#  sim_pop_expector(ancestors = c("AAAA"), r0 = 2,
+#               n_pop = 2)
+#  sim_pop_expector(ancestors = c("AAAA"), r0 = 2,
+#               n_pop = 3)
+#  sim_pop_expector(ancestors = c("AAAA"), r0 = 2,
+#               n_pop = 33)
+#
+#  # Two ancestors
+#  sim_pop_expector(ancestors = c("AAAA", "CCCC"), r0 = 2,
+#               n_pop = 1)
+#  sim_pop_expector(ancestors = c("AAAA", "CCCC"), r0 = 2,
+#               n_pop = 2)
+#  sim_pop_expector(ancestors = c("AAAA", "CCCC"), r0 = 2,
+#               n_pop = 3)
+#  sim_pop_expector(ancestors = c("AAAA", "CCCC"), r0 = 2,
+#               n_pop = 20)
 })
 
 test_that("n_pop and n_gen arguments of sim_pop interact correctly", {
