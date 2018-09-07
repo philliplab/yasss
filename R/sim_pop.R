@@ -7,7 +7,7 @@
 #' @return A genealogy data structure. TODO: link to general documentation on a genealogy. GH issue #6.
 #'
 #' @param ancestors A list of DNA sequences with which to start the population. Include the same sequence multiple times to achieve a target ratio.
-#' @param gen_size The size of each generation (as a multiple of the size of the parent generation). Currently only allowed to be a single integer. Default value is 2.
+#' @param r0 The number of offspring each molecule produces. Currently restricted to being an integer, but this will become a more complex construct in future versions (GH issue #17).
 #' @param n_gen The number of generations to simulate.
 #' @param n_pop Stop the simulation when the population size exceeds this number.
 #' @param mutator A list with two elements fun and args specifying the name of the function that mutates parents into their offspring and the list of arguments said function requires. 
@@ -17,7 +17,7 @@
 #' 
 #' # Five generations, ancestor 60 As, mutation rate 10% per base per generation
 #' x <- sim_pop(ancestors = paste(rep("A", 60), collapse = ''),
-#'              gen_size = 2,
+#'              r0 = 2,
 #'              n_gen = 5,
 #'              n_pop = Inf,
 #'              mutator = list(fun = "mutator_uniform_fun",
@@ -36,19 +36,19 @@
 #' @export 
 
 sim_pop <- function(ancestors, 
-                    gen_size = 2, n_gen = NULL, n_pop = NULL,
+                    r0 = 2, n_gen = NULL, n_pop = NULL,
                     mutator = list(fun = "mutator_uniform_fun",
                                    args = list(mu = 0.01)),
                     fitness_evaluator = list(fun = "fitness_evaluator_uniform_fun",
                                              args = NULL)){
 
-  gen_size <- tryCatch(round(as.numeric(gen_size), 0),
-                       warning=function(w) return(list(round(as.numeric(gen_size), 0), w))
+  r0 <- tryCatch(round(as.numeric(r0), 0),
+                       warning=function(w) return(list(round(as.numeric(r0), 0), w))
                        )
-  if (class(gen_size) == 'list') {
-    stop("gen_size must be between 1 and 1e6")
-  } else if (gen_size < 1 | gen_size > 1e6){
-    stop("gen_size must be between 1 and 1e6")
+  if (class(r0) == 'list') {
+    stop("r0 must be between 1 and 1e6")
+  } else if (r0 < 1 | r0 > 1e6){
+    stop("r0 must be between 1 and 1e6")
   }
 
   if (is.null(n_gen)) {n_gen <- Inf}
@@ -84,11 +84,11 @@ sim_pop <- function(ancestors,
     c_gen <- c_gen + 1
     
 #    new_generation <- sim_next_gen(genealogy[genealogy$gen_num == (c_gen-1),], 
-#                                   gen_size = gen_size,
+#                                   r0 = r0,
 #                                   mutator, gen_num = c_gen)
 #
     new_generation <- sim_next_gen(genealogy, 
-                                   gen_size = gen_size,
+                                   r0 = r0,
                                    mutator, gen_num = c_gen)
 
     # insert recomb here (act on new_generation)

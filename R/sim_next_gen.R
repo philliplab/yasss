@@ -5,13 +5,12 @@
 #' @return A genealogy data structure. TODO: link to general documentation on a genealogy. GH issue #6
 #'
 #' @param genealogy A genealogy data structure holding all the previous generations. TODO: link to general documentation. GH issue #6.
-#' @param gen_size The size of each generation. Currently only allowed to be a
-#' single integer. Default value is 2.
+#' @param r0 The number of offspring each molecule produces. Currently restricted to being an integer, but this will become a more complex construct in future versions (GH issue #17).
 #' @param mutator A list with two elements fun and args specifying the function that mutates parents into their offspring and the list of arguments said function requires. 
 #' @param gen_num The generation number. Defaults to 1.
 #' @export
 
-sim_next_gen <- function(genealogy, gen_size, mutator, gen_num = 1){
+sim_next_gen <- function(genealogy, r0, mutator, gen_num = 1){
 #  genealogy <- data.frame(gen_num = numeric(0),
 #                          id = numeric(0),
 #                          parent_id = numeric(0),
@@ -34,7 +33,7 @@ sim_next_gen <- function(genealogy, gen_size, mutator, gen_num = 1){
   result <- list()
   parents <- genealogy[genealogy$gen_num == (gen_num - 1),]
   for (i in 1:nrow(parents)){
-    for (j in 1:gen_size){
+    for (j in 1:r0){
       total_offspring <- total_offspring + 1
       mut_arg <- mutator$arg
       mut_arg$parent <- parents[i, 'the_seq']

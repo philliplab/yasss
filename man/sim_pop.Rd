@@ -4,7 +4,7 @@
 \alias{sim_pop}
 \title{Simulates evolution of DNA of a population}
 \usage{
-sim_pop(ancestors, gen_size = 2, n_gen = NULL, n_pop = NULL,
+sim_pop(ancestors, r0 = 2, n_gen = NULL, n_pop = NULL,
   mutator = list(fun = "mutator_uniform_fun", args = list(mu = 0.01)),
   fitness_evaluator = list(fun = "fitness_evaluator_uniform_fun", args =
   NULL))
@@ -12,7 +12,7 @@ sim_pop(ancestors, gen_size = 2, n_gen = NULL, n_pop = NULL,
 \arguments{
 \item{ancestors}{A list of DNA sequences with which to start the population. Include the same sequence multiple times to achieve a target ratio.}
 
-\item{gen_size}{The size of each generation (as a multiple of the size of the parent generation). Currently only allowed to be a single integer. Default value is 2.}
+\item{r0}{The number of offspring each molecule produces. Currently restricted to being an integer, but this will become a more complex construct in future versions (GH issue #17).}
 
 \item{n_gen}{The number of generations to simulate.}
 
@@ -35,7 +35,7 @@ Details: Simulated multiple generations TODO - expand this
 
 # Five generations, ancestor 60 As, mutation rate 10\% per base per generation
 x <- sim_pop(ancestors = paste(rep("A", 60), collapse = ''),
-             gen_size = 2,
+             r0 = 2,
              n_gen = 5,
              n_pop = Inf,
              mutator = list(fun = "mutator_uniform_fun",

@@ -2,7 +2,7 @@ context("Integration Tests")
 
 test_that("A small simulation with a moderate uniform mutator yields reasonable results", {
   x <- sim_pop(ancestors = paste(rep("A", 60), collapse = ''),
-               gen_size = 2,
+               r0 = 2,
                n_gen = 5,
                n_pop = Inf,
                mutator = list(fun = "mutator_uniform_fun",

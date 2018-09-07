@@ -4,52 +4,52 @@ library(yasss)
 
 test_that("sim_pop checks arguments correctly", {
   N_GEN_N_POP_INF_NULL <- "Either n_gen or n_pop must be specified and at least one must be finite"
-  expect_error(sim_pop(ancestors = c('AAA'), gen_size = 2), 
+  expect_error(sim_pop(ancestors = c('AAA'), r0 = 2), 
                N_GEN_N_POP_INF_NULL)
-  expect_error(sim_pop(ancestors = c('AAA'), gen_size = 2, n_gen = Inf),
+  expect_error(sim_pop(ancestors = c('AAA'), r0 = 2, n_gen = Inf),
                N_GEN_N_POP_INF_NULL)
-  expect_error(sim_pop(ancestors = c('AAA'), gen_size = 2, n_pop = Inf),
+  expect_error(sim_pop(ancestors = c('AAA'), r0 = 2, n_pop = Inf),
                N_GEN_N_POP_INF_NULL)
-  expect_error(sim_pop(ancestors = c('AAA'), gen_size = 2, n_gen = Inf, n_pop = Inf),
+  expect_error(sim_pop(ancestors = c('AAA'), r0 = 2, n_gen = Inf, n_pop = Inf),
                N_GEN_N_POP_INF_NULL)
 
   N_GEN_N_POP_LESS_ONE <- "Neither n_gen nor n_pop may be set to less than one"
-  expect_error(sim_pop(ancestors = c('AAA'), gen_size = 2, n_gen = 0),
+  expect_error(sim_pop(ancestors = c('AAA'), r0 = 2, n_gen = 0),
                N_GEN_N_POP_LESS_ONE)
-  expect_error(sim_pop(ancestors = c('AAA'), gen_size = 2, n_gen = -5),
+  expect_error(sim_pop(ancestors = c('AAA'), r0 = 2, n_gen = -5),
                N_GEN_N_POP_LESS_ONE)
-  expect_error(sim_pop(ancestors = c('AAA'), gen_size = 2, n_pop = 0.4),
+  expect_error(sim_pop(ancestors = c('AAA'), r0 = 2, n_pop = 0.4),
                N_GEN_N_POP_LESS_ONE)
-  expect_error(sim_pop(ancestors = c('AAA'), gen_size = 2, n_pop = -100),
+  expect_error(sim_pop(ancestors = c('AAA'), r0 = 2, n_pop = -100),
                N_GEN_N_POP_LESS_ONE)
-  expect_error(sim_pop(ancestors = c('AAA'), gen_size = 2, n_gen = 0, n_pop = 0),
+  expect_error(sim_pop(ancestors = c('AAA'), r0 = 2, n_gen = 0, n_pop = 0),
                N_GEN_N_POP_LESS_ONE)
 
-  GEN_SIZE_VALID <- "gen_size must be between 1 and 1e6"
-  for (c_gen_size in c(-10, 0, 0.4, 1e6+1, 2e7)){
-    expect_error(sim_pop(ancestors = c('AAA'), gen_size = c_gen_size, n_gen = 3, n_pop = 50),
-                 GEN_SIZE_VALID, info = paste("Varying gen_size ", c_gen_size, sep = ""))
+  GEN_SIZE_VALID <- "r0 must be between 1 and 1e6"
+  for (c_r0 in c(-10, 0, 0.4, 1e6+1, 2e7)){
+    expect_error(sim_pop(ancestors = c('AAA'), r0 = c_r0, n_gen = 3, n_pop = 50),
+                 GEN_SIZE_VALID, info = paste("Varying r0 ", c_r0, sep = ""))
   }
   expect_error(
-    expect_warning(sim_pop(ancestors = c('AAA'), gen_size = 'many', n_gen = 3, n_pop = 50),
+    expect_warning(sim_pop(ancestors = c('AAA'), r0 = 'many', n_gen = 3, n_pop = 50),
                    "NAs introduced by coercion"),
                GEN_SIZE_VALID)
 })
 
 test_that("sim_pop output in the correct format", {
   x <- sim_pop(ancestors = c("AAAA", "CCCC"), 
-               gen_size = 2,
+               r0 = 2,
                n_gen = 1)
 
   expect_true(all(unlist(check_genealogy(x))))
 })
 
 sim_pop_expector <- function(ancestors,
-                           gen_size = 2,
+                           r0 = 2,
                            n_gen = NULL,
                            n_pop = NULL){
   genea <- sim_pop(ancestors = ancestors, 
-                   gen_size = gen_size, 
+                   r0 = r0, 
                    n_gen = n_gen, 
                    n_pop = n_pop)
   
@@ -65,7 +65,7 @@ sim_pop_expector <- function(ancestors,
   c_pop <- length(ancestors)
   while (c_pop < n_pop & gen_count < n_gen){
     gen_count <- gen_count + 1
-    c_pop <- (c_pop * gen_size)
+    c_pop <- (c_pop * r0)
     total_pop <- total_pop + c_pop
   }
 
@@ -75,87 +75,87 @@ sim_pop_expector <- function(ancestors,
   expect_true(all(sort(unique(genea$gen_num)) == c(0:gen_count)))
   # Correct number of individuals in last generation
   expect_equal(nrow(genea %>% filter(gen_num == max(gen_num))), 
-               length(ancestors)*gen_size^gen_count)
+               length(ancestors)*r0^gen_count)
 }
 
 test_that("n_gen argument of sim_pop works", {
   # Single ancestor
-  sim_pop_expector(ancestors = c("AAAA"), gen_size = 2,
+  sim_pop_expector(ancestors = c("AAAA"), r0 = 2,
                  n_gen = 1)
-  sim_pop_expector(ancestors = c("AAAA"), gen_size = 2,
+  sim_pop_expector(ancestors = c("AAAA"), r0 = 2,
                  n_gen = 2)
-  sim_pop_expector(ancestors = c("AAAA"), gen_size = 2,
+  sim_pop_expector(ancestors = c("AAAA"), r0 = 2,
                  n_gen = 3)
 
   # Two ancestors
-  sim_pop_expector(ancestors = c("AAAA", "CCCC"), gen_size = 2,
+  sim_pop_expector(ancestors = c("AAAA", "CCCC"), r0 = 2,
                n_gen = 1)
-  sim_pop_expector(ancestors = c("AAAA", "CCCC"), gen_size = 2,
+  sim_pop_expector(ancestors = c("AAAA", "CCCC"), r0 = 2,
                n_gen = 2)
-  sim_pop_expector(ancestors = c("AAAA", "CCCC"), gen_size = 2,
+  sim_pop_expector(ancestors = c("AAAA", "CCCC"), r0 = 2,
                n_gen = 3)
 
   # Three ancestors
-  sim_pop_expector(ancestors = c("AAAA", "CCCC", "GGGG"), gen_size = 2,
+  sim_pop_expector(ancestors = c("AAAA", "CCCC", "GGGG"), r0 = 2,
                n_gen = 1)
-  sim_pop_expector(ancestors = c("AAAA", "CCCC", "GGGG"), gen_size = 2,
+  sim_pop_expector(ancestors = c("AAAA", "CCCC", "GGGG"), r0 = 2,
                n_gen = 2)
-  sim_pop_expector(ancestors = c("AAAA", "CCCC", "GGGG"), gen_size = 2,
+  sim_pop_expector(ancestors = c("AAAA", "CCCC", "GGGG"), r0 = 2,
                n_gen = 3)
 })
 
 test_that("n_pop argument of sim_pop works", {
   # One ancestor
-  sim_pop_expector(ancestors = c("AAAA"), gen_size = 2,
+  sim_pop_expector(ancestors = c("AAAA"), r0 = 2,
                n_pop = 1)
-  sim_pop_expector(ancestors = c("AAAA"), gen_size = 2,
+  sim_pop_expector(ancestors = c("AAAA"), r0 = 2,
                n_pop = 2)
-  sim_pop_expector(ancestors = c("AAAA"), gen_size = 2,
+  sim_pop_expector(ancestors = c("AAAA"), r0 = 2,
                n_pop = 3)
-  sim_pop_expector(ancestors = c("AAAA"), gen_size = 2,
+  sim_pop_expector(ancestors = c("AAAA"), r0 = 2,
                n_pop = 33)
 
   # Two ancestors
-  sim_pop_expector(ancestors = c("AAAA", "CCCC"), gen_size = 2,
+  sim_pop_expector(ancestors = c("AAAA", "CCCC"), r0 = 2,
                n_pop = 1)
-  sim_pop_expector(ancestors = c("AAAA", "CCCC"), gen_size = 2,
+  sim_pop_expector(ancestors = c("AAAA", "CCCC"), r0 = 2,
                n_pop = 2)
-  sim_pop_expector(ancestors = c("AAAA", "CCCC"), gen_size = 2,
+  sim_pop_expector(ancestors = c("AAAA", "CCCC"), r0 = 2,
                n_pop = 3)
-  sim_pop_expector(ancestors = c("AAAA", "CCCC"), gen_size = 2,
+  sim_pop_expector(ancestors = c("AAAA", "CCCC"), r0 = 2,
                n_pop = 20)
 })
 
 test_that("n_pop and n_gen arguments of sim_pop interact correctly", {
   # Single ancestor
-  sim_pop_expector(ancestors = c("AAAA"), gen_size = 2,
+  sim_pop_expector(ancestors = c("AAAA"), r0 = 2,
                n_pop = 1, n_gen = 1)
-  sim_pop_expector(ancestors = c("AAAA"), gen_size = 2,
+  sim_pop_expector(ancestors = c("AAAA"), r0 = 2,
                n_pop = 2, n_gen = 2)
-  sim_pop_expector(ancestors = c("AAAA"), gen_size = 2,
+  sim_pop_expector(ancestors = c("AAAA"), r0 = 2,
                n_pop = 3, n_gen = 1)
-  sim_pop_expector(ancestors = c("AAAA"), gen_size = 2,
+  sim_pop_expector(ancestors = c("AAAA"), r0 = 2,
                n_pop = 33, n_gen = 10)
   
   # Dual ancestor
-  sim_pop_expector(ancestors = c("AAAA", "TTTT"), gen_size = 2,
+  sim_pop_expector(ancestors = c("AAAA", "TTTT"), r0 = 2,
                n_pop = 1, n_gen = 1)
-  sim_pop_expector(ancestors = c("AAAA", "TTTT"), gen_size = 2,
+  sim_pop_expector(ancestors = c("AAAA", "TTTT"), r0 = 2,
                n_pop = 2, n_gen = 2)
-  sim_pop_expector(ancestors = c("AAAA", "TTTT"), gen_size = 2,
+  sim_pop_expector(ancestors = c("AAAA", "TTTT"), r0 = 2,
                n_pop = 3, n_gen = 1)
-  sim_pop_expector(ancestors = c("AAAA", "TTTT"), gen_size = 2,
+  sim_pop_expector(ancestors = c("AAAA", "TTTT"), r0 = 2,
                n_pop = 33, n_gen = 10)
 
   # And a few bigger ones
-  sim_pop_expector(ancestors = c("AAAA"), gen_size = 3,
+  sim_pop_expector(ancestors = c("AAAA"), r0 = 3,
                n_pop = 100, n_gen = 5)
 #TODO: Uncomment
-#  sim_pop_expector(ancestors = c("AAAA", "TTTT"), gen_size = 3,
+#  sim_pop_expector(ancestors = c("AAAA", "TTTT"), r0 = 3,
 #               n_pop = 200, n_gen = 8)
-#  sim_pop_expector(ancestors = c("AAAA", "TTTT", "CCCC"), gen_size = 2,
+#  sim_pop_expector(ancestors = c("AAAA", "TTTT", "CCCC"), r0 = 2,
 #               n_pop = 200, n_gen = 10)
 # Pretty slow
-#  sim_pop_expector(ancestors = c("AAAA", "TTTT", "CCCC"), gen_size = 5,
+#  sim_pop_expector(ancestors = c("AAAA", "TTTT", "CCCC"), r0 = 5,
 #               n_pop = 3000, n_gen = 10)
 })

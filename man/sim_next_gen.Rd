@@ -4,13 +4,12 @@
 \alias{sim_next_gen}
 \title{Simulate the next generation}
 \usage{
-sim_next_gen(genealogy, gen_size, mutator, gen_num = 1)
+sim_next_gen(genealogy, r0, mutator, gen_num = 1)
 }
 \arguments{
 \item{genealogy}{A genealogy data structure holding all the previous generations. TODO: link to general documentation. GH issue #6.}
 
-\item{gen_size}{The size of each generation. Currently only allowed to be a
-single integer. Default value is 2.}
+\item{r0}{The number of offspring each molecule produces. Currently restricted to being an integer, but this will become a more complex construct in future versions (GH issue #17).}
 
 \item{mutator}{A list with two elements fun and args specifying the function that mutates parents into their offspring and the list of arguments said function requires.}
 

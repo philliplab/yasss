@@ -30,22 +30,22 @@ test_that('sim_next_gen produces output of the correct format', {
 
 test_that('sim_next_gen produces the correct number of offspring', {
   
-  for (gen_size in c(1,2,5,100)){
-    x <- sim_next_gen(make_genealogy(c('AAA')), gen_size, 
+  for (r0 in c(1,2,5,100)){
+    x <- sim_next_gen(make_genealogy(c('AAA')), r0, 
                       YASSS_MUTATORS$mutator_uniform)
-    expect_equal(length(x$the_seq[x$gen_num == max(x$gen_num)]), gen_size)
+    expect_equal(length(x$the_seq[x$gen_num == max(x$gen_num)]), r0)
   }
             
-  for (gen_size in c(1,2,5,100)){
-    x <- sim_next_gen(make_genealogy(c('AAA', 'CCC')), gen_size, 
+  for (r0 in c(1,2,5,100)){
+    x <- sim_next_gen(make_genealogy(c('AAA', 'CCC')), r0, 
                       YASSS_MUTATORS$mutator_uniform)
-    expect_equal(length(x$the_seq[x$gen_num == max(x$gen_num)]), 2*gen_size)
+    expect_equal(length(x$the_seq[x$gen_num == max(x$gen_num)]), 2*r0)
   }
 
-  for (gen_size in c(1,2,5,100)){
-    x <- sim_next_gen(make_genealogy(c('AAA', 'CCC', 'GGG', 'TTT', 'ACG')), gen_size, 
+  for (r0 in c(1,2,5,100)){
+    x <- sim_next_gen(make_genealogy(c('AAA', 'CCC', 'GGG', 'TTT', 'ACG')), r0, 
                       YASSS_MUTATORS$mutator_uniform)
-    expect_equal(length(x$the_seq[x$gen_num == max(x$gen_num)]), 5*gen_size)
+    expect_equal(length(x$the_seq[x$gen_num == max(x$gen_num)]), 5*r0)
   }
 })
 
@@ -53,7 +53,7 @@ test_that('sim_next_gen produces mutations when called with 100% mutation rates'
   mutator_uniform_mu100 <- YASSS_MUTATORS$mutator_uniform
   mutator_uniform_mu100$args$mu <- 1
 
-  x <- sim_next_gen(make_genealogy(c('AAA')), gen_size = 2,
+  x <- sim_next_gen(make_genealogy(c('AAA')), r0 = 2,
                     mutator_uniform_mu100)
   expect_false(any(x$the_seq[x$gen_num == max(x$gen_num)] == 'AAA'))
   expect_false('A' %in% strsplit(x$the_seq[x$gen_num == max(x$gen_num)][1], '')[[1]])
