@@ -26,16 +26,10 @@ test_that("sim_pop checks arguments correctly", {
                N_GEN_N_POP_LESS_ONE)
 
   GEN_SIZE_VALID <- "gen_size must be between 1 and 1e6"
-  expect_error(sim_pop(ancestors = c('AAA'), gen_size = -10, n_gen = 3, n_pop = 50),
-               GEN_SIZE_VALID)
-  expect_error(sim_pop(ancestors = c('AAA'), gen_size = 0, n_gen = 3, n_pop = 50),
-               GEN_SIZE_VALID)
-  expect_error(sim_pop(ancestors = c('AAA'), gen_size = 0.4, n_gen = 3, n_pop = 50),
-               GEN_SIZE_VALID)
-  expect_error(sim_pop(ancestors = c('AAA'), gen_size = 1e6+1, n_gen = 3, n_pop = 50),
-               GEN_SIZE_VALID)
-  expect_error(sim_pop(ancestors = c('AAA'), gen_size = 2e7, n_gen = 3, n_pop = 50),
-               GEN_SIZE_VALID)
+  for (c_gen_size in c(-10, 0, 0.4, 1e6+1, 2e7)){
+    expect_error(sim_pop(ancestors = c('AAA'), gen_size = c_gen_size, n_gen = 3, n_pop = 50),
+                 GEN_SIZE_VALID, info = paste("Varying gen_size ", c_gen_size, sep = ""))
+  }
   expect_error(
     expect_warning(sim_pop(ancestors = c('AAA'), gen_size = 'many', n_gen = 3, n_pop = 50),
                    "NAs introduced by coercion"),
