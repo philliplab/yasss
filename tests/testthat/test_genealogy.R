@@ -1,52 +1,52 @@
 context('General Genealogy')
 
-SAMPLE_GENEALOGIES <- list(
-  bif_2gen = data.frame(
-#==========================================================
-gen_num          =  c(  0,              1,              1),
-id               =  c(  1,              1,              2),
-parent_id        =  c(  NA,             1,              1),
-the_seq          =  c(  'AAA',          'AAC',          'AAA'),
-n_mut            =  c(  NA_real_,       1,              0),
-recomb_pos       =  c(  NA_real_,       NA_real_,       NA_real_),
-recomb_replaced  =  c(  NA_character_,  NA_character_,  NA_character_),
-recomb_partner   =  c(  NA_real_,       NA_real_,       NA_real_),
-recomb_muts      =  c(  NA_real_,       NA_real_,       NA_real_),
-fitness_score    =  c(  0.98,           0.99,           0.96),
-#==========================================================
-stringsAsFactors = FALSE
-  ),
-  ances_only_1 = data.frame(
-#==========================================================
-gen_num = 0,
-id = 1,
-parent_id = NA_real_,
-the_seq = 'AAA',
-n_mut = NA_real_,
-recomb_pos = NA_real_,
-recomb_replaced = NA_character_,
-recomb_partner = NA_real_,
-recomb_muts = NA_real_,
-fitness_score = NA_real_,
-#==========================================================
-stringsAsFactors = FALSE
-  ),
-  ances_only_3 = data.frame(
-#==========================================================
-gen_num = 0,
-id = 1:3,
-parent_id = NA_real_,
-the_seq = c('AAA', 'CCC', 'GGG'),
-n_mut = NA_real_,
-recomb_pos = NA_real_,
-recomb_replaced = NA_character_,
-recomb_partner = NA_real_,
-recomb_muts = NA_real_,
-fitness_score = NA_real_,
-#==========================================================
-stringsAsFactors = FALSE
-  )
-)
+#SAMPLE_GENEALOGIES <- list(
+#  bif_2gen = data.frame(
+##==========================================================
+#gen_num          =  c(  0,              1,              1),
+#id               =  c(  1,              1,              2),
+#parent_id        =  c(  NA,             1,              1),
+#the_seq          =  c(  'AAA',          'AAC',          'AAA'),
+#n_mut            =  c(  NA_real_,       1,              0),
+#recomb_pos       =  c(  NA_real_,       NA_real_,       NA_real_),
+#recomb_replaced  =  c(  NA_character_,  NA_character_,  NA_character_),
+#recomb_partner   =  c(  NA_real_,       NA_real_,       NA_real_),
+#recomb_muts      =  c(  NA_real_,       NA_real_,       NA_real_),
+#fitness_score    =  c(  0.98,           0.99,           0.96),
+##==========================================================
+#stringsAsFactors = FALSE
+#  ),
+#  ances_only_1 = data.frame(
+##==========================================================
+#gen_num = 0,
+#id = 1,
+#parent_id = NA_real_,
+#the_seq = 'AAA',
+#n_mut = NA_real_,
+#recomb_pos = NA_real_,
+#recomb_replaced = NA_character_,
+#recomb_partner = NA_real_,
+#recomb_muts = NA_real_,
+#fitness_score = NA_real_,
+##==========================================================
+#stringsAsFactors = FALSE
+#  ),
+#  ances_only_3 = data.frame(
+##==========================================================
+#gen_num = 0,
+#id = 1:3,
+#parent_id = NA_real_,
+#the_seq = c('AAA', 'CCC', 'GGG'),
+#n_mut = NA_real_,
+#recomb_pos = NA_real_,
+#recomb_replaced = NA_character_,
+#recomb_partner = NA_real_,
+#recomb_muts = NA_real_,
+#fitness_score = NA_real_,
+##==========================================================
+#stringsAsFactors = FALSE
+#  )
+#)
 
 genealogy_expector <- function(genealogy, true_list = 'all', false_list = 'none', 
                                ignore_list = NULL, extra_info = NULL,
@@ -82,7 +82,7 @@ genealogy_expector <- function(genealogy, true_list = 'all', false_list = 'none'
 
 test_that('genealogy_expector works', {
   ancestors <- 'AAA'
-  x <- SAMPLE_GENEALOGIES[['ances_only_1']]
+  x <- YASSS_DATASETS[['ances_only_1']]
 
   expect_error(genealogy_expector(x, true_list = 'bogus_column'), "y\\[\\[i\\]\\] isn't true.\nbogus_column")
   expect_error(genealogy_expector(x, true_list = c('all', 'bogus_column')), "y\\[\\[i\\]\\] isn't true.\nbogus_column")
@@ -91,14 +91,14 @@ test_that('genealogy_expector works', {
 })
 
 test_that('check_genealogy lets correct genealogies pass', {
-  for (c_name in names(SAMPLE_GENEALOGIES)){
-    c_genea <- SAMPLE_GENEALOGIES[[c_name]]
+  for (c_name in names(YASSS_DATASETS)){
+    c_genea <- YASSS_DATASETS[[c_name]]
     genealogy_expector(c_genea, extra_info = c_name)
   }
 })
 
 test_that('check_genealogy flags issues with missing columns', {
-  x <- SAMPLE_GENEALOGIES[['ances_only_1']]
+  x <- YASSS_DATASETS[['ances_only_1']]
   column_list <- c("gen_num", "id", "parent_id", "the_seq", "n_mut",
                    "recomb_pos", "recomb_replaced", "recomb_partner",
                    "recomb_muts", "fitness_score")
@@ -117,7 +117,7 @@ test_that('check_genealogy flags issues with missing columns', {
 })
 
 test_that('check_genealogy flags issues with incorrect column data types', {
-  x <- SAMPLE_GENEALOGIES[['ances_only_1']]
+  x <- YASSS_DATASETS[['ances_only_1']]
   column_list <- c("gen_num", "id", "parent_id", "the_seq", "n_mut",
                    "recomb_pos", "recomb_replaced", "recomb_partner",
                    "recomb_muts", "fitness_score")
@@ -143,7 +143,7 @@ test_that('check_genealogy flags issues with incorrect column data types', {
 })
 
 test_that('check_genealogy flags issues with unexpected columns', {
-  x <- SAMPLE_GENEALOGIES[['ances_only_1']]
+  x <- YASSS_DATASETS[['ances_only_1']]
   for (i in c('col1', '1', '__A', '  ')){
     y <- x
     y[,i] <- 1
@@ -151,7 +151,7 @@ test_that('check_genealogy flags issues with unexpected columns', {
                        which_checker = 'check_genealogy_structure')
   }
 
-  x <- SAMPLE_GENEALOGIES[['ances_only_1']]
+  x <- YASSS_DATASETS[['ances_only_1']]
   y <- cbind(x, x[,3:5])
   y[,3:5] <- NULL
   genealogy_expector(y, false_list = c('column_order', 'all_structure'),
@@ -163,7 +163,7 @@ test_that('check_genealogy flags issues with unexpected columns', {
 #  results$gen_num_naturals <- all(genealogy$gen_num %in% 0:max(genealogy$gen_num)) &
 
 test_that('check_genealogy flags issues with gen_num', {
-  c_genea <- SAMPLE_GENEALOGIES[['bif_2gen']]
+  c_genea <- YASSS_DATASETS[['bif_2gen']]
   m_genea <- c_genea
   m_genea$gen_num[2] <- NA
   genealogy_expector(m_genea, 
@@ -188,7 +188,7 @@ test_that('check_genealogy flags issues with gen_num', {
 })
 
 test_that('check_genealogy flags issues with ids', {
-  c_genea <- SAMPLE_GENEALOGIES[['bif_2gen']]
+  c_genea <- YASSS_DATASETS[['bif_2gen']]
   m_genea <- c_genea
   m_genea$id[2] <- NA
   genealogy_expector(m_genea, 
@@ -224,7 +224,7 @@ test_that('check_genealogy flags issues with ids', {
 })
 
 test_that('check_genealogy flags issues with parent_ids', {
-  c_genea <- SAMPLE_GENEALOGIES[['bif_2gen']]
+  c_genea <- YASSS_DATASETS[['bif_2gen']]
   m_genea <- c_genea
   m_genea$parent_id[2] <- NA
   genealogy_expector(m_genea, 
@@ -247,7 +247,7 @@ test_that('check_genealogy flags issues with parent_ids', {
 })
 
 test_that('check_genealogy flags issues with the_seq', {
-  c_genea <- SAMPLE_GENEALOGIES[['bif_2gen']]
+  c_genea <- YASSS_DATASETS[['bif_2gen']]
   m_genea <- c_genea
   m_genea$the_seq[2] <- NA
   genealogy_expector(m_genea, 
@@ -284,7 +284,7 @@ test_that('check_genealogy flags issues with the_seq', {
 })
 
 test_that('check_genealogy flags issues with n_mut', {
-  c_genea <- SAMPLE_GENEALOGIES[['bif_2gen']]
+  c_genea <- YASSS_DATASETS[['bif_2gen']]
   m_genea <- c_genea
   m_genea$n_mut[2] <- NA
 
