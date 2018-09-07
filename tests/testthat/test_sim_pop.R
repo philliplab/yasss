@@ -3,7 +3,8 @@ context('sim_pop')
 library(yasss)
 
 test_that("sim_pop checks arguments correctly", {
-  N_GEN_N_POP_INF_NULL <- "Either n_gen or n_pop must be specified and at least one must be finite"
+#  N_GEN_N_POP_INF_NULL <- "Either n_gen or n_pop must be specified and at least one must be finite"
+  N_GEN_N_POP_INF_NULL <- YASSS_ERR_MSG[['N_GEN_N_POP_INF_NULL']]
   expect_error(sim_pop(ancestors = c('AAA'), r0 = 2), 
                N_GEN_N_POP_INF_NULL)
   expect_error(sim_pop(ancestors = c('AAA'), r0 = 2, n_gen = Inf),
@@ -13,7 +14,8 @@ test_that("sim_pop checks arguments correctly", {
   expect_error(sim_pop(ancestors = c('AAA'), r0 = 2, n_gen = Inf, n_pop = Inf),
                N_GEN_N_POP_INF_NULL)
 
-  N_GEN_N_POP_LESS_ONE <- "Neither n_gen nor n_pop may be set to less than one"
+#  N_GEN_N_POP_LESS_ONE <- "Neither n_gen nor n_pop may be set to less than one"
+  N_GEN_N_POP_LESS_ONE <- YASSS_ERR_MSG[['N_GEN_N_POP_LESS_ONE']]
   expect_error(sim_pop(ancestors = c('AAA'), r0 = 2, n_gen = 0),
                N_GEN_N_POP_LESS_ONE)
   expect_error(sim_pop(ancestors = c('AAA'), r0 = 2, n_gen = -5),
@@ -25,7 +27,8 @@ test_that("sim_pop checks arguments correctly", {
   expect_error(sim_pop(ancestors = c('AAA'), r0 = 2, n_gen = 0, n_pop = 0),
                N_GEN_N_POP_LESS_ONE)
 
-  GEN_SIZE_VALID <- "r0 must be between 1 and 1e6"
+#  GEN_SIZE_VALID <- "r0 must be between 1 and 1e6"
+  GEN_SIZE_VALID <- YASSS_ERR_MSG[['GEN_SIZE_VALID']]
   for (c_r0 in c(-10, 0, 0.4, 1e6+1, 2e7)){
     expect_error(sim_pop(ancestors = c('AAA'), r0 = c_r0, n_gen = 3, n_pop = 50),
                  GEN_SIZE_VALID, info = paste("Varying r0 ", c_r0, sep = ""))

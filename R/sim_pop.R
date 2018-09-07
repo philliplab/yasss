@@ -46,19 +46,19 @@ sim_pop <- function(ancestors,
                        warning=function(w) return(list(round(as.numeric(r0), 0), w))
                        )
   if (class(r0) == 'list') {
-    stop("r0 must be between 1 and 1e6")
+    stop(YASSS_ERR_MSG[['GEN_SIZE_VALID']])
   } else if (r0 < 1 | r0 > 1e6){
-    stop("r0 must be between 1 and 1e6")
+    stop(YASSS_ERR_MSG[['GEN_SIZE_VALID']])
   }
 
   if (is.null(n_gen)) {n_gen <- Inf}
   if (is.null(n_pop)) {n_pop <- Inf}
 
   if (n_gen == Inf & n_pop == Inf){
-    stop('Either n_gen or n_pop must be specified and at least one must be finite')
+    stop(YASSS_ERR_MSG[['N_GEN_N_POP_INF_NULL']])
   }
   if (n_gen < 1 | n_pop < 1){
-    stop('Neither n_gen nor n_pop may be set to less than one')
+    stop(YASSS_ERR_MSG[['N_GEN_N_POP_LESS_ONE']])
   }
   
   parents <- ancestors
