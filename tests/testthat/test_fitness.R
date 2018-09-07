@@ -1,26 +1,5 @@
 context("General Fitness")
 
-
-SAMPLE_GENEALOGIES <- list(
-  bif_2gen = data.frame(
-#==========================================================
-gen_num          =  c(  0,              1,              1),
-id               =  c(  1,              1,              2),
-parent_id        =  c(  NA,             1,              1),
-the_seq          =  c(  'AAA',          'AAC',          'AAA'),
-n_mut            =  c(  NA_real_,       1,              0),
-recomb_pos       =  c(  NA_real_,       NA_real_,       NA_real_),
-recomb_replaced  =  c(  NA_character_,  NA_character_,  NA_character_),
-recomb_partner   =  c(  NA_real_,       NA_real_,       NA_real_),
-recomb_muts      =  c(  NA_real_,       NA_real_,       NA_real_),
-fitness_score    =  c(  0.98,           0.99,           0.96),
-#==========================================================
-stringsAsFactors = FALSE
-  )
-                           )
-
-
-
 test_that("check_fitness_evaluator works", {
   fe <- list(fun = 'fitness_evaluator_uniform_fun',
              args = NULL)
@@ -65,7 +44,7 @@ test_that("assign_fitness works", {
 
 test_that("get_fit_offspring works", {
 
-  c_genea <- SAMPLE_GENEALOGIES[['bif_2gen']]
+  c_genea <- YASSS_DATASETS[['bif_2gen']]
   x <- get_fit_offspring(c_genea, 0)
   expect_equal(x, c_genea)
 
