@@ -2,6 +2,7 @@ context("General Fitness")
 
 test_that("check_fitness_evaluator works", {
   fe <- list(fun = 'fitness_evaluator_uniform_fun',
+             the_seq = c("AAAAAA", "CCCCCC", "GGGGGG"),
              args = NULL)
   #debugging
   #TODO:delete
@@ -10,7 +11,7 @@ test_that("check_fitness_evaluator works", {
     args <- fe$args
   }
 
-  x <- check_fitness_evaluator(fe$fun, fe$args)
+  x <- check_fitness_evaluator(fe$the_seq, fe$fun, fe$args)
   for (i in names(x)){
     expect_true(x[[i]], info = i)
   }
@@ -18,9 +19,10 @@ test_that("check_fitness_evaluator works", {
 
 test_that("assign_fitness works", {
   fe <- list(fun = 'fitness_evaluator_uniform_fun',
+             the_seq = c("AAAAAA", "CCCCCC", "GGGGGG"),
              args = NULL)
 
-  x <- check_fitness_evaluator(fe$fun, fe$args)
+  x <- check_fitness_evaluator(fe$the_seq, fe$fun, fe$args)
   for (i in names(x)){
     expect_true(x[[i]], info = i)
   }

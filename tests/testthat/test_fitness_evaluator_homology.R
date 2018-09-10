@@ -2,6 +2,7 @@ context("fitness_evaluator_homology")
 
 test_that("fitness_evaluator_homology works", {
   fe <- list(fun = 'fitness_evaluator_homology_fun',
+             the_seq = c("AAAAAAAAA", "AAAAAAAAC", "AAAAAACCC", "CCCCCCCCC"),
              args = list(comparators = "AAAAAAAAA",
                          h2fs = "h2fs_1_epitope"))
 
@@ -10,9 +11,12 @@ test_that("fitness_evaluator_homology works", {
   if (FALSE){
     fun <- fe$fun
     args <- fe$args
+    the_seq <- fe$the_seq
+    comparators <- fe$args$comparators
+    h2fs <- fe$args$h2fs
   }
 
-  x <- check_fitness_evaluator(fe$fun, fe$args)
+  x <- check_fitness_evaluator(fe$the_seq, fe$fun, fe$args)
   for (i in names(x)){
     expect_true(x[[i]], info = i)
   }

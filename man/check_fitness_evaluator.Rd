@@ -4,7 +4,7 @@
 \alias{check_fitness_evaluator}
 \title{General fitness_evaluator checker}
 \usage{
-check_fitness_evaluator(fun, args)
+check_fitness_evaluator(the_seq, fun, args)
 }
 \arguments{
 \item{fun}{The fitness_evaluator function}

@@ -1,7 +1,10 @@
 context("fitness_evaluator_uniform")
 
+#  the_seq <- c('AAAAAA', 'CCCCCC', 'GGGGGG')
+
 test_that("fitness_evaluator_uniform works", {
   fe <- list(fun = 'fitness_evaluator_uniform_fun',
+             the_seq = c('AAAAAA', 'CCCCCC', 'GGGGGG'),
              args = NULL)
 
   # debugging
@@ -11,7 +14,7 @@ test_that("fitness_evaluator_uniform works", {
     args <- fe$args
   }
 
-  x <- check_fitness_evaluator(fe$fun, fe$args)
+  x <- check_fitness_evaluator(fe$the_seq, fe$fun, fe$args)
   for (i in names(x)){
     expect_true(x[[i]], info = i)
   }

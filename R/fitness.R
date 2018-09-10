@@ -38,14 +38,14 @@ assign_fitness <- function(genealogy, fitness_evaluator){
 #' @param args A single list of arguments for the fitness_evaluator that are reasonable. This will be used to call the evaluator on dummy data during the checks.
 #' @export
 
-check_fitness_evaluator <- function(fun, args){
+check_fitness_evaluator <- function(the_seq, fun, args){
   result <- list()
   result$fun_is_character <- class(fun) == "character"
   fun <- get(fun)
   result$fun_is_getable <- class(fun) == "function"
   result$has_the_seq_arg <- "the_seq" %in% names(formals(fun))
 
-  the_seq <- c('AAAAAA', 'CCCCCC', 'GGGGGG')
+#  the_seq <- c('AAAAAA', 'CCCCCC', 'GGGGGG')
   tmp_args <- args
   tmp_args$the_seq <- the_seq
   x <- try(do.call(fun, tmp_args), silent = TRUE)
