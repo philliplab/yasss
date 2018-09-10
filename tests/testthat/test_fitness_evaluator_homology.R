@@ -37,3 +37,17 @@ test_that("fitness_evaluator_homology works", {
   y <- do.call(fit_fun, args)
   check_fitness_evaluator_result(y, args)
 })
+
+test_that("max_homology correctly computes the max possible homology", {
+  comparator_df <- data.frame(
+    compa =     c("AAA", "XXX", "XAA", "AAX", "AXC", "AAAAAAAAX"),
+    max_score = c(     3,    0,     2,      2,    2,           8),
+    stringsAsFactors = FALSE)
+
+  comped_max_homology <- max_homology(comparator_df$compa)
+  for (i in 1:nrow(comparator_df)){
+    expect_equal(comped_max_homology[[comparator_df[i,'compa']]], 
+                 comparator_df[i,'max_score'], 
+                 info = comparator_df[i,'compa'])
+  }
+})
