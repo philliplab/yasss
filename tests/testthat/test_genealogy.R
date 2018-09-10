@@ -221,7 +221,7 @@ test_that('check_genealogy flags issues with the_seq', {
   m_genea <- c_genea
   m_genea$the_seq[3] <- 'W'
   genealogy_expector(m_genea, 
-                     false_list = c('the_seq_valid_letters', 'all_the_seq'),
+                     false_list = c('the_seq_valid_letters', 'the_seq_equal_length', 'all_the_seq'),
                      which_checker = 'check_genealogy_the_seq',
                      prerequisite_result = list(has_the_seq = TRUE),
                      extra_info = 'm_genea$the_seq[3] <- "W"')
@@ -229,10 +229,18 @@ test_that('check_genealogy flags issues with the_seq', {
   m_genea <- c_genea
   m_genea$the_seq[2] <- 'AACGTCCGT?'
   genealogy_expector(m_genea, 
-                     false_list = c('the_seq_valid_letters', 'all_the_seq'),
+                     false_list = c('the_seq_valid_letters', 'the_seq_equal_length', 'all_the_seq'),
                      which_checker = 'check_genealogy_the_seq',
                      prerequisite_result = list(has_the_seq = TRUE),
                      extra_info = 'm_genea$the_seq[2] <- "AACGTCCGT?"')
+
+  m_genea <- c_genea
+  m_genea$the_seq[3] <- 'A'
+  genealogy_expector(m_genea, 
+                     false_list = c('the_seq_equal_length', 'all_the_seq'),
+                     which_checker = 'check_genealogy_the_seq',
+                     prerequisite_result = list(has_the_seq = TRUE),
+                     extra_info = 'm_genea$the_seq[3] <- "W"')
 })
 
 test_that('check_genealogy flags issues with n_mut', {

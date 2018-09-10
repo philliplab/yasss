@@ -405,7 +405,7 @@ check_genealogy_the_seq <- function(genealogy, result = list()){
     } else {
       all_lets <- unique(strsplit(paste(genealogy$the_seq, collapse = ''), '')[[1]])
       result$the_seq_valid_letters <- all(all_lets %in% c('A', 'C', 'G', 'T'))
-      result$the_seq_equal_length <- all(nchar(genealogy$the_Seq) == min(nchar(genealogy$the_seq)))
+      result$the_seq_equal_length <- all(nchar(genealogy$the_seq) == min(nchar(genealogy$the_seq)))
       result$all_the_seq <- result$the_seq_valid_letters & result$the_seq_equal_length
     }
   } # if (prerequisites_not_met)
