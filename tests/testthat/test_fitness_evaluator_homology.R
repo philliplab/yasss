@@ -21,6 +21,14 @@ test_that("fitness_evaluator_homology works", {
     expect_true(x[[i]], info = i)
   }
 
+  args <- fe$args
+  args$the_seq <- fe$the_seq
+  y <- do.call(get(fe$fun), args)
+  expect_equal(y$dists[1,1], 0/9)
+  expect_equal(y$dists[2,1], 1/9)
+  expect_equal(y$dists[3,1], 3/9)
+  expect_equal(y$dists[4,1], 9/9)
+
   x <- sim_pop('AAAAAAAAA', r0 = 2, n_pop = 15)
   fit_fun <- get(fe$fun)
   args <- fe$args
