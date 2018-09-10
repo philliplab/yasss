@@ -390,6 +390,7 @@ check_genealogy_the_seq <- function(genealogy, result = list()){
     result$the_seq_not_missing <- FALSE
     result$the_seq_valid_letters <- FALSE
     result$all_the_seq <- FALSE
+    result$the_seq_equal_length <- FALSE
     return(result)
   } else {
     result$the_seq_not_missing <- !(any(is.na(genealogy$the_seq)) | 
@@ -399,11 +400,13 @@ check_genealogy_the_seq <- function(genealogy, result = list()){
     if (!result$the_seq_not_missing){
       result$the_seq_valid_letters <- FALSE
       result$all_the_seq <- FALSE
+      result$the_seq_equal_length <- FALSE
       return(result)
     } else {
       all_lets <- unique(strsplit(paste(genealogy$the_seq, collapse = ''), '')[[1]])
       result$the_seq_valid_letters <- all(all_lets %in% c('A', 'C', 'G', 'T'))
-      result$all_the_seq <- result$the_seq_valid_letters
+      result$the_seq_equal_length <- all(nchar(genealogy$the_Seq) == min(nchar(genealogy$the_seq)))
+      result$all_the_seq <- result$the_seq_valid_letters & result$the_seq_equal_length
     }
   } # if (prerequisites_not_met)
 

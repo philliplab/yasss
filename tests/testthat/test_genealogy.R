@@ -204,7 +204,7 @@ test_that('check_genealogy flags issues with the_seq', {
   m_genea$the_seq[2] <- NA
   genealogy_expector(m_genea, 
                      false_list = c('the_seq_not_missing', 'the_seq_valid_letters', 
-                                    'all_the_seq'),
+                                    'the_seq_equal_length', 'all_the_seq'),
                      which_checker = 'check_genealogy_the_seq',
                      prerequisite_result = list(has_the_seq = TRUE),
                      extra_info = 'm_genea$the_seq[2] <- NA')
@@ -213,7 +213,7 @@ test_that('check_genealogy flags issues with the_seq', {
   m_genea$the_seq[1] <- ''
   genealogy_expector(m_genea, 
                      false_list = c('the_seq_not_missing', 'the_seq_valid_letters',
-                                    'all_the_seq'),
+                                    'the_seq_equal_length', 'all_the_seq'),
                      which_checker = 'check_genealogy_the_seq',
                      prerequisite_result = list(has_the_seq = TRUE),
                      extra_info = 'm_genea$the_seq[1] <- ""')
