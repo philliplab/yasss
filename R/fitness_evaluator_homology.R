@@ -11,7 +11,7 @@
 fitness_evaluator_homology_fun <- function(the_seq, comparators, h2fs){
   stopifnot(class(the_seq) == "character")
 
-#  max_homologies <- max_homology(comparators)
+  max_homologies <- max_homology(comparators)
 
   dists <- NULL
 
@@ -20,6 +20,7 @@ fitness_evaluator_homology_fun <- function(the_seq, comparators, h2fs){
   for (c_comparator in comparators){
     comparator_num <- comparator_num + 1
     c_dists <- data.frame(X = stringdist(c_comparator, the_seq))
+    c_dists$X <- c_dists$X / max_homologies[[c_comparator]]
     names(c_dists) <- paste("Comp_", comparator_num, sep = '')
     if (is.null(dists)){
       dists <- c_dists
@@ -28,7 +29,7 @@ fitness_evaluator_homology_fun <- function(the_seq, comparators, h2fs){
     }
   }
 
-  fitness_score <- dists[,1]/max(dists[,1])
+  fitness_score <- dists[,1]
 
   return(list(fitness_score = fitness_score,
               dists = dists,

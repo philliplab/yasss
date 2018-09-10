@@ -27,6 +27,9 @@ test_that("fitness_evaluator_homology works", {
   args$the_seq = x$the_seq
   y <- do.call(fit_fun, args)
   check_fitness_evaluator_result(y, args)
+  expect_equal(ncol(y$dists), length(fe$args$comparators))
+  expect_true(all(y$dists >= 0))
+  expect_true(all(y$dists <= 1))
   
   x <- sim_pop('AAAAAAAAA', r0 = 2, n_pop = 15,
                mutator = list(fun = "mutator_uniform_fun",
@@ -36,6 +39,10 @@ test_that("fitness_evaluator_homology works", {
   args$the_seq = x$the_seq
   y <- do.call(fit_fun, args)
   check_fitness_evaluator_result(y, args)
+  expect_equal(ncol(y$dists), length(fe$args$comparators))
+  expect_true(all(y$dists >= 0))
+  expect_true(all(y$dists <= 1))
+
 })
 
 test_that("max_homology correctly computes the max possible homology", {
@@ -51,3 +58,4 @@ test_that("max_homology correctly computes the max possible homology", {
                  info = comparator_df[i,'compa'])
   }
 })
+
