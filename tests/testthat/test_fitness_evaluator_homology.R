@@ -4,7 +4,7 @@ test_that("fitness_evaluator_homology works", {
   fe <- list(fun = 'fitness_evaluator_homology_fun',
              the_seq = c("AAAAAAAAA", "AAAAAAAAC", "AAAAAACCC", "CCCCCCCCC"),
              args = list(comparators = "AAAAAAAAA",
-                         h2fs = "h2fs_1_epitope"))
+                         h2fs = "h2fs_univariate_linear_fun"))
 
   # debugging
   #TODO: delete
@@ -36,7 +36,7 @@ test_that("fitness_evaluator_homology works", {
                                          "AAAAAACCCTAT", "CCCCCCCCCTAT"),
              args = list(comparators = c("AAAAAAAAXTAT", "XAAAAAAAATAT", 
                                          "XAXAXAXAXTAX"),
-                         h2fs = "h2fs_1_epitope"))
+                         h2fs = "h2fs_univariate_linear_fun"))
   args <- fe$args
   args$the_seq <- fe$the_seq
   y <- do.call(get(fe$fun), args)

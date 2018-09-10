@@ -4,7 +4,8 @@
 \alias{fitness_evaluator_homology_fun}
 \title{The homology based fitness_evaluator}
 \usage{
-fitness_evaluator_homology_fun(the_seq, comparators, h2fs)
+fitness_evaluator_homology_fun(the_seq, comparators,
+  h2fs = "h2fs_univariate_linear_fun")
 }
 \arguments{
 \item{the_seq}{All the sequences to which fitnesses must be assigned.}
