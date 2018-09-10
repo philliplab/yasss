@@ -28,7 +28,7 @@ test_that("assign_fitness works", {
   }
 
   x <- sim_pop('AAAA', r0 = 2, n_pop = 15)
-  x$fitness_score <- NA_real_
+  x$fitness_score[x$gen_num == max(x$gen_num)] <- NA_real_
   y <- assign_fitness(x, fe)
 
   z <- check_genealogy(y)
@@ -36,10 +36,10 @@ test_that("assign_fitness works", {
     expect_true(z[[i]], info = i)
   }
   
-  y_non_last <- y %>% filter(gen_num != max(gen_num))
+  x_last <- x %>% filter(gen_num == max(gen_num))
   y_last <- y %>% filter(gen_num == max(gen_num))
 
-  expect_true(all(is.na(y_non_last$fitness_score)))
+  expect_true(all(is.na(x_last$fitness_score)))
   expect_true(all(!is.na(y_last$fitness_score)))
   expect_true(all(y_last$fitness_score > 0 & y_last$fitness_score < 1))
 })

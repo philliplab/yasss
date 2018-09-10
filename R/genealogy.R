@@ -48,6 +48,8 @@ check_genealogy <- function(genealogy){
 
   result <- check_genealogy_n_mut(genealogy, result)
 
+  result <- check_genealogy_fitness_score(genealogy, result)
+
   return(result)
 }
 
@@ -499,6 +501,51 @@ check_genealogy_n_mut <- function(genealogy, result = list()){
       } # else of if(!result$n_mut_not_missing)
     } # else of if(nrow(non_first_gen) == 0)
   } # else of if (prerequisites_not_met)
+
+  return(result)
+}
+
+#' Check the fitness_score column in a genealogy
+#'
+#' Checks that fitness_score column contains only valid fitness_scores.
+#'
+#' @return A list with TRUE or FALSE indicating whether the related check
+#' passed.
+#' @param genealogy The genealogy to check.
+#' @param result The list to which the result will be added and from which
+#' previous result will be drawn to check the prerequisites.
+#' @export
+
+check_genealogy_fitness_score <- function(genealogy, result = list()){
+
+  prerequisites <- c("has_fitness_score", "class_fitness_score")
+  prerequisites_not_met <- FALSE
+  for (i in names(prerequisites)){
+    if (result[[i]] == FALSE){
+      prerequisites_not_met <- TRUE
+    }
+  }
+
+  if (prerequisites_not_met){
+    result$fitness_score_not_missing <- FALSE
+    result$fitness_score_between_zero_one <- FALSE
+    result$all_fitness_score <- FALSE
+    return(result)
+  } else {
+    result$fitness_score_not_missing <- !(any(is.na(genealogy$fitness_score)) | 
+                                          any(is.nan(genealogy$fitness_score)) | 
+                                          any(is.null(genealogy$fitness_score)) |
+                                          any(genealogy$fitness_score == ''))
+    if (!result$fitness_score_not_missing){
+      result$fitness_score_between_zero_one <- FALSE
+      result$all_fitness_score <- FALSE
+      return(result)
+    } else {
+      result$fitness_score_between_zero_one <- all((genealogy$fitness_score >= 0) & 
+                                                   (genealogy$fitness_score <= 1))
+      result$all_fitness_score <- result$fitness_score_between_zero_one
+    }
+  } # if (prerequisites_not_met)
 
   return(result)
 }
