@@ -24,10 +24,38 @@ test_that("fitness_evaluator_homology works", {
   args <- fe$args
   args$the_seq <- fe$the_seq
   y <- do.call(get(fe$fun), args)
+  expect_equal(ncol(y$dists), 1)
   expect_equal(y$dists[1,1], 0/9)
   expect_equal(y$dists[2,1], 1/9)
   expect_equal(y$dists[3,1], 3/9)
   expect_equal(y$dists[4,1], 9/9)
+  
+  
+  fe <- list(fun = 'fitness_evaluator_homology_fun',
+             the_seq =                 c("AAAAAAAAATAT", "AAAAAAAACTAT", 
+                                         "AAAAAACCCTAT", "CCCCCCCCCTAT"),
+             args = list(comparators = c("AAAAAAAAXTAT", "XAAAAAAAATAT", 
+                                         "XAXAXAXAXTAX"),
+                         h2fs = "h2fs_1_epitope"))
+  args <- fe$args
+  args$the_seq <- fe$the_seq
+  y <- do.call(get(fe$fun), args)
+  expect_equal(ncol(y$dists), 3)
+
+  expect_equal(y$dists[1,1], 0/11)
+  expect_equal(y$dists[2,1], 0/11)
+  expect_equal(y$dists[3,1], 2/11)
+  expect_equal(y$dists[4,1], 8/11)
+
+  expect_equal(y$dists[1,2], 0/11)
+  expect_equal(y$dists[2,2], 1/11)
+  expect_equal(y$dists[3,2], 3/11)
+  expect_equal(y$dists[4,2], 8/11)
+
+  expect_equal(y$dists[1,3], 0/6)
+  expect_equal(y$dists[2,3], 0/6)
+  expect_equal(y$dists[3,3], 1/6)
+  expect_equal(y$dists[4,3], 4/6)
 
   x <- sim_pop('AAAAAAAAA', r0 = 2, n_pop = 15)
   fit_fun <- get(fe$fun)
@@ -52,18 +80,3 @@ test_that("fitness_evaluator_homology works", {
   expect_true(all(y$dists <= 1))
 
 })
-
-test_that("max_homology correctly computes the max possible homology", {
-  comparator_df <- data.frame(
-    compa =     c("AAA", "XXX", "XAA", "AAX", "AXC", "AAAAAAAAX"),
-    max_score = c(     3,    0,     2,      2,    2,           8),
-    stringsAsFactors = FALSE)
-
-  comped_max_homology <- max_homology(comparator_df$compa)
-  for (i in 1:nrow(comparator_df)){
-    expect_equal(comped_max_homology[[comparator_df[i,'compa']]], 
-                 comparator_df[i,'max_score'], 
-                 info = comparator_df[i,'compa'])
-  }
-})
-

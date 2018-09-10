@@ -11,16 +11,19 @@
 fitness_evaluator_homology_fun <- function(the_seq, comparators, h2fs){
   stopifnot(class(the_seq) == "character")
 
-  max_homologies <- max_homology(comparators)
-
   dists <- NULL
 
   comparator_num <- 0
   c_comparator <- comparators[1]
   for (c_comparator in comparators){
+    num_x <- sum(charToRaw(c_comparator) == charToRaw("X"))
     comparator_num <- comparator_num + 1
     c_dists <- data.frame(X = stringdist(c_comparator, the_seq))
-    c_dists$X <- c_dists$X / max_homologies[[c_comparator]]
+    c_dists$X <- c_dists$X - num_x
+    if (any(c_dists$X < 0)){
+      c_dists$X[c_dists$X < 0] <- 0
+    }
+    c_dists$X <- c_dists$X / (nchar(c_comparator) - num_x)
     names(c_dists) <- paste("Comp_", comparator_num, sep = '')
     if (is.null(dists)){
       dists <- c_dists
@@ -34,21 +37,4 @@ fitness_evaluator_homology_fun <- function(the_seq, comparators, h2fs){
   return(list(fitness_score = fitness_score,
               dists = dists,
               the_seq = the_seq))
-}
-
-#' Computes the max homology possible to a set of comparator sequences.
-#'
-#' Given comparator sequences, compute the max homology that can be achieved to these comparators given the conventions around the handling of X characters. See github issue #43
-#'
-#' @return A list with an element for each comparator. This element contains the max possible homology between a sequence and the comparator.
-#' @param comparators A vector of character strings that form the comparators. Note the special restrictions placed on the usage of X.
-#' @export
-
-max_homology <- function(comparators){
-  result <- list()
-  for (i in 1:length(comparators)){
-    num_x <- sum(charToRaw(comparators[i]) == charToRaw("X"))
-    result[[comparators[i]]] <- nchar(comparators[i]) - num_x
-  }
-  return(result)
 }
