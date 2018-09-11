@@ -33,7 +33,7 @@ recomb_pos = NA_real_,
 recomb_replaced = NA_character_,
 recomb_partner = NA_real_,
 recomb_muts = NA_real_,
-fitness_score = NA_real_,
+fitness_score = 0.9,
 #==========================================================
 stringsAsFactors = FALSE
   ),
@@ -48,7 +48,7 @@ recomb_pos = NA_real_,
 recomb_replaced = NA_character_,
 recomb_partner = NA_real_,
 recomb_muts = NA_real_,
-fitness_score = NA_real_,
+fitness_score = 0.8,
 #==========================================================
 stringsAsFactors = FALSE
   )
