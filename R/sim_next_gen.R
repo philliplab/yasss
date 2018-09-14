@@ -23,6 +23,7 @@ sim_next_gen <- function(genealogy, r0, mutator, gen_num = 1){
 #                          fitness_score = numeric(0),
 #                          stringsAsFactors = FALSE
 #                          )
+  c_gen_num <- gen_num
   genealogy_names <- c("gen_num", "id", "parent_id", "the_seq", "n_mut", 
                        "recomb_pos", "recomb_replaced", "recomb_partner", 
                        "recomb_muts", "fitness_score")
@@ -32,6 +33,14 @@ sim_next_gen <- function(genealogy, r0, mutator, gen_num = 1){
   total_offspring <- 0
   result <- list()
   parents <- genealogy[genealogy$gen_num == (gen_num - 1),]
+
+  next_gen_total_size <- nrow(parents) * r0
+
+#  n_genealogy <- genealogy[rep(1, next_gen_total_size),]
+#  n_genealogy <- data.table(n_genealogy)
+
+#  n_genealogy <- vector("list", length = next_gen_total_size)
+
   for (i in 1:nrow(parents)){
     for (j in 1:r0){
       total_offspring <- total_offspring + 1
@@ -51,9 +60,27 @@ sim_next_gen <- function(genealogy, r0, mutator, gen_num = 1){
                                 recomb_muts = NA_real_,
                                 fitness_score = NA_real_,
                                 stringsAsFactors = FALSE)
+#      n_genealogy[[total_offspring]] <- c_genealogy
       genealogy <- rbind(genealogy, c_genealogy, stringsAsFactors = FALSE)
+#      n_genealogy[total_offspring, names(n_genealogy) := list(
+#        c_gen_num, 
+#        total_offspring, 
+#        i, 
+#        child, 
+#        mut_result$mutation_stats$n_mut, 
+#        NA_real_,
+#        NA_character_,
+#        NA_real_,
+#        NA_real_,
+#        NA_real_
+#        )
+#      ]
     }
   }
+#  n_genealogy <- data.frame(n_genealogy)
+#  genealogy <- rbind(genealogy, n_genealogy)
+#  genealogy <- rbindlist(n_genealogy)
+#  genealogy <- data.frame(genealogy)
   return(genealogy)
 }
 

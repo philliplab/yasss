@@ -20,6 +20,16 @@ make_genealogy <- function(ancestors){
                           )
 }
 
+# debugging scribbles
+if (FALSE){
+#sim_next_gen <- function(genealogy, r0, mutator, gen_num = 1){
+  genealogy <- make_genealogy(c('AAA', 'CCC')) 
+  r0 <- 2
+  mutator <- YASSS_MUTATORS$mutator_uniform
+  gen_num <- 1
+  r0 <- 5
+}
+
 test_that('sim_next_gen produces output of the correct format', {
   x <- sim_next_gen(make_genealogy(c('AAA', 'CCC')), 2, 
                     YASSS_MUTATORS$mutator_uniform)
