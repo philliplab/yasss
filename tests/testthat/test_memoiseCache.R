@@ -33,4 +33,24 @@ test_that("memoiseCache returns the correct result", {
   expect_equal(y, z)
 })
 
+test_that("memoiseCache reads the result from the cache", {
+  fun <- "rnorm"
+  args <- list(n = 10, mean = 2)
+  x <- memoiseCache(fun, args)
+  y <- memoiseCache(fun, args)
+  z <- memoiseCache(fun, args)
+  expect_equal(x, y)
+  expect_equal(x, z)
+})
+
+test_that("seed argument works", {
+  fun <- "rnorm"
+  args <- list(n = 10, mean = 2)
+  x <- memoiseCache(fun, args, seed = 1)
+  y <- memoiseCache(fun, args, seed = 2)
+  z <- memoiseCache(fun, args, seed = 2)
+  expect_true(x != y)
+  expect_equal(y, z)
+})
+
 set.seed(.old.seed)
