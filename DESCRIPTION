@@ -9,7 +9,8 @@ Depends:
     stringdist,
     ggplot2,
     dplyr,
-    simpleCache
+    simpleCache,
+    digest
 Suggests:
     testthat,
     knitr
