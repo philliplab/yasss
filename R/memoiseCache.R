@@ -11,3 +11,4 @@
 memoiseCache <- function(fun, args, cacheNamePrefix = NULL, seed = NULL, ...){
   do.call(fun, args)
 }
+
