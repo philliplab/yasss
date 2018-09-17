@@ -44,22 +44,6 @@ memoiseCache <- function(fun, args, cacheNamePrefix = NULL, seed = NULL, ...){
     }
   }
 
-#  if (is.null(seed)){
-#    searchName <- paste(
-#      cacheNamePrefix,
-#      as.character(substitute(fun)),
-#      digest(args, 'sha512'),
-#      seed,
-#      sep = '_')
-#    searchName <- gsub("^_", gsub("_.Rdata$", ".Rdata", searchName))
-#    existingCaches <- listCaches()
-#    matchedCaches_bool <- grepl(searchName, existingCaches)
-#    if (any(matchedCaches_bool)){
-#      matchedCaches <- existingCaches[matchedCaches_bool]
-#    } else {
-#    }
-#  }
-
   cacheName <- paste(
     cacheNamePrefix,
     fun,
