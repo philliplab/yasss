@@ -2,6 +2,23 @@ context("memoiseCache")
 
 .old.seed <- .Random.seed
 
+test_that("memoiseCache checks arguments correctly", {
+  expect_error(memoiseCache(1, list(x=1)), "fun must be character or a function of length 1")
+  expect_error(memoiseCache(c("sum", "mean"), list(x=1)), "fun must be character or a function")
+  expect_error(memoiseCache(sum, 1), "args must be a list")
+  expect_error(memoiseCache("sum", "name"), "args must be a list")
+  expect_error(memoiseCache("rnorm", list(n = 100, mean = 10, sd = 5), cacheNamePrefix = 51),
+               "cacheNamePrefix must be a character of length 1")
+  expect_error(memoiseCache("rnorm", list(n = 100, mean = 10, sd = 5), seed = "name"),
+               "seed must be a positive integer")
+  expect_error(memoiseCache("rnorm", list(n = 100, mean = 10, sd = 5), seed = -1),
+               "seed must be a positive integer")
+  expect_error(memoiseCache("rnorm", list(n = 100, mean = 10, sd = 5), seed = 0),
+               "seed must be a positive integer")
+  expect_error(memoiseCache("rnorm", list(n = 100, mean = 10, sd = 5), seed = 5.5),
+               "seed must be a positive integer")
+})
+
 test_that("memoiseCache returns the correct result", {
   fun <- "sum"
   args <- list(1:10)
