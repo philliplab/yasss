@@ -18,6 +18,9 @@ memoiseCache <- function(fun, args, cacheNamePrefix = NULL, seed = NULL, ...){
   if ((class(args) != 'list')){
     stop("args must be a list")
   }
+  if (class(fun) == 'function'){
+    fun <- as.character(substitute(fun))
+  }
   if (!is.null(cacheNamePrefix)){
     if ((length(cacheNamePrefix) != 1)){
       stop("cacheNamePrefix must be a character of length 1 or NULL")
@@ -59,12 +62,12 @@ memoiseCache <- function(fun, args, cacheNamePrefix = NULL, seed = NULL, ...){
 
   cacheName <- paste(
     cacheNamePrefix,
-    as.character(substitute(fun)),
+    fun,
     digest(args, 'sha512'),
     seed,
     sep = '_')
 
-  x <- simpleCache(cacheName, do.call(fun, args), lifespan = 7)
+  x <- simpleCache(cacheName, do.call(fun, args), reload = TRUE, lifespan = 7)
 
   return(x)
 }

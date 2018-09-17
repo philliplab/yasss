@@ -1,5 +1,8 @@
 context("memoiseCache")
 
+cache_dir <- '/tmp/memoiseCacheDebug'
+setCacheDir(cache_dir)
+
 .old.seed <- .Random.seed
 
 test_that("memoiseCache checks arguments correctly", {
@@ -49,7 +52,7 @@ test_that("seed argument works", {
   x <- memoiseCache(fun, args, seed = 1)
   y <- memoiseCache(fun, args, seed = 2)
   z <- memoiseCache(fun, args, seed = 2)
-  expect_true(x != y)
+  expect_true(!all(x == y))
   expect_equal(y, z)
 })
 
