@@ -9,6 +9,36 @@
 #' @export
 
 memoiseCache <- function(fun, args, cacheNamePrefix = NULL, seed = NULL, ...){
+  if (length(fun) != 1){
+    stop("fun must be character or a function of length 1")
+  }
+  if (!(class(fun) %in% c('character', 'function'))){
+    stop("fun must be character or a function of length 1")
+  }
+  if ((class(args) != 'list')){
+    stop("args must be a list")
+  }
+  if (!is.null(cacheNamePrefix)){
+    if ((length(cacheNamePrefix) != 1)){
+      stop("cacheNamePrefix must be a character of length 1 or NULL")
+    }
+    if ((class(cacheNamePrefix) != 'character')){
+      stop("cacheNamePrefix must be a character of length 1 or NULL")
+    }
+  }
+  if (!is.null(seed)){
+    if ((length(seed) != 1)){
+      stop("seed must be a positive integer or NULL")
+    }
+    if (!(class(seed) %in% c("numeric", "integer"))){
+      stop("seed must be a positive integer or NULL")
+    }
+    if (ceiling(seed) != floor(seed)){
+      stop("seed must be a positive integer or NULL")
+    }
+    if (seed <= 0){
+      stop("seed must be a positive integer or NULL")
+    }
+  }
   do.call(fun, args)
 }
-

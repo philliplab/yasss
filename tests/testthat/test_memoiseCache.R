@@ -8,15 +8,18 @@ test_that("memoiseCache checks arguments correctly", {
   expect_error(memoiseCache(sum, 1), "args must be a list")
   expect_error(memoiseCache("sum", "name"), "args must be a list")
   expect_error(memoiseCache("rnorm", list(n = 100, mean = 10, sd = 5), cacheNamePrefix = 51),
-               "cacheNamePrefix must be a character of length 1")
+               "cacheNamePrefix must be a character of length 1 or NULL")
+  expect_error(memoiseCache("rnorm", list(n = 100, mean = 10, sd = 5), 
+                            cacheNamePrefix = c("abc", "def")),
+               "cacheNamePrefix must be a character of length 1 or NULL")
   expect_error(memoiseCache("rnorm", list(n = 100, mean = 10, sd = 5), seed = "name"),
-               "seed must be a positive integer")
+               "seed must be a positive integer or NULL")
   expect_error(memoiseCache("rnorm", list(n = 100, mean = 10, sd = 5), seed = -1),
-               "seed must be a positive integer")
+               "seed must be a positive integer or NULL")
   expect_error(memoiseCache("rnorm", list(n = 100, mean = 10, sd = 5), seed = 0),
-               "seed must be a positive integer")
+               "seed must be a positive integer or NULL")
   expect_error(memoiseCache("rnorm", list(n = 100, mean = 10, sd = 5), seed = 5.5),
-               "seed must be a positive integer")
+               "seed must be a positive integer or NULL")
 })
 
 test_that("memoiseCache returns the correct result", {
