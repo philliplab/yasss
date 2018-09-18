@@ -52,6 +52,16 @@ test_that("sim_pop output in the correct format", {
   expect_true(all(unlist(check_genealogy(x))))
 })
 
+test_that("sim_pop prints progress", {
+  expect_output({
+  x <- sim_pop(ancestors = c("AAAA", "CCCC"), 
+               r0 = 2,
+               n_gen = 2,
+               verbose = TRUE)
+  },
+  "Simulating generation 1\nSimulating generation 2")
+})
+
 sim_pop_expector <- function(ancestors,
                            r0 = 2,
                            n_gen = NULL,

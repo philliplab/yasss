@@ -12,6 +12,7 @@
 #' @param n_pop Stop the simulation when the population size exceeds this number.
 #' @param mutator A list with two elements fun and args specifying the name of the function that mutates parents into their offspring and the list of arguments said function requires. 
 #' @param fitness_evaluator A list with two elements fun and args, specifying the name of the function that evaluates the fitness of each sequence and the list of arguments the function requires.
+#' @param verbose If TRUE, progress is printed to STDOUT.
 #' 
 #' @examples
 #' 
@@ -40,7 +41,8 @@ sim_pop <- function(ancestors,
                     mutator = list(fun = "mutator_uniform_fun",
                                    args = list(mu = 0.01)),
                     fitness_evaluator = list(fun = "fitness_evaluator_uniform_fun",
-                                             args = NULL)){
+                                             args = NULL),
+                    verbose = FALSE){
 
   r0 <- tryCatch(round(as.numeric(r0), 0),
                        warning=function(w) return(list(round(as.numeric(r0), 0), w))
@@ -86,14 +88,21 @@ sim_pop <- function(ancestors,
 
   while ((c_pop < n_pop) & (c_gen < n_gen)){
     c_gen <- c_gen + 1
+    if (verbose){
+      cat ("Simulating generation ", c_gen, "\n", sep = '')
+    }
     
 #    new_generation <- sim_next_gen(genealogy[genealogy$gen_num == (c_gen-1),], 
 #                                   r0 = r0,
 #                                   mutator, gen_num = c_gen)
 #
-    new_generation <- sim_next_gen(genealogy, 
-                                   r0 = r0,
-                                   mutator, gen_num = c_gen)
+
+    args <- list(genealogy = genealogy,
+                 r0 = r0,
+                 mutator = mutator,
+                 gen_num = c_gen)
+#    dput(args)
+    new_generation <- do.call(sim_next_gen, args)
 
     # insert recomb here (act on new_generation)
 

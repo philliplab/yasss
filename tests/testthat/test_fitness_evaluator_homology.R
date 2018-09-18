@@ -81,6 +81,26 @@ test_that("fitness_evaluator_homology works", {
   expect_equal(y$dists[3,3], 1/6)
   expect_equal(y$dists[4,3], 4/6)
 
+  if (FALSE){
+    options(error = recover)
+    x <- sim_pop('AAAAAAAAA', r0 = 2, n_pop = 15)
+
+    genealogy <- data.frame(gen_num = 0, 
+                            id = 1L, 
+                            parent_id = NA_real_,
+                            the_seq = "AAAAAAAAA", 
+                            n_mut = NA_real_,
+                            recomb_pos = NA_real_, 
+                            recomb_replaced = NA_character_, 
+                            recomb_partner = NA_real_,
+                            recomb_muts = NA_real_, 
+                            fitness_score = 0.897154232952744)
+    mutator <- list(fun = "mutator_uniform_fun", 
+                    args = list(mu = 0.01))
+    gen_num <- 1
+    r0 <- 2
+  }
+
   x <- sim_pop('AAAAAAAAA', r0 = 2, n_pop = 15)
   fit_fun <- get(fe$fun)
   args <- fe$args
@@ -102,5 +122,4 @@ test_that("fitness_evaluator_homology works", {
   expect_equal(ncol(y$dists), length(fe$args$comparators))
   expect_true(all(y$dists >= 0))
   expect_true(all(y$dists <= 1))
-
 })

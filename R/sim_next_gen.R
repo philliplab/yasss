@@ -36,22 +36,26 @@ sim_next_gen <- function(genealogy, r0, mutator, gen_num = 1){
 
   next_gen_total_size <- nrow(parents) * r0
 
+## := operator      
 #  n_genealogy <- genealogy[rep(1, next_gen_total_size),]
-#  n_genealogy <- data.table(n_genealogy)
+#  n_genealogy <- as.data.table(n_genealogy)
 
-#  n_genealogy <- vector("list", length = next_gen_total_size)
+# RBINDLIST
+  n_genealogy <- vector("list", length = next_gen_total_size)
+#  n_genealogy <- list()  
 
-  for (i in 1:nrow(parents)){
-    for (j in 1:r0){
+  for (var_i in 1:nrow(parents)){
+    for (var_j in 1:r0){
       total_offspring <- total_offspring + 1
       mut_arg <- mutator$arg
-      mut_arg$parent <- parents[i, 'the_seq']
+      mut_arg$parent <- parents[var_i, 'the_seq']
       mut_fun <- get(mutator$fun)
       mut_result <- do.call(mut_fun, mut_arg)
       child <- mut_result$child
+# DATA FRAMES and RBINDLIST
       c_genealogy <- data.frame(gen_num = gen_num,
                                 id = total_offspring,
-                                parent_id = i,
+                                parent_id = var_i,
                                 the_seq = child,
                                 n_mut = mut_result$mutation_stats$n_mut,
                                 recomb_pos = NA_real_,
@@ -60,27 +64,28 @@ sim_next_gen <- function(genealogy, r0, mutator, gen_num = 1){
                                 recomb_muts = NA_real_,
                                 fitness_score = NA_real_,
                                 stringsAsFactors = FALSE)
-#      n_genealogy[[total_offspring]] <- c_genealogy
-      genealogy <- rbind(genealogy, c_genealogy, stringsAsFactors = FALSE)
-#      n_genealogy[total_offspring, names(n_genealogy) := list(
-#        c_gen_num, 
-#        total_offspring, 
-#        i, 
-#        child, 
-#        mut_result$mutation_stats$n_mut, 
-#        NA_real_,
-#        NA_character_,
-#        NA_real_,
-#        NA_real_,
-#        NA_real_
-#        )
-#      ]
+
+## DATA FRAMES ONLY
+#      genealogy <- rbind(genealogy, c_genealogy, stringsAsFactors = FALSE)
+
+# RBINDLIST
+      n_genealogy[[total_offspring]] <- c_genealogy
+
+## := operator      
+#      new_row <- list( c_gen_num, total_offspring, var_i, child,
+#                      mut_result$mutation_stats$n_mut, NA_real_, NA_character_,
+#                      NA_real_, NA_real_, NA_real_)
+#      n_genealogy[total_offspring, (names(n_genealogy)) := new_row]
     }
   }
+## := operator
 #  n_genealogy <- data.frame(n_genealogy)
 #  genealogy <- rbind(genealogy, n_genealogy)
-#  genealogy <- rbindlist(n_genealogy)
-#  genealogy <- data.frame(genealogy)
+
+# RBINDLIST
+  n_genealogy <- rbindlist(n_genealogy)
+  n_genealogy <- data.frame(n_genealogy)
+  genealogy <- rbind(genealogy, n_genealogy)
   return(genealogy)
 }
 

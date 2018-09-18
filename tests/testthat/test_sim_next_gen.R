@@ -28,6 +28,14 @@ if (FALSE){
   mutator <- YASSS_MUTATORS$mutator_uniform
   gen_num <- 1
   r0 <- 5
+
+
+
+  genealogy <- make_genealogy(c('AAA'))
+  r0
+  YASSS_MUTATORS$mutator_uniform
+
+
 }
 
 test_that('sim_next_gen produces output of the correct format', {

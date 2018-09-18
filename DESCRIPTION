@@ -10,7 +10,8 @@ Depends:
     ggplot2,
     dplyr,
     simpleCache,
-    digest
+    digest,
+    data.table
 Suggests:
     testthat,
     knitr
