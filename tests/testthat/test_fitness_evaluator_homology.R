@@ -1,5 +1,23 @@
 context("fitness_evaluator_homology")
 
+test_that("fitness_evaluator_homology checks the comparators", {
+  fe <- list(fun = 'fitness_evaluator_homology_fun',
+             the_seq = c("AAA", "AAC", "ACC", "CCC"),
+             args = list(comparators = "AAA",
+                         h2fs = "h2fs_univariate_linear_fun"))
+  
+  x <- check_fitness_evaluator(fe$the_seq, fe$fun, fe$args)
+  for (i in names(x)){
+    expect_true(x[[i]], info = i)
+  }
+
+  args <- fe$args
+  args$the_seq <- fe$the_seq
+  args$comparators <- "AAY"
+  expect_error({y <- do.call(get(fe$fun), args)},
+    "Only A, C, G, T and X are allowed in comparators")
+})
+
 test_that("fitness_evaluator_homology works", {
   fe <- list(fun = 'fitness_evaluator_homology_fun',
              the_seq = c("AAAAAAAAA", "AAAAAAAAC", "AAAAAACCC", "CCCCCCCCC"),

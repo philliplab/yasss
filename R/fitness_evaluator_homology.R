@@ -5,12 +5,19 @@
 #' @return A list with a single element called fitness.
 #' @param the_seq All the sequences to which fitnesses must be assigned.
 #' @param comparators The sequences to which the input sequences must be compared
-#' @param h2fs A function that remaps the homology results between the input sequences and the comparators to a fitness score.
+#' @param h2fs A function that remaps the homology results between the input
+#' sequences and the comparators to a fitness score.
 #' @export
 
 fitness_evaluator_homology_fun <- function(the_seq, comparators, 
     h2fs = "h2fs_univariate_linear_fun"){
   stopifnot(class(the_seq) == "character")
+
+  cat_comparators <- paste(comparators, sep = '', collapse = '')
+  all_comparator_letters <- sort(unique(strsplit(cat_comparators, '')[[1]]))
+  if (!all(all_comparator_letters %in% c('A', 'C', 'G', 'T', 'X'))){
+    stop("Only A, C, G, T and X are allowed in comparators")
+  }
 
   dists <- NULL
 

@@ -12,7 +12,8 @@ fitness_evaluator_homology_fun(the_seq, comparators,
 
 \item{comparators}{The sequences to which the input sequences must be compared}
 
-\item{h2fs}{A function that remaps the homology results between the input sequences and the comparators to a fitness score.}
+\item{h2fs}{A function that remaps the homology results between the input
+sequences and the comparators to a fitness score.}
 }
 \value{
 A list with a single element called fitness.
