@@ -113,18 +113,19 @@ sim_next_gen <- function(genealogy, r0, mutator, gen_num = 1){
 
 # col vectors
   n_genealogy <- data.frame(
-    gen_num = v_gen_num,
-    id = v_id,
-    parent_id = v_parent_id,
-    the_seq = v_the_seq,
-    n_mut = v_n_mut,
-    recomb_pos = v_recomb_pos,
-    recomb_replaced = v_recomb_replaced,
-    recomb_partner = v_recomb_partner,
-    recomb_muts = v_recomb_muts,
-    fitness_score = v_fitness_score,
+    gen_num = c(genealogy$gen_num, v_gen_num),
+    id = c(genealogy$id, v_id),
+    parent_id = c(genealogy$parent_id, v_parent_id),
+    the_seq = c(genealogy$the_seq, v_the_seq),
+    n_mut = c(genealogy$n_mut, v_n_mut),
+    recomb_pos = c(genealogy$recomb_pos, v_recomb_pos),
+    recomb_replaced = c(genealogy$recomb_replaced, v_recomb_replaced),
+    recomb_partner = c(genealogy$recomb_partner, v_recomb_partner),
+    recomb_muts = c(genealogy$recomb_muts, v_recomb_muts),
+    fitness_score = c(genealogy$fitness_score, v_fitness_score),
     stringsAsFactors = FALSE)
-  genealogy <- rbind(genealogy, n_genealogy)
+#  genealogy <- rbind(genealogy, n_genealogy)
+  genealogy <- n_genealogy
 
   return(genealogy)
 }

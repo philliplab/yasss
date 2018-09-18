@@ -73,6 +73,13 @@ test_that("sim_pop prints progress", {
                    n_gen = 11,
                    verbose = TRUE)
     })
+    
+    profvis({
+      x <- sim_pop(ancestors = paste(rep('AAAAAA'), collapse = ''), 
+                   r0 = 2,
+                   n_gen = 11,
+                   verbose = TRUE)
+    })
   }
 
 
