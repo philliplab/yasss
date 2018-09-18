@@ -37,6 +37,10 @@ test_that("sim_pop checks arguments correctly", {
     expect_warning(sim_pop(ancestors = c('AAA'), r0 = 'many', n_gen = 3, n_pop = 50),
                    "NAs introduced by coercion"),
                GEN_SIZE_VALID)
+
+# No Xs in ancestors
+  expect_error(sim_pop(ancestors = c("AAAX", "CCCC"), r0 = 2, n_gen = 1),
+               'No Xs allows in ancestors')
 })
 
 test_that("sim_pop output in the correct format", {
