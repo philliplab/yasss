@@ -61,7 +61,7 @@ sim_pop <- function(ancestors,
     stop(YASSS_ERR_MSG[['N_GEN_N_POP_LESS_ONE']])
   }
   if (any(grepl('X', ancestors))){
-    stop('No Xs allows in ancestors')
+    stop(YASSS_ERR_MSG[['NO_X_IN_ANCESTOR']])
   }
 
   

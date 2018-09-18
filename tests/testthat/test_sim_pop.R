@@ -38,9 +38,10 @@ test_that("sim_pop checks arguments correctly", {
                    "NAs introduced by coercion"),
                GEN_SIZE_VALID)
 
-# No Xs in ancestors
+#  NO_X_IN_ANCESTOR = 'No Xs allows in ancestors'
+  NO_X_IN_ANCESTOR <- YASSS_ERR_MSG[['NO_X_IN_ANCESTOR']]
   expect_error(sim_pop(ancestors = c("AAAX", "CCCC"), r0 = 2, n_gen = 1),
-               'No Xs allows in ancestors')
+               NO_X_IN_ANCESTOR)
 })
 
 test_that("sim_pop output in the correct format", {
