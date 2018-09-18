@@ -60,6 +60,22 @@ test_that("sim_pop prints progress", {
                verbose = TRUE)
   },
   "Simulating generation 1\nSimulating generation 2")
+
+  # PROFILING
+  if (FALSE){
+    restart_r()
+    library(profvis)
+    library(testthat)
+    devtools::load_all()
+    profvis({
+      x <- sim_pop(ancestors = paste(rep('A', 500), collapse = ''), 
+                   r0 = 2,
+                   n_gen = 11,
+                   verbose = TRUE)
+    })
+  }
+
+
 })
 
 sim_pop_expector <- function(ancestors,
