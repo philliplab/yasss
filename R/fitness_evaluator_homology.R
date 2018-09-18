@@ -18,6 +18,9 @@ fitness_evaluator_homology_fun <- function(the_seq, comparators,
   if (!all(all_comparator_letters %in% c('A', 'C', 'G', 'T', 'X'))){
     stop("Only A, C, G, T and X are allowed in comparators")
   }
+  if (!any(c('A', 'C', 'G', 'T') %in% all_comparator_letters)){
+    stop('A comparator must have at least one non-X character')
+  }
 
   dists <- NULL
 

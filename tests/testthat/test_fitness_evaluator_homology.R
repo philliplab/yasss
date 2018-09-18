@@ -16,6 +16,12 @@ test_that("fitness_evaluator_homology checks the comparators", {
   args$comparators <- "AAY"
   expect_error({y <- do.call(get(fe$fun), args)},
     "Only A, C, G, T and X are allowed in comparators")
+
+  args <- fe$args
+  args$the_seq <- fe$the_seq
+  args$comparators <- "XXX"
+  expect_error({y <- do.call(get(fe$fun), args)},
+    'A comparator must have at least one non-X character')
 })
 
 test_that("fitness_evaluator_homology works", {
