@@ -14,7 +14,8 @@ Depends:
     data.table
 Suggests:
     testthat,
-    knitr
+    knitr,
+    rmarkdown
 VignetteBuilder: knitr
 License: GPL-3
 RoxygenNote: 6.1.0
