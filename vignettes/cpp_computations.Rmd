@@ -86,19 +86,24 @@ start_time <- proc.time()
 x <- cpp_fibo_exported(1, 1, 5000)
 print(proc.time() - start_time)
 
-#print('Time required to compute 10000 x 10000 matrix')
-#start_time <- proc.time()
-#y <- yasss:::cpp_fibo_df(1000, 1000)
-#print(proc.time() - start_time)
+print('Time required to compute 10000 x 10000 matrix')
+start_time <- proc.time()
+y <- yasss:::cpp_fibo_df(1000, 1000)
+print(proc.time() - start_time)
 ```
 
 ### Passing Rcpp into Rcpp
 
 ```{r}
-#print('Time required to compute 10000 x 10000 matrix')
-#start_time <- proc.time()
-#x <- yasss:::cpp_fibo_df_pass(1000, 1000, cpp_fibo_exported)
-#print(proc.time() - start_time)
+print('Time required to compute 10000 x 10000 matrix')
+start_time <- proc.time()
+x <- yasss:::cpp_fibo_df_pass(1000, 1000, cpp_fibo_exported)
+print(proc.time() - start_time)
+
+print('Time required to compute 10000 x 10000 matrix')
+start_time <- proc.time()
+x <- yasss:::cpp_fibo_df_pass(1000, 1000, yasss:::cpp_fibo)
+print(proc.time() - start_time)
 ```
 
 *IT WORKS !!!!!*
