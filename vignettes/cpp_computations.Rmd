@@ -65,12 +65,22 @@ fibo_df <- function(n, n_columns = 20){
 }
 
 start_time <- proc.time()
-x <- fibo(1, 1, 20000)
+x <- fibo(1, 1, 50000)
 print(proc.time() - start_time)
 
 start_time <- proc.time()
-y <- fibo_df(200, 200)
+y <- fibo_df(400, 400)
 print(proc.time() - start_time)
+```
+
+```{r}
+library(Rcpp)
+sourceCpp('../src/fibo_perf.cpp')
+
+start_time <- proc.time()
+x <- cpp_fibo(1, 1, 50000)
+print(proc.time() - start_time)
+
 ```
 
 
