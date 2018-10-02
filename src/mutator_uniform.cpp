@@ -1,7 +1,7 @@
 #include <Rcpp.h>
 using namespace Rcpp;
 
-// [[Rcpp::plugins(cpp14)]]                                        
+// [[Rcpp::plugins(cpp11)]]                                        
 
 // [[Rcpp::export]]
 List cpp_mutator_uniform_fun(StringVector parent, double mu){
