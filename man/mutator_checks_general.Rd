@@ -9,7 +9,9 @@ mutator_checks_general(fun, args)
 \arguments{
 \item{fun}{The mutator function}
 
-\item{args}{A list of arguments with which the mutator such run 'normally'. i.e. a per base mutation rate between 0% and 5%. This will be used to call the mutator on dummy data during the checks.}
+\item{args}{A list of arguments with which the mutator such run 'normally'.
+i.e. a per base mutation rate between 0% and 5%. This will be used to call
+the mutator on dummy data during the checks.}
 }
 \description{
 Performs basic sanity checks on a mutator and its candidate argument set.

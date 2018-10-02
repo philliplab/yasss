@@ -118,3 +118,6 @@ sim_pop <- function(ancestors,
   return(genealogy)
 }
 
+
+#' @useDynLib yasss
+NULL
