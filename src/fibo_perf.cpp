@@ -26,19 +26,23 @@ std::vector<double> cpp_fibo_no_wrap(double s1, double s2, int n) {
 
 
 // [[Rcpp::export]]
-List cpp_fibo_df(int n, int n_columns) {
+List cpp_fibo_df(int n, int n_columns, bool rify = false) {
   std::vector<std::vector<double>> x;
-//  std::vector<double> y;
-
+  std::vector<double> z;
+  NumericMatrix y(n, n_columns);
 
   double s1 = 1;
   double s2 = 1;
-  for (int i = 0; i < n_columns; i++){
-//    y = cpp_fibo_no_wrap(s1, s2, n);
-//    y.push_back(1);
-//    y.push_back(1);
-//    y.push_back(1);
-    x.push_back(cpp_fibo_no_wrap(s1, s2, n));
+  for (int i = 0; i < n; i++){
+    z = cpp_fibo_no_wrap(s1, s2, n_columns);
+    x.push_back(z);
+  }
+  if (rify){
+    for (int i = 0; i < n; i++){
+      for (int j = 0; j < n_columns; j++){
+        y(i,j) = x[i][j];
+      }
+    }
   }
   return wrap(x);
 }

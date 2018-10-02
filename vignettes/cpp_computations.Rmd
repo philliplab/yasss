@@ -82,7 +82,7 @@ x <- cpp_fibo(1, 1, 50000)
 print(proc.time() - start_time)
 
 start_time <- proc.time()
-y <- cpp_fibo_df(400, 400)
+y <- cpp_fibo_df(4000, 4000)
 print(proc.time() - start_time)
 ```
 
