@@ -8,7 +8,9 @@
 #' errors are flagged before the main loop is initiated.
 #'
 #' @param fun The mutator function
-#' @param args A list of arguments with which the mutator such run 'normally'. i.e. a per base mutation rate between 0% and 5%. This will be used to call the mutator on dummy data during the checks.
+#' @param args A list of arguments with which the mutator such run 'normally'.
+#' i.e. a per base mutation rate between 0% and 5%. This will be used to call
+#' the mutator on dummy data during the checks.
 #' @export
 
 mutator_checks_general <- function(fun, args){

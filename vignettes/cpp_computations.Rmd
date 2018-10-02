@@ -14,6 +14,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+library(yasss)
 ```
 
 To improve performance, various parts of the simulations were implemented in
@@ -80,27 +81,27 @@ print(proc.time() - start_time)
 ### Pure C++
 
 ```{r}
-library(Rcpp)
-sourceCpp('../src/fibo_perf.cpp')
+#library(Rcpp)
+#sourceCpp('../src/fibo_perf.cpp')
 
-print('Time required to compute 50000 elements of the sequence')
-start_time <- proc.time()
-x <- cpp_fibo(1, 1, 50000)
-print(proc.time() - start_time)
-
-print('Time required to compute 10000 x 10000 matrix')
-start_time <- proc.time()
-y <- cpp_fibo_df(10000, 10000, rify = FALSE)
-print(proc.time() - start_time)
+#print('Time required to compute 50000 elements of the sequence')
+#start_time <- proc.time()
+#x <- cpp_fibo(1, 1, 50000)
+#print(proc.time() - start_time)
+#
+#print('Time required to compute 10000 x 10000 matrix')
+#start_time <- proc.time()
+#y <- cpp_fibo_df(10000, 10000)
+#print(proc.time() - start_time)
 ```
 
 ### Passing Rcpp into Rcpp
 
 ```{r}
-print('Time required to compute 10000 x 10000 matrix')
-start_time <- proc.time()
-x <- cpp_fibo_df_pass(10000, 10000, cpp_fibo)
-print(proc.time() - start_time)
+#print('Time required to compute 10000 x 10000 matrix')
+#start_time <- proc.time()
+#x <- cpp_fibo_df_pass(10000, 10000, cpp_fibo)
+#print(proc.time() - start_time)
 ```
 
 *IT WORKS !!!!!*
