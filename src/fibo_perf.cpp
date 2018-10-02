@@ -24,10 +24,8 @@ std::vector<double> cpp_fibo_no_wrap(double s1, double s2, int n) {
   return x;
 }
 
-
 // [[Rcpp::export]]
-List cpp_fibo_df(int n, int n_columns, bool rify = false) {
-  std::vector<std::vector<double>> x;
+NumericMatrix cpp_fibo_df(int n, int n_columns) {
   std::vector<double> z;
   NumericMatrix y(n, n_columns);
 
@@ -35,16 +33,29 @@ List cpp_fibo_df(int n, int n_columns, bool rify = false) {
   double s2 = 1;
   for (int i = 0; i < n; i++){
     z = cpp_fibo_no_wrap(s1, s2, n_columns);
-    x.push_back(z);
-  }
-  if (rify){
-    for (int i = 0; i < n; i++){
-      for (int j = 0; j < n_columns; j++){
-        y(i,j) = x[i][j];
-      }
+
+    for (int j = 0; j < n_columns; j++){
+      y(i,j) = z[j];
     }
   }
-  return wrap(x);
+  return y;
 }
 
+// [[Rcpp::export]]
+
+NumericMatrix cpp_fibo_df_pass(int n, int n_columns, Function foo) {
+  NumericVector z;
+  NumericMatrix y(n, n_columns);
+
+  double s1 = 1;
+  double s2 = 1;
+  for (int i = 0; i < n; i++){
+    z = foo(s1, s2, n_columns);
+
+    for (int j = 0; j < n_columns; j++){
+      y(i,j) = z[j];
+    }
+  }
+  return y;
+}
 

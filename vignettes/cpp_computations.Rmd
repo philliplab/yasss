@@ -39,6 +39,8 @@ number preceding it. Making this modification keeps the number sizes under
 control. This will be a good indicator of the performance characteristics for
 the kinds of calculations in yass.
 
+### Pure R
+
 ```{r}
 fibo <- function(s1, s2, n){
   result <- c(s1, s2)
@@ -64,27 +66,48 @@ fibo_df <- function(n, n_columns = 20){
   x
 }
 
+print('Time required to compute 50000 elements of the sequence')
 start_time <- proc.time()
 x <- fibo(1, 1, 50000)
 print(proc.time() - start_time)
 
+print('Time required to compute 400 x 400 matrix')
 start_time <- proc.time()
 y <- fibo_df(400, 400)
 print(proc.time() - start_time)
 ```
 
+### Pure C++
+
 ```{r}
 library(Rcpp)
 sourceCpp('../src/fibo_perf.cpp')
 
+print('Time required to compute 50000 elements of the sequence')
 start_time <- proc.time()
 x <- cpp_fibo(1, 1, 50000)
 print(proc.time() - start_time)
 
+print('Time required to compute 10000 x 10000 matrix')
 start_time <- proc.time()
-y <- cpp_fibo_df(4000, 4000)
+y <- cpp_fibo_df(10000, 10000, rify = FALSE)
 print(proc.time() - start_time)
 ```
+
+### Passing Rcpp into Rcpp
+
+```{r}
+print('Time required to compute 10000 x 10000 matrix')
+start_time <- proc.time()
+x <- cpp_fibo_df_pass(10000, 10000, cpp_fibo)
+print(proc.time() - start_time)
+```
+
+*IT WORKS !!!!!*
+
+So this means that it is a valid strategy to write a C++ function for the mutator / fitness_evaluator and then pass that function, via R, into another C++ function (sim_next_gen / sim_pop).
+
+## Mutators
 
 
 
