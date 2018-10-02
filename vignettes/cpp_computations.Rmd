@@ -1,6 +1,6 @@
 ---
-title: "Vignette Title"
-author: "Vignette Author"
+title: "Rcpp vs pure R performance"
+author: "Phillip Labuschagne"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -15,6 +15,67 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
+
+To improve performance, various parts of the simulations were implemented in
+C++ and accessed via Rcpp. This vignette explains some of the weirder things
+that had to be done to get this working and presents a detailed performance
+comparison.
+
+## Passing Rcpp functions into Rcpp functions.
+
+Due to the way the mutators and fitness_evaluators are specified in the sim_pop
+call, we need to check that you can actually pass functions to Rcpp and that
+the performance hits are not too large.
+
+To test this, write a silly function in Rcpp and pass it to another silly
+function in Rcpp.
+
+R performs poorly when you grow data structures or when you update a data.frame
+repeatedly. So write a C++ function that produces a fibonacci-like sequence and then
+write another function that repeatedly call s this fibonacci-like sequence generator
+and populates a data.frame with it. Instead of adding the two previous numbers
+to each other add the imediately preceding number to the 4th power root of the
+number preceding it. Making this modification keeps the number sizes under
+control. This will be a good indicator of the performance characteristics for
+the kinds of calculations in yass.
+
+```{r}
+fibo <- function(s1, s2, n){
+  result <- c(s1, s2)
+  for (i in 3:n){
+    result <- c(result, result[i-2]^0.25 + result[i-1])
+  }
+  result
+}
+
+fibo_df <- function(n, n_columns = 20){
+  x <- data.frame()
+  for (i in 1:n_columns){
+    x[,paste("V", i, sep = '')] <- numeric(0)
+  }
+  s1 <- 1
+  s2 <- 1
+  for (i in 1:n){
+    y <- fibo(s1, s2, n_columns+2)
+    y <- matrix(y[3:(n_columns+2)], ncol = n_columns)
+    y <- as.data.frame(y)
+    x <- rbind(x, y)
+  }
+  x
+}
+
+start_time <- proc.time()
+x <- fibo(1, 1, 20000)
+print(proc.time() - start_time)
+
+start_time <- proc.time()
+y <- fibo_df(200, 200)
+print(proc.time() - start_time)
+```
+
+
+
+## Template boilerplate, keep for now for easy ref.
 
 Vignettes are long form documentation commonly included in packages. Because they are part of the distribution of the package, they need to be as compact as possible. The `html_vignette` output type provides a custom style sheet (and tweaks some options) to ensure that the resulting html is as small as possible. The `html_vignette` format:
 
