@@ -142,6 +142,8 @@ print(proc.time() - start_time)
 
 ```{r}
 print('Time to mutate 5e7 sequence in cpp')
+library(Rcpp)
+sourceCpp('../src/mutator_uniform.cpp')
 start_time <- proc.time()
 x <- yasss:::cpp_mutator_uniform_fun(paste(rep('A', 50000000/speed_up), 
                                            sep = '', collapse = ''), 0.1)

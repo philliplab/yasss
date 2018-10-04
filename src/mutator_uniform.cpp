@@ -4,6 +4,7 @@
 #include <iterator>
 #include <experimental/algorithm>
 #include <Rcpp.h>
+#include <map>
 
 using namespace Rcpp;
 
@@ -30,13 +31,21 @@ List cpp_mutator_uniform_fun(StringVector parent, double mu){
     }
   }
   std::vector<std::string> lets = {"A", "C", "G", "T"};
+  std::vector<char> lets_c = {'A', 'C', 'G', 'T'};
 
   std::vector<int> mut_draws;
   std::uniform_int_distribution<> dis_unif(0, 3);
+  char replace_letter;
+  int draw;
 
   for (int i = 0; i < mut_pos.size(); i++){
-    mut_draws.push_back(dis_unif(gen));
-    child.replace(mut_pos[i], 1, lets[mut_draws[i]]);
+    draw = dis_unif(gen);
+    replace_letter = lets_c[draw];
+    while (replace_letter == child.at(mut_pos[i])){
+      draw = dis_unif(gen);
+      replace_letter = lets_c[draw];
+    }
+    child.replace(mut_pos[i], 1, lets[draw]);
   }
 
   List mutation_stats;
