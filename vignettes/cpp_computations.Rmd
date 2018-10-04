@@ -15,6 +15,17 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 library(yasss)
+
+# toggle the speed_up variable during development.
+speed_up <- 10
+speeding_it_up <- speed_up > 1
+```
+
+```{r, eval = speeding_it_up}
+for (i in 1:10){
+print('Speeding up the process for development')
+print(speed_up)
+}
 ```
 
 To improve performance, various parts of the simulations were implemented in
@@ -69,12 +80,12 @@ fibo_df <- function(n, n_columns = 20){
 
 print('Time required to compute 50000 elements of the sequence')
 start_time <- proc.time()
-x <- fibo(1, 1, 5000)
+x <- fibo(1, 1, 50000/speed_up)
 print(proc.time() - start_time)
 
 print('Time required to compute 400 x 400 matrix')
 start_time <- proc.time()
-y <- fibo_df(40, 40)
+y <- fibo_df(400/speed_up, 400/speed_up)
 print(proc.time() - start_time)
 ```
 
@@ -83,12 +94,12 @@ print(proc.time() - start_time)
 ```{r}
 print('Time required to compute 50000 elements of the sequence')
 start_time <- proc.time()
-x <- cpp_fibo_exported(1, 1, 5000)
+x <- cpp_fibo_exported(1, 1, 50000/speed_up)
 print(proc.time() - start_time)
 
 print('Time required to compute 10000 x 10000 matrix')
 start_time <- proc.time()
-y <- yasss:::cpp_fibo_df(1000, 1000)
+y <- yasss:::cpp_fibo_df(10000/speed_up, 10000/speed_up)
 print(proc.time() - start_time)
 ```
 
@@ -97,12 +108,12 @@ print(proc.time() - start_time)
 ```{r}
 print('Time required to compute 10000 x 10000 matrix')
 start_time <- proc.time()
-x <- yasss:::cpp_fibo_df_pass(1000, 1000, cpp_fibo_exported)
+x <- yasss:::cpp_fibo_df_pass(10000/speed_up, 10000/speed_up, cpp_fibo_exported)
 print(proc.time() - start_time)
 
 print('Time required to compute 10000 x 10000 matrix')
 start_time <- proc.time()
-x <- yasss:::cpp_fibo_df_pass(1000, 1000, yasss:::cpp_fibo)
+x <- yasss:::cpp_fibo_df_pass(10000/speed_up, 10000/speed_up, yasss:::cpp_fibo)
 print(proc.time() - start_time)
 ```
 
@@ -121,7 +132,7 @@ C++ function (sim_next_gen / sim_pop).
 ```{r}
 print('Time to mutate 5e6 sequence in R')
 start_time <- proc.time()
-x <- mutator_uniform_fun(paste(rep('A', 5000000), sep = '', collapse = ''), 0.1)
+x <- mutator_uniform_fun(paste(rep('A', 5000000/speed_up), sep = '', collapse = ''), 0.1)
 print(proc.time() - start_time)
 ```
 
@@ -130,7 +141,8 @@ print(proc.time() - start_time)
 ```{r}
 print('Time to mutate 5e7 sequence in cpp')
 start_time <- proc.time()
-x <- yasss:::cpp_mutator_uniform_fun(paste(rep('A', 50000000), sep = '', collapse = ''), 0.1)
+x <- yasss:::cpp_mutator_uniform_fun(paste(rep('A', 50000000/speed_up), 
+                                           sep = '', collapse = ''), 0.1)
 print(proc.time() - start_time)
 ```
 
