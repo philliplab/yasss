@@ -116,11 +116,24 @@ C++ function (sim_next_gen / sim_pop).
 
 ### mutator_uniform
 
+#### Performance of mutator_uniform_fun
+
 ```{r}
-devtools::load_all()
-library(Rcpp)
-sourceCpp('../src/mutator_uniform.cpp')
-cpp_mutator_uniform_fun(paste(rep('A', 500), sep = '', collapse = ''), 0.1)
+print('Time to mutate 5e6 sequence in R')
+start_time <- proc.time()
+x <- mutator_uniform_fun(paste(rep('A', 5000000), sep = '', collapse = ''), 0.1)
+print(proc.time() - start_time)
 ```
+
+#### Performance of cpp_mutator_uniform_fun
+
+```{r}
+print('Time to mutate 5e7 sequence in cpp')
+start_time <- proc.time()
+x <- yasss:::cpp_mutator_uniform_fun(paste(rep('A', 50000000), sep = '', collapse = ''), 0.1)
+print(proc.time() - start_time)
+```
+
+10x speedup.
 
 

@@ -12,6 +12,9 @@ using namespace Rcpp;
 // [[Rcpp::export]]
 List cpp_mutator_uniform_fun(StringVector parent, double mu){
 
+  int parent_size;
+  parent_size = parent[0].size();
+
   std::string child;
 
   child = Rcpp::as<std::string>(parent[0]);
@@ -21,7 +24,7 @@ List cpp_mutator_uniform_fun(StringVector parent, double mu){
   std::uniform_real_distribution<> dis(0.0, 1.0);
 
   std::vector<int> mut_pos;
-  for (int i = 0; i < parent[0].size(); ++i) {
+  for (int i = 0; i < parent_size; ++i) {
     if (dis(gen) < mu){
       mut_pos.push_back(i);
     }
@@ -37,10 +40,9 @@ List cpp_mutator_uniform_fun(StringVector parent, double mu){
   }
 
   List mutation_stats;
-  mutation_stats = List::create(Named("n_mut") = mut_pos,
-                                Named("mut_draws") = mut_draws);
+  mutation_stats = List::create(Named("n_mut") = mut_pos.size());
 
-  return List::create(Named("parent") = parent[0],
+  return List::create(Named("parent") = parent,
                       Named("child") = child,
                       Named("mutation_stats") = mutation_stats);
 }
