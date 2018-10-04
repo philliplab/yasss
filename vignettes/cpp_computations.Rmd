@@ -17,6 +17,7 @@ knitr::opts_chunk$set(
 library(yasss)
 
 # toggle the speed_up variable during development.
+speed_up <- 1
 speed_up <- 10
 speeding_it_up <- speed_up > 1
 ```
@@ -147,5 +148,29 @@ print(proc.time() - start_time)
 ```
 
 10x speedup.
+
+#### Performance of mutator_uniform_fun for many repeated calls
+
+```{r}
+print('Time to mutate 10000 length 500 sequences in R')
+start_time <- proc.time()
+for (i in 1:(10000/speed_up)){
+  x <- mutator_uniform_fun(paste(rep('A', 500), sep = '', collapse = ''), 0.1)
+}
+print(proc.time() - start_time)
+```
+
+#### Performance of cpp_mutator_uniform_fun for many repeated calls
+
+```{r}
+print('Time to mutate 10000 length 500 sequences in cpp')
+start_time <- proc.time()
+for (i in 1:(10000/speed_up)){
+  x <- mutator_uniform_fun(paste(rep('A', 500), sep = '', collapse = ''), 0.1)
+}
+print(proc.time() - start_time)
+```
+
+Much smaller speedup.
 
 
