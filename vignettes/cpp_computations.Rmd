@@ -121,8 +121,6 @@ devtools::load_all()
 library(Rcpp)
 sourceCpp('../src/mutator_uniform.cpp')
 
-#List cpp_mutator_uniform_fun(StringVector parent, double mu){
-
 cpp_mutator_uniform_fun(paste(rep('A', 500), sep = '', collapse = ''), 0.1)
 
 ```

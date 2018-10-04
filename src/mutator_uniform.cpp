@@ -14,30 +14,34 @@ List cpp_mutator_uniform_fun(StringVector parent, double mu){
 
   std::string child;
 
+  child = Rcpp::as<std::string>(parent[0]);
+
   std::random_device rd;
   std::mt19937 gen(rd());
   std::uniform_real_distribution<> dis(0.0, 1.0);
+
   std::vector<int> mut_pos;
   for (int i = 0; i < parent[0].size(); ++i) {
     if (dis(gen) < mu){
       mut_pos.push_back(i);
     }
   }
-  std::string lets = "ACGT", lets_out;
+  std::string lets = "X";
+
+  std::vector<int> mut_draws;
+  std::uniform_int_distribution<> dis_unif(0, 3);
 
   for (int i = 0; i < mut_pos.size(); i++){
-    std::experimental::sample(lets.begin(), lets.end(), std::back_inserter(lets_out),
-                mut_pos.size(), gen);
-    std::cout << "five random letters out of " << lets << " : " << lets_out << '\n';
-
+    mut_draws.push_back(dis_unif(gen));
+    child.replace(1, 1, "X");
   }
 
   List mutation_stats;
   mutation_stats = List::create(Named("n_mut") = mut_pos,
-                                Named("lets_out") = lets_out);
+                                Named("mut_draws") = mut_draws);
 
-  return List::create(Named("parent") = parent,
-                      Named("child") = parent,
+  return List::create(Named("parent") = parent[0],
+                      Named("child") = child,
                       Named("mutation_stats") = mutation_stats);
 }
 
