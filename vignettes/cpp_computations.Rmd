@@ -150,7 +150,9 @@ x <- yasss:::cpp_mutator_uniform_fun(paste(rep('A', 50000000/speed_up),
 print(proc.time() - start_time)
 ```
 
-10x speedup.
+Very minor speedup.
+
+Initially there was a decent speed-up, but it was only due to me forgetting to prevent a mutation from mutation to the same letter. I think I can regain the speed-up if I use a map instead of a while loop.
 
 #### Performance of mutator_uniform_fun for many repeated calls
 

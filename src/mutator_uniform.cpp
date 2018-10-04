@@ -37,11 +37,13 @@ List cpp_mutator_uniform_fun(StringVector parent, double mu){
   std::uniform_int_distribution<> dis_unif(0, 3);
   char replace_letter;
   int draw;
+  char c_child_let;
 
   for (int i = 0; i < mut_pos.size(); i++){
     draw = dis_unif(gen);
     replace_letter = lets_c[draw];
-    while (replace_letter == child.at(mut_pos[i])){
+    c_child_let = child.at(mut_pos[i]);
+    while (replace_letter == c_child_let){
       draw = dis_unif(gen);
       replace_letter = lets_c[draw];
     }

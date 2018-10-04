@@ -1,4 +1,9 @@
-context("mutator_uniform")
+context("cpp_mutator_uniform")
+
+if (FALSE){
+  devtools::load_all()
+  library(testthat)
+}
 
 fun <- yasss:::cpp_mutator_uniform_fun
 parents <- c('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
