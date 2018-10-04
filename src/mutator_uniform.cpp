@@ -26,14 +26,14 @@ List cpp_mutator_uniform_fun(StringVector parent, double mu){
       mut_pos.push_back(i);
     }
   }
-  std::string lets = "X";
+  std::vector<std::string> lets = {"A", "C", "G", "T"};
 
   std::vector<int> mut_draws;
   std::uniform_int_distribution<> dis_unif(0, 3);
 
   for (int i = 0; i < mut_pos.size(); i++){
     mut_draws.push_back(dis_unif(gen));
-    child.replace(1, 1, "X");
+    child.replace(mut_pos[i], 1, lets[mut_draws[i]]);
   }
 
   List mutation_stats;

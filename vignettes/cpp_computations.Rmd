@@ -120,9 +120,7 @@ C++ function (sim_next_gen / sim_pop).
 devtools::load_all()
 library(Rcpp)
 sourceCpp('../src/mutator_uniform.cpp')
-
 cpp_mutator_uniform_fun(paste(rep('A', 500), sep = '', collapse = ''), 0.1)
-
 ```
 
 
