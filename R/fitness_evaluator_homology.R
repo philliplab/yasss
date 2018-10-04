@@ -29,7 +29,7 @@ fitness_evaluator_homology_fun <- function(the_seq, comparators,
   for (c_comparator in comparators){
     num_x <- sum(charToRaw(c_comparator) == charToRaw("X"))
     comparator_num <- comparator_num + 1
-    c_dists <- data.frame(X = stringdist(c_comparator, the_seq))
+    c_dists <- data.frame(X = stringdist(c_comparator, the_seq, method = 'hamming'))
     c_dists$X <- c_dists$X - num_x
     if (any(c_dists$X < 0)){
       c_dists$X[c_dists$X < 0] <- 0
