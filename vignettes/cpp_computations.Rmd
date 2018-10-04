@@ -12,7 +12,8 @@ vignette: >
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  echo = FALSE
 )
 library(yasss)
 
@@ -173,4 +174,49 @@ print(proc.time() - start_time)
 
 Much smaller speedup.
 
+## sim_next_gen
+
+```{r}
+ancestors <- paste(rep('A', 500), sep = '', collapse = '')
+ancestors <- rep(ancestors, 2000/speed_up)
+genea <- data.frame(
+  gen_num = 0,
+  id = 1:length(ancestors),
+  parent_id = -1,
+  the_seq = ancestors,
+  n_mut = NA_real_,
+  recomb_pos = NA_real_,
+  recomb_replaced = NA_character_,
+  recomb_partner = NA_real_,
+  recomb_muts = NA_real_,
+  fitness_score = NA_real_,
+  stringsAsFactors = FALSE
+                    )
+```
+
+### Passing mutator_uniform_fun
+
+```{r}
+print('Time to compute next gen for 2k ancestors with 20 offspring each when passing mutator_uniform_fun to sim_next_gen')
+start_time <- proc.time()
+x <- sim_next_gen(genea, 20, 
+                  list(fun = "mutator_uniform_fun",
+                       args = list(mu = 0.01))
+                  )
+print(proc.time() - start_time)
+```
+
+### Passing cpp_mutator_uniform_fun
+
+```{r}
+print('Time to compute next gen for 2k ancestors with 20 offspring each when passing cpp_mutator_uniform_fun to sim_next_gen')
+start_time <- proc.time()
+x <- sim_next_gen(genea, 20, 
+                  list(fun = "cpp_mutator_uniform_fun",
+                       args = list(mu = 0.01))
+                  )
+print(proc.time() - start_time)
+```
+
+4x speedup
 
