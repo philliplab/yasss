@@ -1,20 +1,45 @@
+#include <iostream>
+#include <random>
+#include <string>
+#include <iterator>
+#include <experimental/algorithm>
 #include <Rcpp.h>
+
 using namespace Rcpp;
 
-// [[Rcpp::plugins(cpp11)]]                                        
+// [[Rcpp::plugins(cpp14)]]                                        
 
 // [[Rcpp::export]]
 List cpp_mutator_uniform_fun(StringVector parent, double mu){
 
+  std::string child;
+
+  std::random_device rd;
+  std::mt19937 gen(rd());
+  std::uniform_real_distribution<> dis(0.0, 1.0);
+  std::vector<int> mut_pos;
+  for (int i = 0; i < parent[0].size(); ++i) {
+    if (dis(gen) < mu){
+      mut_pos.push_back(i);
+    }
+  }
+  std::string lets = "ACGT", lets_out;
+
+  for (int i = 0; i < mut_pos.size(); i++){
+    std::experimental::sample(lets.begin(), lets.end(), std::back_inserter(lets_out),
+                mut_pos.size(), gen);
+    std::cout << "five random letters out of " << lets << " : " << lets_out << '\n';
+
+  }
+
   List mutation_stats;
-  mutation_stats = List::create(Named("n_mut") = 0);
+  mutation_stats = List::create(Named("n_mut") = mut_pos,
+                                Named("lets_out") = lets_out);
 
   return List::create(Named("parent") = parent,
                       Named("child") = parent,
                       Named("mutation_stats") = mutation_stats);
 }
-
-
 
 //#' The uniform mutator
 //#'

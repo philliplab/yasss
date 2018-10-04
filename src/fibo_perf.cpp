@@ -1,7 +1,7 @@
 #include <Rcpp.h>
 using namespace Rcpp;
 
-// [[Rcpp::plugins(cpp11)]]                                        
+// [[Rcpp::plugins(cpp14)]]                                        
 
 // [[Rcpp::export]]
 NumericVector cpp_fibo(double s1, double s2, int n) {
