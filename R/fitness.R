@@ -88,12 +88,14 @@ check_fitness_evaluator_result <- function(fitness_evaluation, input_args){
 #'
 #' @param genealogy The genealogy from which the fit individuals must be selected
 #' @param fitness_score The minimun fitness score an individual must have to have survived.
-#' @param implementation Which implementation to use. 'df' for data.frame.
+#' @param implementation Which implementation to use. 'df' for data.frame. 'Rvec' for R based vectors.
 #' @export
 
 get_fit_offspring <- function(genealogy, fitness_score, implementation = 'df'){
   if (implementation == 'df'){
     gfo_internal_Rdf(genealogy, fitness_score)
+  } else if (implementation == 'Rvec') {
+    gfo_internal_Rvec(genealogy, fitness_score)
   }
 }
 
@@ -136,5 +138,120 @@ gfo_internal_Rdf <- function(genealogy, fitness_score){
     return(f_genealogy[1:total_fit,])
   } else {
     return(f_genealogy[0,])
+  }
+}
+
+#' Internal function implementing get_fit_offspring using vectors
+
+gfo_internal_Rvec <- function(genealogy, fitness_score){
+
+  if (FALSE){
+    names(c_genea)
+    genealogy <- c_genea
+    x <- gfo_internal_Rvec(c_genea, 0.985)
+  }
+
+  genealogy <- genealogy %>% arrange(gen_num, id)
+
+  i_gen_num         <- genealogy$gen_num
+  i_id              <- genealogy$id
+  i_parent_id       <- genealogy$parent_id
+  i_the_seq         <- genealogy$the_seq
+  i_n_mut           <- genealogy$n_mut
+  i_recomb_pos      <- genealogy$recomb_pos
+  i_recomb_replaced <- genealogy$recomb_replaced
+  i_recomb_partner  <- genealogy$recomb_partner
+  i_recomb_muts     <- genealogy$recomb_muts
+  i_fitness_score   <- genealogy$fitness_score
+
+  genealogy_size <- length(i_gen_num)
+
+  o_gen_num         <- numeric(genealogy_size)
+  o_id              <- numeric(genealogy_size)
+  o_parent_id       <- numeric(genealogy_size)
+  o_the_seq         <- character(genealogy_size)
+  o_n_mut           <- numeric(genealogy_size)
+  o_recomb_pos      <- numeric(genealogy_size)
+  o_recomb_replaced <- character(genealogy_size)
+  o_recomb_partner  <- numeric(genealogy_size)
+  o_recomb_muts     <- numeric(genealogy_size)
+  o_fitness_score   <- numeric(genealogy_size)
+
+  c_gen_num <- 0
+  total_fit <- 0
+  fit_parents <- NULL
+  fit_gen <- NULL
+
+  i <- 2
+  for (i in 1:genealogy_size){
+    if (i_gen_num[i] == 0){
+      if (i_fitness_score[i] >= fitness_score){
+        total_fit <- total_fit + 1
+        o_gen_num[total_fit]         <- i_gen_num[i]
+        o_id[total_fit]              <- i_id[i]
+        o_parent_id[total_fit]       <- i_parent_id[i]
+        o_the_seq[total_fit]         <- i_the_seq[i]
+        o_n_mut[total_fit]           <- i_n_mut[i]
+        o_recomb_pos[total_fit]      <- i_recomb_pos[i]
+        o_recomb_replaced[total_fit] <- i_recomb_replaced[i]
+        o_recomb_partner[total_fit]  <- i_recomb_partner[i]
+        o_recomb_muts[total_fit]     <- i_recomb_muts[i]
+        o_fitness_score[total_fit]   <- i_fitness_score[i]
+        fit_gen <- c(fit_gen, i_id[i])
+        next
+      }
+    }
+    if (i_gen_num[i] != c_gen_num){
+      c_gen_num <- c_gen_num + 1
+      stopifnot(i_gen_num[i] == c_gen_num)
+      fit_parents <- fit_gen
+      fit_gen <- NULL
+    }
+    if (i_fitness_score[i] >= fitness_score){
+      if (i_parent_id[i] %in% fit_parents){
+        total_fit <- total_fit + 1
+        o_gen_num[total_fit]         <- i_gen_num[i]
+        o_id[total_fit]              <- i_id[i]
+        o_parent_id[total_fit]       <- i_parent_id[i]
+        o_the_seq[total_fit]         <- i_the_seq[i]
+        o_n_mut[total_fit]           <- i_n_mut[i]
+        o_recomb_pos[total_fit]      <- i_recomb_pos[i]
+        o_recomb_replaced[total_fit] <- i_recomb_replaced[i]
+        o_recomb_partner[total_fit]  <- i_recomb_partner[i]
+        o_recomb_muts[total_fit]     <- i_recomb_muts[i]
+        o_fitness_score[total_fit]   <- i_fitness_score[i]
+        fit_gen <- c(fit_gen, i_id[i])
+        next
+      }    
+    }
+  }
+
+  o_gen_num         <- o_gen_num[1:total_fit]
+  o_id              <- o_id[1:total_fit]
+  o_parent_id       <- o_parent_id[1:total_fit]
+  o_the_seq         <- o_the_seq[1:total_fit]
+  o_n_mut           <- o_n_mut[1:total_fit]
+  o_recomb_pos      <- o_recomb_pos[1:total_fit]
+  o_recomb_replaced <- o_recomb_replaced[1:total_fit]
+  o_recomb_partner  <- o_recomb_partner[1:total_fit]
+  o_recomb_muts     <- o_recomb_muts[1:total_fit]
+  o_fitness_score   <- o_fitness_score[1:total_fit]
+
+  if (total_fit > 0){
+    return(data.frame(gen_num         = o_gen_num,
+                      id              = o_id,
+                      parent_id       = o_parent_id,
+                      the_seq         = o_the_seq,
+                      n_mut           = o_n_mut,
+                      recomb_pos      = o_recomb_pos,
+                      recomb_replaced = o_recomb_replaced,
+                      recomb_partner  = o_recomb_partner,
+                      recomb_muts     = o_recomb_muts,
+                      fitness_score   = o_fitness_score,
+                      stringsAsFactors = FALSE
+                      )
+    )
+  } else {
+    return(genealogy[0,])
   }
 }

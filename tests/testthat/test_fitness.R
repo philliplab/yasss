@@ -44,10 +44,11 @@ test_that("assign_fitness works", {
   expect_true(all(y_last$fitness_score > 0 & y_last$fitness_score < 1))
 })
 
-test_that("get_fit_offspring works", {
+test_that("get_fit_offspring with data.frames works", {
 
   c_genea <- YASSS_DATASETS[['bif_2gen']]
   x <- get_fit_offspring(c_genea, 0)
+  #x <- gfo_internal_Rvec(c_genea, 0)
   expect_equal(x, c_genea)
 
   x <- get_fit_offspring(c_genea, 0.999)
@@ -72,7 +73,7 @@ test_that("get_fit_offspring works", {
   expect_true(all(x$fitness_score > 0.1))
   y <- check_genealogy(x)
   for (i in names(y)){
-    expect_true(y[[i]], info = paste("get_fit_offspring(c_genea, 0.979)", i, sep = ' '))
+    expect_true(y[[i]], info = paste("get_fit_offspring(c_genea, 0.1)", i, sep = ' '))
   }
   
   x2 <- get_fit_offspring(c_genea, 0.2)
@@ -80,6 +81,51 @@ test_that("get_fit_offspring works", {
   expect_true(nrow(x2) <= nrow(x))
   y <- check_genealogy(x2)
   for (i in names(y)){
-    expect_true(y[[i]], info = paste("get_fit_offspring(c_genea, 0.979)", i, sep = ' '))
+    expect_true(y[[i]], info = paste("get_fit_offspring(c_genea, 0.2)", i, sep = ' '))
   }
 })
+
+test_that("get_fit_offspring with R vectors works", {
+
+  c_genea <- YASSS_DATASETS[['bif_2gen']]
+  x <- get_fit_offspring(c_genea, 0, implementation = 'Rvec')
+  #x <- gfo_internal_Rvec(c_genea, 0)
+  expect_equal(x, c_genea)
+
+  x <- get_fit_offspring(c_genea, 0.999, implementation = 'Rvec')
+  expect_equal(names(x), names(c_genea))
+  expect_equal(nrow(x), 0)
+
+  x <- get_fit_offspring(c_genea, 0.989, implementation = 'Rvec')
+  expect_equal(names(x), names(c_genea))
+  expect_equal(nrow(x), 0)
+
+  x <- get_fit_offspring(c_genea, 0.979, implementation = 'Rvec')
+  expect_equal(nrow(x), 2)
+  expect_true(all(x$fitness_score > 0.979))
+  y <- check_genealogy(x)
+  for (i in names(y)){
+    expect_true(y[[i]], info = paste("get_fit_offspring(c_genea, 0.979, implementation = 'Rvec')", i, sep = ' '))
+  }
+
+  c_genea <- sim_pop(ancestors = paste(rep('A', 90), collapse = ''), r0 = 2, n_gen = 4)
+  c_genea$fitness_score[1:5] <- rep(0.99, 5)
+  x <- get_fit_offspring(c_genea, 0.1, implementation = 'Rvec')
+  expect_true(all(x$fitness_score > 0.1))
+  y <- check_genealogy(x)
+  for (i in names(y)){
+    expect_true(y[[i]], info = paste("get_fit_offspring(c_genea, 0.1, implementation = 'Rvec')", i, sep = ' '))
+  }
+  
+  x2 <- get_fit_offspring(c_genea, 0.2, implementation = 'Rvec')
+  expect_true(all(x2$fitness_score > 0.2))
+  expect_true(nrow(x2) <= nrow(x))
+  y <- check_genealogy(x2)
+  for (i in names(y)){
+    expect_true(y[[i]], info = paste("get_fit_offspring(c_genea, 0.2, implementation = 'Rvec')", i, sep = ' '))
+  }
+})
+
+
+
+
