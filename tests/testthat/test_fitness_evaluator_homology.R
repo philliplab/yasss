@@ -1,5 +1,11 @@
 context("fitness_evaluator_homology")
 
+if (FALSE){
+  yasss:::restart_r()
+  library(testthat)
+  devtools::load_all()
+}
+
 test_that("fitness_evaluator_homology checks the comparators", {
   fe <- list(fun = 'fitness_evaluator_homology_fun',
              the_seq = c("AAA", "AAC", "ACC", "CCC"),
@@ -83,7 +89,7 @@ test_that("fitness_evaluator_homology works", {
 
   if (FALSE){
     options(error = recover)
-    x <- sim_pop('AAAAAAAAA', r0 = 2, n_pop = 15)
+    x <- sim_pop('AAAAAAAAAAAA', r0 = 2, n_pop = 15)
 
     genealogy <- data.frame(gen_num = 0, 
                             id = 1L, 
@@ -100,8 +106,16 @@ test_that("fitness_evaluator_homology works", {
     gen_num <- 1
     r0 <- 2
   }
+  
+  if (FALSE){
+    fun <- fe$fun
+    args <- fe$args
+    the_seq <- x$the_seq
+    comparators <- fe$args$comparators
+    h2fs <- fe$args$h2fs
+  }
 
-  x <- sim_pop('AAAAAAAAA', r0 = 2, n_pop = 15)
+  x <- sim_pop('AAAAAAAAAAAA', r0 = 2, n_pop = 15)
   fit_fun <- get(fe$fun)
   args <- fe$args
   args$the_seq = x$the_seq
@@ -111,7 +125,7 @@ test_that("fitness_evaluator_homology works", {
   expect_true(all(y$dists >= 0))
   expect_true(all(y$dists <= 1))
   
-  x <- sim_pop('AAAAAAAAA', r0 = 2, n_pop = 15,
+  x <- sim_pop('AAAAAAAAAAAA', r0 = 2, n_pop = 15,
                mutator = list(fun = "mutator_uniform_fun",
                               args = list(mu = 0.5)))
   fit_fun <- get(fe$fun)
