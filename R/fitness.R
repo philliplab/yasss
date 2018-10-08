@@ -88,9 +88,18 @@ check_fitness_evaluator_result <- function(fitness_evaluation, input_args){
 #'
 #' @param genealogy The genealogy from which the fit individuals must be selected
 #' @param fitness_score The minimun fitness score an individual must have to have survived.
+#' @param implementation Which implementation to use. 'df' for data.frame.
 #' @export
 
-get_fit_offspring <- function(genealogy, fitness_score){
+get_fit_offspring <- function(genealogy, fitness_score, implementation = 'df'){
+  if (implementation == 'df'){
+    gfo_internal_Rdf(genealogy, fitness_score)
+  }
+}
+
+#' Internal function implementing get_fit_offspring using data.frames
+
+gfo_internal_Rdf <- function(genealogy, fitness_score){
   f_genealogy <- as.data.frame(matrix(nrow = nrow(genealogy), ncol = length(names(genealogy))))
   names(f_genealogy) <- names(genealogy)
   

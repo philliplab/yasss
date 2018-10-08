@@ -4,12 +4,14 @@
 \alias{get_fit_offspring}
 \title{Retrieves the fit offspring with fit ancestry}
 \usage{
-get_fit_offspring(genealogy, fitness_score)
+get_fit_offspring(genealogy, fitness_score, implementation = "df")
 }
 \arguments{
 \item{genealogy}{The genealogy from which the fit individuals must be selected}
 
 \item{fitness_score}{The minimun fitness score an individual must have to have survived.}
+
+\item{implementation}{Which implementation to use. 'df' for data.frame.}
 }
 \description{
 Selects all the individuals from the last generation in a genealogy that are themselves fit and whose entire ancestry was also fit.
