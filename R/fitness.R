@@ -185,7 +185,7 @@ gfo_internal_Rvec <- function(genealogy, fitness_score){
   i <- 2
   for (i in 1:genealogy_size){
     if (i_gen_num[i] == 0){
-      if (i_fitness_score[i] >= fitness_score){
+      if (i_fitness_score[i] > fitness_score){
         total_fit <- total_fit + 1
         o_gen_num[total_fit]         <- i_gen_num[i]
         o_id[total_fit]              <- i_id[i]
@@ -207,7 +207,7 @@ gfo_internal_Rvec <- function(genealogy, fitness_score){
       fit_parents <- fit_gen
       fit_gen <- NULL
     }
-    if (i_fitness_score[i] >= fitness_score){
+    if (i_fitness_score[i] > fitness_score){
       if (i_parent_id[i] %in% fit_parents){
         total_fit <- total_fit + 1
         o_gen_num[total_fit]         <- i_gen_num[i]
