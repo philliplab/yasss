@@ -1,0 +1,45 @@
+---
+title: "Design of yasss"
+author: "Phillip Labuschagne"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Overall Design
+
+yasss is designed to simulate genealogies which are stored in data.frames. A
+high level summary of the core simulation functions are provided below:
+
+sim_pop
+- loop over number of generations
+  - sim_next_gen
+    - loop over all parents
+      - mutator
+  - fitness_evaluator
+
+It quickly became clear that most simulations will involve many datasets
+generated with distinct sets of arguments. Functionality to track this extra
+structure was added to yasss.
+
+## Managing multiple simulations
+
+The genealogy data.frames rapidly become too large to store in memory. Thus
+there are two differnt approaches to managing the data from multiple
+simulations. The first is to store the full genealogies, which is useful for
+smaller simulations and for troubleshooting. The second approach reduces memory
+consumption by summarizing each genealogy as it is simulated and only saving the
+summary metrics. The summary metrics include:
+- the percentiles of the distribution,
+- the average of all the pairwise distances,
+- and, an estimate of the distribution as produced by density()
