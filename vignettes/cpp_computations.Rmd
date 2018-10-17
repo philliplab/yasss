@@ -291,4 +291,5 @@ fit_vec <- get_fit_offspring(x, 0.02, 'Rvec')
 print(proc.time() - start_time)
 ```
 
-LOL OK, data.frames are evil. On 14 generations, it is 53sec vs 0.4sec.
+data.frames are evil. On 14 generations, it is 53sec vs 0.4sec.
+
