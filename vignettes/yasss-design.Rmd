@@ -164,6 +164,12 @@ The extra columns that must be added:
 
 #### `dsum`
 
+**Is more complication needed? a version with identifiers and a version
+without identifiers?**
+
+**Can the identifier on/off thing be handled by just adding a flag to the
+`check_dsum` function?**
+
 Due to the memory requiremented of storing full genealogies (or distance
 matrices), it is often preferable to immediately compute and summarize a
 distance matrix on the last generation of a genealogy and to delete both the
@@ -210,6 +216,18 @@ constructor. Given an `arg_set` it runs through a series of checks and
 produces a list in which the name describe the check that was performed and
 the entry is a bool indication pass (TRUE) or failure (FALSE).
 
+#### `check_dsum`
+
+Checks that a dsum conforms to the required formats. The function has a flag
+that allows the inclusion of the identifiers to be toggled.
+
+If identifiers are set to off, then only check `avg_hd`, `perc` and `density`.
+
+If identifiers are set to on, also check presence, format and length of
+`sim_id`, `label`, and `sampling`
+
+Optionally also give the `arg_collection` to check the label.
+
 #### `dsum_generation`
 
 Computes a distance matrix and summary metrics on a single generation from a
@@ -247,24 +265,43 @@ Primary arguments:
 
 Algorithm:
 
-loop over arg_collection
+- loop over `arg_collection`
 
-loop over n_pop
+- loop over `n_pop`
 
-call `sim_pop`
+- call `sim_pop`
 
-if statements controlling fitness evaluation
-  Also add in all the identifiers
+- if `fitness_processing == none`: just add in the columns
+- if `fitness_processing == fit_unfit_pair`:
+  * `get_fit_offspring` with `fitness_threshold`
+    + add in identifying columns
+    + append into `new_genealogies` (full genealogy)
+  * size matched sampling
+    + add in identifying columns
+    + append into `new_genealogies` (full genealogy)
+- if `fitness_processing == fit_unfit_unmatched_pair`:
+  * `get_fit_offspring` with `fitness_threshold`
+    + add in identifying columns
+    + append into `new_genealogies` (full genealogy)
+  * just take the fill genealogy
+    + add in identifying columns
+    + append into `new_genealogies` (full genealogy)
 
-store genealogy(ies) into all_genealogies based on ouput_genealogy
+- if `output_genealogy == last_gen_only`
+  * loop over `new_genealogies`
+    + filter out `last_gen`  
+    + append `last_gen` to `output_genealogies`
+- if `output_genealogy == full`
+  * append `new_genealogies` to `output_genealogies`
 
-loop over new genealogy(ies)
+- loop over `new_genealogies`
+  * filter out `last_gen`
+  * call `dsum_generation`
+  * add in identifiers
+  * add new dsum into `all_dsums`
 
-call dsum_generation
-
-Add new dsum into all_dsums
-
-Add the dmat into all_dmats based on output_dmat
+- if `output_dmat`
+  * add the dmat into `all_dmats`
 
 
 
