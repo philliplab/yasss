@@ -5,22 +5,32 @@
 #' @return A genealogy
 #' @param genealogy A genealogy
 #' @param fitness_evaluator A list with two elements: fun is the character string naming a fitness evaluator and args is a list of arguments that fun needs.
+#' @param last_generation_only If TRUE, then fitness will be computed for the last generation only.
 #' @export
 
-assign_fitness <- function(genealogy, fitness_evaluator){
-
-  last_generation <- genealogy %>% filter(gen_num == max(gen_num))
-  all_non_last_generation <- genealogy %>% filter(gen_num != max(gen_num))
+assign_fitness <- function(genealogy, fitness_evaluator, last_generation_only = TRUE){
 
   args <- fitness_evaluator$args
-  args$the_seq <- last_generation$the_seq
-  fit_fun <- get(fitness_evaluator$fun)
-  x <- do.call(fit_fun, args)
-  #TODO: remove this line if there are performance issues
-  stopifnot(all(x$the_seq == last_generation$the_seq))
-  last_generation$fitness_score <- x$fitness_score
+  if (last_generation_only){
+    last_generation <- genealogy %>% filter(gen_num == max(gen_num))
+    all_non_last_generation <- genealogy %>% filter(gen_num != max(gen_num))
 
-  genealogy <- rbind(all_non_last_generation, last_generation)
+    args$the_seq <- last_generation$the_seq
+    fit_fun <- get(fitness_evaluator$fun)
+    x <- do.call(fit_fun, args)
+    #TODO: remove this line if there are performance issues
+    stopifnot(all(x$the_seq == last_generation$the_seq))
+    last_generation$fitness_score <- x$fitness_score
+
+    genealogy <- rbind(all_non_last_generation, last_generation)
+  } else {
+    args$the_seq <- genealogy$the_seq
+    fit_fun <- get(fitness_evaluator$fun)
+    x <- do.call(fit_fun, args)
+    #TODO: remove this line if there are performance issues
+    stopifnot(all(x$the_seq == genealogy$the_seq))
+    genealogy$fitness_score <- x$fitness_score
+  }
 
   return(genealogy)
 }

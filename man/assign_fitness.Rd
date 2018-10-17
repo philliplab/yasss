@@ -4,12 +4,14 @@
 \alias{assign_fitness}
 \title{Assign fitness to sequences}
 \usage{
-assign_fitness(genealogy, fitness_evaluator)
+assign_fitness(genealogy, fitness_evaluator, last_generation_only = TRUE)
 }
 \arguments{
 \item{genealogy}{A genealogy}
 
 \item{fitness_evaluator}{A list with two elements: fun is the character string naming a fitness evaluator and args is a list of arguments that fun needs.}
+
+\item{last_generation_only}{If TRUE, then fitness will be computed for the last generation only.}
 }
 \value{
 A genealogy
