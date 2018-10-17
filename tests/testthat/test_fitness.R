@@ -44,6 +44,24 @@ test_that("assign_fitness works", {
   expect_true(all(y_last$fitness_score > 0 & y_last$fitness_score < 1))
 })
 
+test_that("assign_fitness can operate on a whole genealogy", {
+  fe <- list(fun = 'fitness_evaluator_uniform_fun',
+             the_seq = c("AAAAAA", "CCCCCC", "GGGGGG"),
+             args = NULL)
+  x <- sim_pop('AAAA', r0 = 2, n_pop = 15)
+  x$fitness_score <- NA_real_
+  y <- assign_fitness(x, fe, last_generation_only = FALSE)
+
+  z <- check_genealogy(y)
+  for (i in setdiff(names(z), c("n_mut_calc", "all_n_mut"))){
+    expect_true(z[[i]], info = i)
+  }
+
+  expect_true(all(!is.na(y$fitness_score)))
+  expect_true(all(is.na(x$fitness_score)))
+  expect_true(all(y$fitness_score > 0 & y$fitness_score < 1))
+})
+
 test_that("get_fit_offspring with data.frames works", {
 
   c_genea <- YASSS_DATASETS[['bif_2gen']]
