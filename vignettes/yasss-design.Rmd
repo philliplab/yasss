@@ -28,11 +28,25 @@ high level summary of the core simulation functions are provided below:
   + `sim_next_gen`
     - loop over all parents
       * `mutator`: mutate parent seq into offspring seq
-  + `fitness_evaluator`: for most recent generation only
+  + `assign_fitness`: for most recent generation only
+
+`get_fit_offspring`
 
 It quickly became clear that most simulations will involve many datasets
 generated with distinct sets of arguments. Functionality to track this extra
 structure was added to yasss.
+
+### `sim_pop`
+
+### `sim_next_gen`
+
+### `assign_fitness`
+
+### `get_fit_offspring`
+
+## Mutators
+
+## Fitness evaluators
 
 ## Managing multiple simulations
 
@@ -41,7 +55,12 @@ there are two different approaches to managing the data from multiple
 simulations. The first is to store the full genealogies, which is useful for
 smaller simulations and for troubleshooting. The second approach reduces memory
 consumption by summarizing each genealogy as it is simulated and only saving the
-summary metrics. The summary metrics include:
+summary metrics. 
+
+### Data structures
+
+The data structure that saves only the summary metrics is called a `dsum` and
+the summary metrics include:
 
 - the percentiles of the distribution,
 - the average of all the pairwise distances,
@@ -98,7 +117,7 @@ This complexity is tracked in the following data structures:
 - `dsum`: Summary of the distance matrix (percentiles, avg, density). This is a
   list with an element for each distance matrix that was produced.
 
-### `arg_set` and `arg_collection`
+#### `arg_set` and `arg_collection`
 
 An example of the current version of an `arg_set`. Note that this will
 probably be redesigned in a future version to allow multiple
@@ -124,7 +143,7 @@ arg_set <- list(
 )
 ```
 
-### `gcol`
+#### `gcol`
 
 This is just a `data.frame` build by `rbind`ing many different genealogies
 together and adding some columns to track the arguments that where used to
@@ -143,7 +162,7 @@ The extra columns that must be added:
   * `size_matched_sampling`
   * `none`
 
-### `dsum`
+#### `dsum`
 
 Due to the memory requiremented of storing full genealogies (or distance
 matrices), it is often preferable to immediately compute and summarize a
@@ -175,10 +194,77 @@ The root level elements of the `dsum` list should not be named since the
 identifier elements that match the extra columns of a `gcol` should be used to
 identify the elements.
 
+### Functions
 
+Since this package is not implemented in an object oriented framework, the
+data structures are not explicitly defined in code. The main focus of the
+implementation is functions, so the data structures described need to guide
+the development of specific functions that operate on and produce the
+described datasets.
 
+#### `check_arg_set`
 
+This function validates an `arg_set` (a single element of an
+`arg_collection`). Its function is similar to that of the validator of a
+constructor. Given an `arg_set` it runs through a series of checks and
+produces a list in which the name describe the check that was performed and
+the entry is a bool indication pass (TRUE) or failure (FALSE).
 
+#### `dsum_generation`
+
+Computes a distance matrix and summary metrics on a single generation from a
+genealogy.
+
+#### `sim_proc_many_pops`
+
+A large wrapper for `sim_pop`, `get_fit_offspring` and `dsum_generation`. It
+has many arguments that control the amount of intermediary results are stored.
+
+Primary arguments:
+
+- `arg_collection`: All the `arg_set`s that will be used to simulate
+  genealogies with `sim_pop` and `get_fit_offspring`.
+- `n_pop`: The number of times `sim_pop` will be called each `arg_set`. Note
+  that the number of datasets generated will depend on the way the fitness
+  scores are used to sample from the genealogies.
+- `fitness_processing`: The way that the fitness scores should be used to
+  sample from the genealogy. Valid options include:
+  * `none`: This will produce one dataset per genealogy.
+  * `fit_unfit_pair`: This will use the threshold approach to remove all unfit
+    individuals and their offspring. The remaining members of the last
+    generation will be considered to be the fit member of the pair. An equal
+    number of individuals will be sampled at random from the original
+    genealogy to produce the unfit pair such that it is the same size as the
+    fit pair.
+  * `fit_unfit_unmatched_pair`: Same as `fit_unfit_pair` except that the
+    unfit member will not be down sampled to size match the fit member.
+- `output_genealogy`: Should the genealogy data sets be deleted to reduce
+  memory usage? Valid options:
+  * `last_gen_only`
+  * `none`
+  * `full`
+- `output_dmat`: Should the distance matrix be included in the output?
+
+Algorithm:
+
+loop over arg_collection
+
+loop over n_pop
+
+call `sim_pop`
+
+if statements controlling fitness evaluation
+  Also add in all the identifiers
+
+store genealogy(ies) into all_genealogies based on ouput_genealogy
+
+loop over new genealogy(ies)
+
+call dsum_generation
+
+Add new dsum into all_dsums
+
+Add the dmat into all_dmats based on output_dmat
 
 
 
