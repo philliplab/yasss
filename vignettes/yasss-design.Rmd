@@ -152,12 +152,12 @@ call `sim_pop` and that were used to remove individuals from the population.
 
 The extra columns that must be added:
 
-- **`sim_id`:** The id of the simulation. If many simulations are run in a
+- `sim_id`: The id of the simulation. If many simulations are run in a
   loop using the same `arg_set` this column is the primary mechanism that
   distinguishes the simulations from each other.
-- **`label`:** The label is used to match the simulation to the arguments that
+- `label`: The label is used to match the simulation to the arguments that
   were used call `sim_pop` or sample from the genealogy.
-- **`sampling`:** The sampling appoach applied to the original genealogy that
+- `sampling`: The sampling appoach applied to the original genealogy that
   was produced by `sim_pop`. Valid values include:
   * `fit_threshold`
   * `size_matched_sampling`
@@ -175,12 +175,12 @@ a `dsum`.  Outside of a `dcollection`, the `dsum` does not necessarily have
 the identification elements. These additional identificaiton elements are the
 same as the extra columns added to the `gcol` data structure:
 
-- **`sim_id`:** The id of the simulation. If many simulations are run in a
+- `sim_id`: The id of the simulation. If many simulations are run in a
   loop using the same `arg_set` this column is the primary mechanism that
   distinguishes the simulations from each other.
-- **`label`:** The label is used to match the simulation to the arguments that
+- `label`: The label is used to match the simulation to the arguments that
   were used call `sim_pop` or sample from the genealogy.
-- **`sampling`:** The sampling appoach applied to the original genealogy that
+- `sampling`: The sampling appoach applied to the original genealogy that
   was produced by `sim_pop`. Valid values include:
   * `fit_threshold`
   * `size_matched_sampling`

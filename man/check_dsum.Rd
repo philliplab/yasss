@@ -4,11 +4,13 @@
 \alias{check_dsum}
 \title{Check a dsum list}
 \usage{
-check_dsum(dsum)
+check_dsum(dsum, identifiers = FALSE)
 }
 \arguments{
-\item{dsum}{The dsum to check
-previous result will be drawn to check the prerequisites.}
+\item{dsum}{The dsum to check}
+
+\item{identifiers}{If TRUE, then the dsum will be checked to ensure that
+the identifier elements are also present.}
 }
 \value{
 A list with TRUE or FALSE indicating whether the related check

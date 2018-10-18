@@ -13,7 +13,7 @@ dmat <- stringdistmatrix(y, method = 'hamming')
 z <- quantile(dmat, (0:100)/100)
 names(z) <- NULL
 
-dsum1 <- list(avg_HD = mean(dmat),
+dsum1 <- list(avg_hd = mean(dmat),
               perc = z,
               dens = density(dmat))
 
@@ -26,6 +26,6 @@ test_that('check_dsum works', {
   result <- check_dsum(dsum1)
   expect_equal(class(result), 'list')
   for (check_name in names(result)){
-    expect_true(result[[check_name]])
+    expect_true(result[[check_name]], info = check_name)
   }
 })
