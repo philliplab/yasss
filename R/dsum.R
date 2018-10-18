@@ -10,6 +10,7 @@
 
 check_dsum <- function(dsum){
   result <- list()
+  result[['is_a_list']] <- class(dsum) == 'list'
   return(result)
 }
     
