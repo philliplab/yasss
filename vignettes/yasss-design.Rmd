@@ -22,15 +22,13 @@ knitr::opts_chunk$set(
 yasss is designed to simulate genealogies which are stored in `data.frames`. A
 high level summary of the core simulation functions are provided below:
 
-`sim_pop`
-
-* loop over number of generations
-  + `sim_next_gen`
-    - loop over all parents
-      * `mutator`: mutate parent seq into offspring seq
-  + `assign_fitness`: for most recent generation only
-
-`get_fit_offspring`
++ `sim_pop`
+  * loop over number of generations
+    + `sim_next_gen`
+      - loop over all parents
+        * `mutator`: mutate parent seq into offspring seq
+    + `assign_fitness`: for most recent generation only
++ `get_fit_offspring`
 
 It quickly became clear that most simulations will involve many datasets
 generated with distinct sets of arguments. Functionality to track this extra
