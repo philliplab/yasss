@@ -113,7 +113,10 @@ This complexity is tracked in the following data structures:
   extra columns added that tracks the `genealogy_id`, the `arg_set` that was
   used to produce it and the fitness requirement that had to be satisfied.
 - `dsum`: Summary of the distance matrix (percentiles, avg, density). This is a
-  list with an element for each distance matrix that was produced.
+  list with the three elements that summarize a dmat and optionally with the
+  identifiers used to track which simulation (and fitness selection) the dmat
+  belonged to.
+- `dcollection`: A collection of `dsum`s. Each element is a single `dsum`.
 
 #### `arg_set` and `arg_collection`
 
@@ -162,19 +165,15 @@ The extra columns that must be added:
 
 #### `dsum`
 
-**Is more complication needed? a version with identifiers and a version
-without identifiers?**
-
-**Can the identifier on/off thing be handled by just adding a flag to the
-`check_dsum` function?**
-
 Due to the memory requiremented of storing full genealogies (or distance
 matrices), it is often preferable to immediately compute and summarize a
 distance matrix on the last generation of a genealogy and to delete both the
-genealogy and distance matrix from memory. A `dsum` is a list in which each
-element summarized a single distance matrix and contains additional elements
-to help identify it. These additional elements are the same as the extra
-columns added to the `gcol` data structure:
+genealogy and distance matrix from memory. A `dcollection` is a list in which
+each element summarized a single distance matrix and contains additional
+elements to help identify it. An element of a `dcollection` is referred to as
+a `dsum`.  Outside of a `dcollection`, the `dsum` does not necessarily have
+the identification elements. These additional identificaiton elements are the
+same as the extra columns added to the `gcol` data structure:
 
 - **`sim_id`:** The id of the simulation. If many simulations are run in a
   loop using the same `arg_set` this column is the primary mechanism that
@@ -187,14 +186,14 @@ columns added to the `gcol` data structure:
   * `size_matched_sampling`
   * `none`
 
-Each element of a `dsum` also have three additional elements that contains the
+Each element of a `dsum` must have three core elements that contains the
 summary metrics:
 
 - `perc`: the percentiles of the distribution,
 - `avg_hd`: the average of all the pairwise distances,
 - `dens` : an estimate of the distribution as produced by `density()`
 
-The root level elements of the `dsum` list should not be named since the
+The root level elements of the `dcollection` list should not be named since the
 identifier elements that match the extra columns of a `gcol` should be used to
 identify the elements.
 
@@ -226,10 +225,21 @@ If identifiers are set to on, also check presence, format and length of
 
 Optionally also give the `arg_collection` to check the label.
 
+#### `check_dcollection`
+
+Checks that a `dcollection` is a list, that each element in the `dcollection` is a `dsum`
+with identifiers (optionally check for label existence in an `arg_collection`) and
+that the elements are unnamed.
+
 #### `dsum_generation`
 
 Computes a distance matrix and summary metrics on a single generation from a
 genealogy.
+
+**Should the distance matrix computation be separated from the
+dsum-genetation? Does this function summarize a distance matrix or does it
+perform the whole distance thing for a last generation? It seems clear that it
+is more advantageous to just operate on the distance matrices**
 
 #### `sim_proc_many_pops`
 
