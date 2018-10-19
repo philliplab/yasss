@@ -87,12 +87,15 @@ check_dsum <- function(dsum, identifiers = FALSE){
 check_dcollection <- function(dcollection){
   result <- list()
 
+  # class list
   result[['is_list']] <- class(dcollection) == 'list'
 
+  # length > 0
   result[['length_gt_zero']] <- length(dcollection) > 0
   if (!result[['length_gt_zero']]){
     return(result)
   }
+
   # each element is dsum with identifiers
   all_valid_dsums <- TRUE
   for (i in 1:length(dcollection)){
@@ -100,8 +103,10 @@ check_dcollection <- function(dcollection){
     all_valid_dsums <- all_valid_dsums & all(unlist(x))
   }
   result[['all_valid_dsums']] <- all_valid_dsums
-  # class list
+
   # unnamed
+  result[['unnamed']] <- is.null(names(dcollection))
+
   return(result)
 }
 

@@ -170,6 +170,8 @@ dcol1 <- list(dsum1, dsum2, dsum3, dsum4)
 dcol2 <- list()
 dcol3 <- 'a'
 dcol4 <- c(dcol1, 'a')
+dcol5 <- dcol1
+names(dcol5) <- paste('got_a_name_', 1:length(dcol5), sep = '')
 
 test_that('check_dcollection let correct dcollections pass', {
   result <- check_dcollection(dcol1)
@@ -188,6 +190,8 @@ test_that('check_dcollection catches issues', {
   result <- check_dcollection(dcol4)
   expect_false(result[['all_valid_dsums']])
 
+  result <- check_dcollection(dcol5)
+  expect_false(result[['unnamed']])
 })
 
 
