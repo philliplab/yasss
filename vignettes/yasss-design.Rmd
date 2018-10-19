@@ -231,19 +231,15 @@ Checks that a `dcollection` is a list, that each element in the `dcollection` is
 with identifiers (optionally check for label existence in an `arg_collection`) and
 that the elements are unnamed.
 
-#### `dsum_generation`
+#### `summarize_dmat`
 
-Computes a distance matrix and summary metrics on a single generation from a
-genealogy.
-
-**Should the distance matrix computation be separated from the
-dsum-genetation? Does this function summarize a distance matrix or does it
-perform the whole distance thing for a last generation? It seems clear that it
-is more advantageous to just operate on the distance matrices**
+Summarizes a distance matrix into an average pairwise distance (`avg_hd`), a
+set of percentile (`perc`) and a density estimate (`dens`). No identifiers are
+added, that is not part of this function.
 
 #### `sim_proc_many_pops`
 
-A large wrapper for `sim_pop`, `get_fit_offspring` and `dsum_generation`. It
+A large wrapper for `sim_pop`, `get_fit_offspring` and `summarize_dmat`. It
 has many arguments that control the amount of intermediary results are stored.
 
 Primary arguments:
@@ -304,7 +300,7 @@ Algorithm:
 
 - loop over `new_genealogies`
   * filter out `last_gen`
-  * call `dsum_generation`
+  * call `summarize_dmat`
   * add in identifiers
   * add new dsum into `all_dsums`
 
