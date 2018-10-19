@@ -1,4 +1,4 @@
-#' Check a dsum list
+#' Checks a dsum list
 #'
 #' Checks that a dsum list adheres to the specifications
 #'
@@ -19,6 +19,7 @@ check_dsum <- function(dsum, identifiers = FALSE){
     result_label <- paste(col_name, 'exists', sep = '_')
     result[[result_label]] <- col_name %in% names(dsum)
     if (!result[[result_label]]){
+      result[['has_req_elements']] <- FALSE
       return(result)
     }
   }
@@ -28,6 +29,7 @@ check_dsum <- function(dsum, identifiers = FALSE){
       result_label <- paste(col_name, 'exists', sep = '_')
       result[[result_label]] <- col_name %in% names(dsum)
       if (!result[[result_label]]){
+        result[['has_req_elements']] <- FALSE
         return(result)
       }
     }
@@ -48,7 +50,6 @@ check_dsum <- function(dsum, identifiers = FALSE){
     # sampling
     result[['sampling_length_one']] <- length(dsum$sampling) == 1
     result[['sampling_valid']] <- dsum$sampling %in% c('fit_threshold', 'size_matched_sampling', 'none')
-
   }
 
   # avg_hd
@@ -69,10 +70,24 @@ check_dsum <- function(dsum, identifiers = FALSE){
   }
   result[['only_valid_columns']] <- only_valid_columns
 
-
-
   return(result)
 }
 
+#' Checks a dcollection list
+#'
+#' Checks that a dcollection list adheres to the specifications
+#'
+#' @return A list with TRUE or FALSE indicating whether the related check
+#' passed.
+#' @param dsum The dsum to check
+#' @param identifiers If TRUE, then the dsum will be checked to ensure that
+#' the identifier elements are also present.
+#' @export
 
-
+check_dcollection <- function(dcollection){
+  result <- list()
+  # each element is dsum with identifiers
+  # class list
+  # unnamed
+  return(result)
+}

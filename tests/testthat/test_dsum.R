@@ -63,6 +63,9 @@ dsum10$dens <- matrix(rnorm(100), ncol = 10)
 dsum11 <- dsum2
 dsum11$perc <- NULL
 
+dsum11_1 <- dsum2
+dsum11_1$sim_id <- NULL
+
 dsum12 <- dsum2
 dsum12$sim_id <- NULL
 
@@ -124,7 +127,10 @@ test_that('check_dsum passes on correct dsums', {
 
 test_that('check_dsum find violations', {
   result <- check_dsum(dsum11, identifiers = TRUE)
-  expect_false(result$perc_exists)
+  expect_false(result$has_req_elements)
+  
+  result <- check_dsum(dsum11_1, identifiers = TRUE)
+  expect_false(result$has_req_elements)
 
   result <- check_dsum(dsum13, identifiers = TRUE)
   expect_false(result$only_valid_columns)
@@ -159,11 +165,3 @@ test_that('check_dsum find violations', {
   result <- check_dsum(dsum10, identifiers = TRUE)
   expect_false(result$dens_is_density)
 })
-
-
-
-
-
-
-
-
