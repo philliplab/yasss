@@ -60,6 +60,13 @@ dsum12$sim_id <- NULL
 dsum13 <- dsum2
 dsum13$bad_element <- 'is bad'
 
+dsum14 <- dsum2
+dsum14$sim_id <- 1:2
+
+dsum15 <- dsum2
+dsum15$label <- c('A', 'B')
+
+
 if (FALSE){
   library(yasss)
   library(testthat)
@@ -95,9 +102,15 @@ test_that('check_dsum passes on correct dsums', {
 })
 
 test_that('check_dsum find violations', {
-  result <- check_dsum(dsum11)
+  result <- check_dsum(dsum11, identifiers = TRUE)
   expect_false(result$perc_exists)
 
-  result <- check_dsum(dsum13)
+  result <- check_dsum(dsum13, identifiers = TRUE)
   expect_false(result$only_valid_columns)
+  
+  result <- check_dsum(dsum14, identifiers = TRUE)
+  expect_false(result$sim_id_length_one)
+  
+  result <- check_dsum(dsum6, identifiers = TRUE)
+  expect_false(result$sim_id_integer)
 })
