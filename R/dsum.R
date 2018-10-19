@@ -40,6 +40,8 @@ check_dsum <- function(dsum, identifiers = FALSE){
     result[['label_length_one']] <- length(dsum$label) == 1
 
     # sampling
+    result[['sampling_length_one']] <- length(dsum$sampling) == 1
+    result[['sampling_valid']] <- dsum$sampling %in% c('fit_threshold', 'size_matched_sampling', 'none')
 
   }
 

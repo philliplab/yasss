@@ -31,6 +31,9 @@ dsum4$sampling <- 'none'
 dsum5 <- dsum2
 dsum5$sampling <- 'this is wrong'
 
+dsum5_1 <- dsum2
+dsum5_1$sampling <- c('none', 'fit_threshold')
+
 dsum6 <- dsum2
 dsum6$sim_id <- 'A'
 
@@ -99,6 +102,18 @@ test_that('check_dsum passes on correct dsums', {
   expect_true('sim_id_exists' %in% names(result))
   expect_true('label_exists' %in% names(result))
   expect_true('sampling_exists' %in% names(result))
+  
+  result <- check_dsum(dsum3, identifiers = TRUE)
+  expect_equal(class(result), 'list')
+  for (check_name in names(result)){
+    expect_true(result[[check_name]], info = check_name)
+  }
+
+  result <- check_dsum(dsum4, identifiers = TRUE)
+  expect_equal(class(result), 'list')
+  for (check_name in names(result)){
+    expect_true(result[[check_name]], info = check_name)
+  }
 })
 
 test_that('check_dsum find violations', {
@@ -113,4 +128,19 @@ test_that('check_dsum find violations', {
   
   result <- check_dsum(dsum6, identifiers = TRUE)
   expect_false(result$sim_id_integer)
+
+  result <- check_dsum(dsum5, identifiers = TRUE)
+  expect_false(result$sampling_valid)
+
+  result <- check_dsum(dsum5_1, identifiers = TRUE)
+  expect_false(result$sampling_length_one)
 })
+
+
+
+
+
+
+
+
+
