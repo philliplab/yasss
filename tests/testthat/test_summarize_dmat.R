@@ -17,4 +17,8 @@ test_that('summarize_dmat works', {
   for (i in names(x)){
     expect_true(x[[i]], info = i)
   }
+
+  expect_equal(result$avg_hd, mean(dmat))
+  expect_equal(result$perc, quantile(dmat, (0:100)/100))
+  expect_equal(result$dens, density(dmat))
 })
