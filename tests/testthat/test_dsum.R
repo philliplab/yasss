@@ -167,6 +167,7 @@ test_that('check_dsum find violations', {
 })
 
 dcol1 <- list(dsum1, dsum2, dsum3, dsum4)
+dcol2 <- list()
 
 test_that('check_dcollection let correct dcollections pass', {
   result <- check_dcollection(dcol1)
@@ -175,6 +176,10 @@ test_that('check_dcollection let correct dcollections pass', {
   }
 })
 
+test_that('check_dcollection catches issues', {
+  result <- check_dcollection(dcol2)
+  expect_false(result[['length_gt_zero']])
+})
 
 
 
