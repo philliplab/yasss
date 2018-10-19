@@ -61,6 +61,7 @@ check_dsum <- function(dsum, identifiers = FALSE){
   result[['perc_is_numeric']] <- class(dsum$perc) == 'numeric'
 
   # density
+  result[['dens_is_density']] <- class(dsum$dens) == 'density'
 
   only_valid_columns <- TRUE
   for (element_name in names(dsum)){

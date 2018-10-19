@@ -155,6 +155,9 @@ test_that('check_dsum find violations', {
   
   result <- check_dsum(dsum7_1, identifiers = TRUE)
   expect_false(result$avg_hd_length_one)
+  
+  result <- check_dsum(dsum10, identifiers = TRUE)
+  expect_false(result$dens_is_density)
 })
 
 
