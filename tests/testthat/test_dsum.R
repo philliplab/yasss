@@ -51,15 +51,53 @@ dsum9$perc <- fake_perc
 dsum10 <- dsum2
 dsum10$dens <- matrix(rnorm(100), ncol = 10)
 
+dsum11 <- dsum2
+dsum11$perc <- NULL
+
+dsum12 <- dsum2
+dsum12$sim_id <- NULL
+
+dsum13 <- dsum2
+dsum13$bad_element <- 'is bad'
+
 if (FALSE){
   library(yasss)
   library(testthat)
 }
 
-test_that('check_dsum works', {
+test_that('check_dsum passes on correct dsums', {
   result <- check_dsum(dsum1)
   expect_equal(class(result), 'list')
   for (check_name in names(result)){
     expect_true(result[[check_name]], info = check_name)
   }
+  expect_false('sim_id_exists' %in% names(result))
+  expect_false('label_exists' %in% names(result))
+  expect_false('sampling_exists' %in% names(result))
+  
+  result <- check_dsum(dsum2)
+  expect_equal(class(result), 'list')
+  for (check_name in names(result)){
+    expect_true(result[[check_name]], info = check_name)
+  }
+  expect_false('sim_id_exists' %in% names(result))
+  expect_false('label_exists' %in% names(result))
+  expect_false('sampling_exists' %in% names(result))
+  
+  result <- check_dsum(dsum2, identifiers = TRUE)
+  expect_equal(class(result), 'list')
+  for (check_name in names(result)){
+    expect_true(result[[check_name]], info = check_name)
+  }
+  expect_true('sim_id_exists' %in% names(result))
+  expect_true('label_exists' %in% names(result))
+  expect_true('sampling_exists' %in% names(result))
+})
+
+test_that('check_dsum find violations', {
+  result <- check_dsum(dsum11)
+  expect_false(result$perc_exists)
+
+  result <- check_dsum(dsum13)
+  expect_false(result$only_valid_columns)
 })

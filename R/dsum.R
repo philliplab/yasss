@@ -15,9 +15,17 @@ check_dsum <- function(dsum, identifiers = FALSE){
   col_names <- c('avg_hd', 'perc', 'dens')
   identifier_col_names <- c('sim_id', 'label', 'sampling')
   for (col_name in col_names){
-    result_label <- paste(col_name, 'exists', sep = ' ')
+    result_label <- paste(col_name, 'exists', sep = '_')
     result[[result_label]] <- col_name %in% names(dsum)
   }
+
+  if (identifiers){
+    for (col_name in identifier_col_names){
+      result_label <- paste(col_name, 'exists', sep = '_')
+      result[[result_label]] <- col_name %in% names(dsum)
+    }
+  }
+
   only_valid_columns <- TRUE
   for (element_name in names(dsum)){
     only_valid_columns <- only_valid_columns & element_name %in% c(col_names, identifier_col_names)
