@@ -51,6 +51,9 @@ dsum8$perc <- sorted_fake_perc[1:100]
 dsum9 <- dsum2
 dsum9$perc <- fake_perc
 
+dsum9_1 <- dsum2
+dsum9_1$perc <- as.character(dsum2$perc)
+
 dsum10 <- dsum2
 dsum10$dens <- matrix(rnorm(100), ncol = 10)
 
@@ -134,8 +137,16 @@ test_that('check_dsum find violations', {
 
   result <- check_dsum(dsum5_1, identifiers = TRUE)
   expect_false(result$sampling_length_one)
-})
 
+  result <- check_dsum(dsum8, identifiers = TRUE)
+  expect_false(result$perc_length_101)
+
+  result <- check_dsum(dsum9, identifiers = TRUE)
+  expect_false(result$perc_is_sorted)
+  
+  result <- check_dsum(dsum9_1, identifiers = TRUE)
+  expect_false(result$perc_is_numeric)
+})
 
 
 

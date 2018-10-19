@@ -18,12 +18,18 @@ check_dsum <- function(dsum, identifiers = FALSE){
   for (col_name in col_names){
     result_label <- paste(col_name, 'exists', sep = '_')
     result[[result_label]] <- col_name %in% names(dsum)
+    if (!result[[result_label]]){
+      return(result)
+    }
   }
 
   if (identifiers){
     for (col_name in identifier_col_names){
       result_label <- paste(col_name, 'exists', sep = '_')
       result[[result_label]] <- col_name %in% names(dsum)
+      if (!result[[result_label]]){
+        return(result)
+      }
     }
 
     # sim_id
@@ -48,6 +54,9 @@ check_dsum <- function(dsum, identifiers = FALSE){
   # avg_hd
 
   # perc
+  result[['perc_length_101']] <- length(dsum$perc) == 101
+  result[['perc_is_sorted']] <- all(dsum$perc == sort(dsum$perc))
+  result[['perc_is_numeric']] <- class(dsum$perc) == 'numeric'
 
   # density
 
