@@ -52,6 +52,8 @@ check_dsum <- function(dsum, identifiers = FALSE){
   }
 
   # avg_hd
+  result[['avg_hd_is_numeric']] <- class(dsum$avg_hd) == 'numeric'
+  result[['avg_hd_length_one']] <- length(dsum$avg_hd) == 1
 
   # perc
   result[['perc_length_101']] <- length(dsum$perc) == 101

@@ -40,6 +40,9 @@ dsum6$sim_id <- 'A'
 dsum7 <- dsum2
 dsum7$avg_hd <- 'A'
 
+dsum7_1 <- dsum2
+dsum7_1$avg_hd <- 50:51
+
 fake_perc <- runif(101)*50
 sorted_fake_perc <- sort(fake_perc)
 while (all(fake_perc == sorted_fake_perc)){
@@ -146,6 +149,12 @@ test_that('check_dsum find violations', {
   
   result <- check_dsum(dsum9_1, identifiers = TRUE)
   expect_false(result$perc_is_numeric)
+  
+  result <- check_dsum(dsum7, identifiers = TRUE)
+  expect_false(result$avg_hd_is_numeric)
+  
+  result <- check_dsum(dsum7_1, identifiers = TRUE)
+  expect_false(result$avg_hd_length_one)
 })
 
 
