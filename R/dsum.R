@@ -86,7 +86,10 @@ check_dsum <- function(dsum, identifiers = FALSE){
 
 check_dcollection <- function(dcollection){
   result <- list()
+  result[['length_gt_zero']] <- length(dcollection) > 0
   # each element is dsum with identifiers
+  for (i in 1:length(result)){
+  }
   # class list
   # unnamed
   return(result)

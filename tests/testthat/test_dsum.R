@@ -165,3 +165,17 @@ test_that('check_dsum find violations', {
   result <- check_dsum(dsum10, identifiers = TRUE)
   expect_false(result$dens_is_density)
 })
+
+dcol1 <- list(dsum1, dsum2, dsum3, dsum4)
+
+test_that('check_dcollection let correct dcollections pass', {
+  result <- check_dcollection(dcol1)
+  for (check_name in names(result)){
+    expect_true(result[[check_name]], info = check_name)
+  }
+})
+
+
+
+
+
