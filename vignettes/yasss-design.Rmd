@@ -302,10 +302,18 @@ Algorithm:
   * filter out `last_gen`
   * call `summarize_dmat`
   * add in identifiers
-  * add new dsum into `all_dsums`
+  * add new dsum into `dcollection`
 
 - if `output_dmat`
   * add the dmat into `all_dmats`
 
+Return value from `sim_proc_many_pops` is a list with the following elements:
+
+- `dcollection`
+- `all_dmats`: [OPTIONAL] list of lists containing the dmats and the indentifiers.
+- `all_genealogies`: [OPTIONAL] `data.frame` that contains all the
+  genealogies, or in the case that `last_gen_only` was specified, only the
+  last generations of the genealogies and all the identifier columns.
+- `arg_collection`: The input `arg_collection`.
 
 

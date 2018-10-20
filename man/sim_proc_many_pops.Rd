@@ -10,6 +10,19 @@ sim_proc_many_pops(arg_collection)
 \item{arg_collection}{The collection of argument sets to be used in the
 simulations}
 }
+\value{
+A list with the following elements:
+\itemize{
+  \item \code{dcollection}: A \code{dcollection} as checked by \code{\link{check_dcollection}}
+  \item \code{arg_collection}: The input \code{arg_collection} as checked by
+  \code{\link{check_arg_collection}}.
+  \item \code{all_genealogies} [OPTIONAL]: A \code{data.frame} that contains all the
+  genealogies, or in the case that \code{last_gen_only} was specified, only the
+  last generations of the genealogies and all the identifier columns.
+  \item \code{all_dmats} [OPTIONAL]: A list of lists containing the
+  distance matrixes and their indentifiers.
+}
+}
 \description{
 Simulate and process many populations
 }
