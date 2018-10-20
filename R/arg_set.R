@@ -5,8 +5,50 @@
 check_arg_set <- function(arg_set){
   result <- list()
   result[['is_list']] <- class(arg_set) == 'list'
+
+  # ancestor
+  result[['has_ancestors']] <- 'ancestors' %in% names(arg_set)
+  if (result[['has_ancestors']]){
+    result[['ancestors_are_character']] <- class(arg_set$ancestors) == 'character'
+    if (result[['ancestors_are_character']]){
+      result[['ancestors_same_length']] <- min(nchar(arg_set$ancestors)) == max(nchar(arg_set$ancestors))
+    }
+  }
+
+  # r0
+
+  # n_gen
+
+  # n_pop
+
+  # mutator
+
+  # fitness_evaluator
+
   return(result)
 }
+#  r0 <- tryCatch(round(as.numeric(r0), 0),
+#                       warning=function(w) return(list(round(as.numeric(r0), 0), w))
+#                       )
+#  if (class(r0) == 'list') {
+#    stop(YASSS_ERR_MSG[['GEN_SIZE_VALID']])
+#  } else if (r0 < 1 | r0 > 1e6){
+#    stop(YASSS_ERR_MSG[['GEN_SIZE_VALID']])
+#  }
+#
+#  if (is.null(n_gen)) {n_gen <- Inf}
+#  if (is.null(n_pop)) {n_pop <- Inf}
+#
+#  if (n_gen == Inf & n_pop == Inf){
+#    stop(YASSS_ERR_MSG[['N_GEN_N_POP_INF_NULL']])
+#  }
+#  if (n_gen < 1 | n_pop < 1){
+#    stop(YASSS_ERR_MSG[['N_GEN_N_POP_LESS_ONE']])
+#  }
+#  if (any(grepl('X', ancestors))){
+#    stop(YASSS_ERR_MSG[['NO_X_IN_ANCESTOR']])
+#  }
+
 
 #' Checks an arg_collection (skeleton only)
 #'

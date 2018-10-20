@@ -40,11 +40,24 @@ test_that('check_arg_set lets correct arg_sets pass', {
   }
 })
 
+test_that('check_arg_set catches bad arg_sets', {
+  arg_set3_1 <- arg_set1
+  arg_set3_2 <- arg_set1
+  arg_set3_3 <- arg_set1
+  arg_set3_1$ancestors <- NULL
+  arg_set3_2$ancestors <- 1
+  arg_set3_3$ancestors <- c('AA', 'CCC')
 
-
+  x <- check_arg_set(arg_set3_1)
+  expect_false(x$has_ancestors)
+  x <- check_arg_set(arg_set3_2)
+  expect_false(x$ancestors_are_character)
+  x <- check_arg_set(arg_set3_3)
+  expect_false(x$ancestors_same_length)
+})
 
 test_that('check_arg_collection lets correct arg_collections pass', {
-  x <- check_arg_set(arg_collection1)
+  x <- check_arg_collection(arg_collection1)
   for (i in names(x)){
     expect_true(x[[i]], info = i)
   }
