@@ -135,6 +135,12 @@ test_that('check_arg_set can catch a bad mutator', {
   arg_set5$mutator <- mutator
   x <- check_arg_set(arg_set5)
   expect_false(x$fun_is_getable)
+  
+  mutator = list(fun = "mutator_uniform_fun",
+                 args = list(mu = -5))
+  arg_set5_1 <- arg_set1
+  arg_set5_1$mutator <- mutator
+  x <- check_arg_set(arg_set5_1)
   expect_false(x$all_mu_greater_equal_0)
 })
 

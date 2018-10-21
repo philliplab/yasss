@@ -16,8 +16,11 @@
 mutator_checks_general <- function(fun, args){
   result <- list()
   result$fun_is_character <- class(fun) == "character"
-  fun <- get(fun)
+  fun <- try(get(fun), silent = TRUE)
   result$fun_is_getable <- class(fun) == "function"
+  if (!result$fun_is_getable){
+    return(result)
+  }
   result$fun_has_parent_arg <- "parent" %in% names(formals(fun))
   result$fun_has_mu_arg <- "mu" %in% names(formals(fun))
 
