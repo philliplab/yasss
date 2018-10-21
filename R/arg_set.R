@@ -60,51 +60,9 @@ check_arg_set <- function(arg_set, the_seq = NULL){
   if (!is.null(the_seq)){
     result <- c(result, fe_result)
   }
-#check_fitness_evaluator <- function(the_seq, fun, args){
-#  result <- list()
-#  result$fun_is_character <- class(fun) == "character"
-#  fun <- get(fun)
-#  result$fun_is_getable <- class(fun) == "function"
-#  result$has_the_seq_arg <- "the_seq" %in% names(formals(fun))
-#
-##  the_seq <- c('AAAAAA', 'CCCCCC', 'GGGGGG')
-#  tmp_args <- args
-#  tmp_args$the_seq <- the_seq
-#  x <- try(do.call(fun, tmp_args), silent = TRUE)
-#  result$fitness_evaluator_runs <- !('try-error' %in% class(x))
-#
-#  if (result$fitness_evaluator_runs){
-#    specific_result <- check_fitness_evaluator_result(x, tmp_args)
-#    result <- c(result, specific_result)
-#  }
-#
-#  return(result)
-#}
 
   return(result)
 }
-#  r0 <- tryCatch(round(as.numeric(r0), 0),
-#                       warning=function(w) return(list(round(as.numeric(r0), 0), w))
-#                       )
-#  if (class(r0) == 'list') {
-#    stop(YASSS_ERR_MSG[['GEN_SIZE_VALID']])
-#  } else if (r0 < 1 | r0 > 1e6){
-#    stop(YASSS_ERR_MSG[['GEN_SIZE_VALID']])
-#  }
-#
-#  if (is.null(n_gen)) {n_gen <- Inf}
-#  if (is.null(n_pop)) {n_pop <- Inf}
-#
-#  if (n_gen == Inf & n_pop == Inf){
-#    stop(YASSS_ERR_MSG[['N_GEN_N_POP_INF_NULL']])
-#  }
-#  if (n_gen < 1 | n_pop < 1){
-#    stop(YASSS_ERR_MSG[['N_GEN_N_POP_LESS_ONE']])
-#  }
-#  if (any(grepl('X', ancestors))){
-#    stop(YASSS_ERR_MSG[['NO_X_IN_ANCESTOR']])
-#  }
-
 
 #' Checks an arg_collection (skeleton only)
 #'
@@ -113,5 +71,14 @@ check_arg_set <- function(arg_set, the_seq = NULL){
 check_arg_collection <- function(arg_collection){
   result <- list()
   result[['is_list']] <- class(arg_collection) == 'list'
+
+  all_arg_sets_valid <- TRUE
+  for (arg_set in arg_collection){
+    all_arg_sets_valid <- all_arg_sets_valid & all(unlist(check_arg_set(arg_set)))
+  }
+  result[['all_arg_sets_valid']] <- all_arg_sets_valid 
+
+  result[['unnamed']] <- is.null(names(arg_collection))
+
   return(result)
 }
