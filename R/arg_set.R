@@ -2,7 +2,7 @@
 #'
 #' @export
 
-check_arg_set <- function(arg_set){
+check_arg_set <- function(arg_set, the_seq = NULL){
   result <- list()
   result[['is_list']] <- class(arg_set) == 'list'
 
@@ -46,9 +46,36 @@ check_arg_set <- function(arg_set){
   }
 
   # mutator
-  result <- c(result, mutator_checks_general(arg_set$mutator$fun, arg_set$mutator$args))
+  mutator_result <- mutator_checks_general(arg_set$mutator$fun, arg_set$mutator$args)
+  for (i in 1:length(mutator_result)){
+    names(mutator_result)[[i]] <- paste('mutator', names(mutator_result)[[i]], sep = '_')
+  }
+  result <- c(result, mutator_result)
 
   # fitness_evaluator
+#  if (!is.null(the_seq)){
+#    result <- c(result, check_fitness_evaluator(the_seq, arg_set$mutator$fun, arg_set$mutator$args))
+#  }
+#check_fitness_evaluator <- function(the_seq, fun, args){
+#  result <- list()
+#  result$fun_is_character <- class(fun) == "character"
+#  fun <- get(fun)
+#  result$fun_is_getable <- class(fun) == "function"
+#  result$has_the_seq_arg <- "the_seq" %in% names(formals(fun))
+#
+##  the_seq <- c('AAAAAA', 'CCCCCC', 'GGGGGG')
+#  tmp_args <- args
+#  tmp_args$the_seq <- the_seq
+#  x <- try(do.call(fun, tmp_args), silent = TRUE)
+#  result$fitness_evaluator_runs <- !('try-error' %in% class(x))
+#
+#  if (result$fitness_evaluator_runs){
+#    specific_result <- check_fitness_evaluator_result(x, tmp_args)
+#    result <- c(result, specific_result)
+#  }
+#
+#  return(result)
+#}
 
   return(result)
 }

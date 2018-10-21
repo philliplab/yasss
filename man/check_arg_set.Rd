@@ -4,7 +4,7 @@
 \alias{check_arg_set}
 \title{Checks an arg_set (skeleton only)}
 \usage{
-check_arg_set(arg_set)
+check_arg_set(arg_set, the_seq = NULL)
 }
 \description{
 Checks an arg_set (skeleton only)

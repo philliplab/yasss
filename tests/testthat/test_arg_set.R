@@ -28,6 +28,8 @@ arg_set2 <- list(
 
 arg_collection1 <- list(arg_set1, arg_set2)
 
+seq_to_check_fitness_evaluator <- paste(rep('AAATCGAAAG', 50), collapse = '')
+
 test_that('check_arg_set lets correct arg_sets pass', {
   x <- check_arg_set(arg_set1)
   for (i in names(x)){
@@ -134,15 +136,25 @@ test_that('check_arg_set can catch a bad mutator', {
   arg_set5 <- arg_set1
   arg_set5$mutator <- mutator
   x <- check_arg_set(arg_set5)
-  expect_false(x$fun_is_getable)
+  expect_false(x$mutator_fun_is_getable)
   
   mutator = list(fun = "mutator_uniform_fun",
                  args = list(mu = -5))
   arg_set5_1 <- arg_set1
   arg_set5_1$mutator <- mutator
   x <- check_arg_set(arg_set5_1)
-  expect_false(x$all_mu_greater_equal_0)
+  expect_false(x$mutator_all_mu_greater_equal_0)
 })
+
+#test_that('check_arg_set can catch a bad fitness_evaluator', {
+#  fitness_evaluator = list(fun = "NOTAREALFUNCTIONNAMEBLEH",
+#                           args = list(comparators = paste(rep('XXXXA', 100), collapse = ''),
+#                                       h2fs = "h2fs_univariate_linear_fun"))
+#  arg_set6 <- arg_set1
+#  arg_set6$fitness_evaluator <- fitness_evaluator
+#  x <- check_arg_set(arg_set6)
+#  expect_false(x$fun_is_getable)
+#})
 
 test_that('check_arg_collection lets correct arg_collections pass', {
   x <- check_arg_collection(arg_collection1)
