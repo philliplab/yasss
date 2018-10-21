@@ -53,9 +53,13 @@ check_arg_set <- function(arg_set, the_seq = NULL){
   result <- c(result, mutator_result)
 
   # fitness_evaluator
-#  if (!is.null(the_seq)){
-#    result <- c(result, check_fitness_evaluator(the_seq, arg_set$mutator$fun, arg_set$mutator$args))
-#  }
+  fe_result <- check_fitness_evaluator(the_seq, arg_set$fitness_evaluator$fun, arg_set$fitness_evaluator$args)
+  for (i in 1:length(fe_result)){
+    names(fe_result)[[i]] <- paste('fe', names(fe_result)[[i]], sep = '_')
+  }
+  if (!is.null(the_seq)){
+    result <- c(result, fe_result)
+  }
 #check_fitness_evaluator <- function(the_seq, fun, args){
 #  result <- list()
 #  result$fun_is_character <- class(fun) == "character"

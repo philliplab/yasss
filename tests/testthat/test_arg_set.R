@@ -146,15 +146,15 @@ test_that('check_arg_set can catch a bad mutator', {
   expect_false(x$mutator_all_mu_greater_equal_0)
 })
 
-#test_that('check_arg_set can catch a bad fitness_evaluator', {
-#  fitness_evaluator = list(fun = "NOTAREALFUNCTIONNAMEBLEH",
-#                           args = list(comparators = paste(rep('XXXXA', 100), collapse = ''),
-#                                       h2fs = "h2fs_univariate_linear_fun"))
-#  arg_set6 <- arg_set1
-#  arg_set6$fitness_evaluator <- fitness_evaluator
-#  x <- check_arg_set(arg_set6)
-#  expect_false(x$fun_is_getable)
-#})
+test_that('check_arg_set can catch a bad fitness_evaluator', {
+  fitness_evaluator = list(fun = "NOTAREALFUNCTIONNAMEBLEH",
+                           args = list(comparators = paste(rep('XXXXA', 100), collapse = ''),
+                                       h2fs = "h2fs_univariate_linear_fun"))
+  arg_set6 <- arg_set1
+  arg_set6$fitness_evaluator <- fitness_evaluator
+  x <- check_arg_set(arg_set6)
+  expect_false(x$fe_fun_is_getable)
+})
 
 test_that('check_arg_collection lets correct arg_collections pass', {
   x <- check_arg_collection(arg_collection1)
