@@ -80,6 +80,30 @@ test_that('check_arg_set catches bad r0s', {
   expect_false(x$r0_is_positive_integer)
 })
 
+test_that('check_arg_set catches bad n_gens', {
+  arg_set4_1 <- arg_set1
+  arg_set4_2 <- arg_set1
+  arg_set4_3 <- arg_set1
+  arg_set4_4 <- arg_set1
+  arg_set4_5 <- arg_set1
+  arg_set4_1$n_gen <- NULL
+  arg_set4_2$n_gen <- 'a'
+  arg_set4_3$n_gen <- 2:3
+  arg_set4_4$n_gen <- 2.5
+  arg_set4_5$n_gen <- 0.5
+
+  x <- check_arg_set(arg_set4_1)
+  expect_false(x$has_n_gen)
+  x <- check_arg_set(arg_set4_2)
+  expect_false(x$n_gen_is_numeric)
+  x <- check_arg_set(arg_set4_3)
+  expect_false(x$n_gen_is_length_one)
+  x <- check_arg_set(arg_set4_4)
+  expect_false(x$n_gen_is_positive_integer)
+  x <- check_arg_set(arg_set4_5)
+  expect_false(x$n_gen_is_positive_integer)
+})
+
 test_that('check_arg_collection lets correct arg_collections pass', {
   x <- check_arg_collection(arg_collection1)
   for (i in names(x)){

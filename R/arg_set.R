@@ -26,6 +26,14 @@ check_arg_set <- function(arg_set){
   }
 
   # n_gen
+  result[['has_n_gen']] <- 'n_gen' %in% names(arg_set)
+  if (result[['has_n_gen']]){
+    result[['n_gen_is_numeric']] <- class(arg_set$n_gen) %in% c('numeric', 'integer')
+    result[['n_gen_is_length_one']] <- length(arg_set$n_gen) == 1
+    if (result[['n_gen_is_numeric']] & result[['n_gen_is_length_one']]){
+      result[['n_gen_is_positive_integer']] <- floor(arg_set$n_gen) == ceiling(arg_set$n_gen) & arg_set$n_gen > 0
+    }
+  }
 
   # n_pop
 
