@@ -36,6 +36,14 @@ check_arg_set <- function(arg_set){
   }
 
   # n_pop
+  result[['has_n_pop']] <- 'n_pop' %in% names(arg_set)
+  if (result[['has_n_pop']]){
+    result[['n_pop_is_numeric']] <- class(arg_set$n_pop) %in% c('numeric', 'integer')
+    result[['n_pop_is_length_one']] <- length(arg_set$n_pop) == 1
+    if (result[['n_pop_is_numeric']] & result[['n_pop_is_length_one']]){
+      result[['n_pop_is_positive_integer']] <- floor(arg_set$n_pop) == ceiling(arg_set$n_pop) & arg_set$n_pop > 0
+    }
+  }
 
   # mutator
 
