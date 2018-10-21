@@ -16,6 +16,14 @@ check_arg_set <- function(arg_set){
   }
 
   # r0
+  result[['has_r0']] <- 'r0' %in% names(arg_set)
+  if (result[['has_r0']]){
+    result[['r0_is_numeric']] <- class(arg_set$r0) %in% c('numeric', 'integer')
+    result[['r0_is_length_one']] <- length(arg_set$r0) == 1
+    if (result[['r0_is_numeric']] & result[['r0_is_length_one']]){
+      result[['r0_is_positive_integer']] <- floor(arg_set$r0) == ceiling(arg_set$r0) & arg_set$r0 > 0
+    }
+  }
 
   # n_gen
 

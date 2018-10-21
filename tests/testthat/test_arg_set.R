@@ -40,7 +40,7 @@ test_that('check_arg_set lets correct arg_sets pass', {
   }
 })
 
-test_that('check_arg_set catches bad arg_sets', {
+test_that('check_arg_set catches bad ancestors', {
   arg_set3_1 <- arg_set1
   arg_set3_2 <- arg_set1
   arg_set3_3 <- arg_set1
@@ -54,6 +54,30 @@ test_that('check_arg_set catches bad arg_sets', {
   expect_false(x$ancestors_are_character)
   x <- check_arg_set(arg_set3_3)
   expect_false(x$ancestors_same_length)
+})
+
+test_that('check_arg_set catches bad r0s', {
+  arg_set4_1 <- arg_set1
+  arg_set4_2 <- arg_set1
+  arg_set4_3 <- arg_set1
+  arg_set4_4 <- arg_set1
+  arg_set4_5 <- arg_set1
+  arg_set4_1$r0 <- NULL
+  arg_set4_2$r0 <- 'a'
+  arg_set4_3$r0 <- 2:3
+  arg_set4_4$r0 <- 2.5
+  arg_set4_5$r0 <- 0.5
+
+  x <- check_arg_set(arg_set4_1)
+  expect_false(x$has_r0)
+  x <- check_arg_set(arg_set4_2)
+  expect_false(x$r0_is_numeric)
+  x <- check_arg_set(arg_set4_3)
+  expect_false(x$r0_is_length_one)
+  x <- check_arg_set(arg_set4_4)
+  expect_false(x$r0_is_positive_integer)
+  x <- check_arg_set(arg_set4_5)
+  expect_false(x$r0_is_positive_integer)
 })
 
 test_that('check_arg_collection lets correct arg_collections pass', {
