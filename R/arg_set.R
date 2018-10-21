@@ -46,6 +46,7 @@ check_arg_set <- function(arg_set){
   }
 
   # mutator
+  result <- c(result, mutator_checks_general(arg_set$mutator$fun, arg_set$mutator$args))
 
   # fitness_evaluator
 

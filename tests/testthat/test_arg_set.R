@@ -128,6 +128,16 @@ test_that('check_arg_set catches bad n_pops', {
   expect_false(x$n_pop_is_positive_integer)
 })
 
+test_that('check_arg_set can catch a bad mutator', {
+  mutator = list(fun = "NOTAREALFUNCTIONNAMEBLEH",
+                 args = list(mu = -5))
+  arg_set5 <- arg_set1
+  arg_set5$mutator <- mutator
+  x <- check_arg_set(arg_set5)
+  expect_false(x$fun_is_getable)
+  expect_false(x$all_mu_greater_equal_0)
+})
+
 test_that('check_arg_collection lets correct arg_collections pass', {
   x <- check_arg_collection(arg_collection1)
   for (i in names(x)){
