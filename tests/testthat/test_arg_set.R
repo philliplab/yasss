@@ -31,12 +31,12 @@ arg_collection1 <- list(arg_set1, arg_set2)
 seq_to_check_fitness_evaluator <- paste(rep('AAATCGAAAG', 50), collapse = '')
 
 test_that('check_arg_set lets correct arg_sets pass', {
-  x <- check_arg_set(arg_set1)
+  x <- check_arg_set(arg_set1, the_seq = seq_to_check_fitness_evaluator)
   for (i in names(x)){
     expect_true(x[[i]], info = i)
   }
   
-  x <- check_arg_set(arg_set2)
+  x <- check_arg_set(arg_set2, the_seq = seq_to_check_fitness_evaluator)
   for (i in names(x)){
     expect_true(x[[i]], info = i)
   }
