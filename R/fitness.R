@@ -51,8 +51,11 @@ assign_fitness <- function(genealogy, fitness_evaluator, last_generation_only = 
 check_fitness_evaluator <- function(the_seq, fun, args){
   result <- list()
   result$fun_is_character <- class(fun) == "character"
-  fun <- get(fun)
+  fun <- try(get(fun), silent = TRUE)
   result$fun_is_getable <- class(fun) == "function"
+  if (!result$fun_is_getable){
+    return(result)
+  }
   result$has_the_seq_arg <- "the_seq" %in% names(formals(fun))
 
 #  the_seq <- c('AAAAAA', 'CCCCCC', 'GGGGGG')

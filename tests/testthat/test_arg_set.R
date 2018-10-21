@@ -147,12 +147,12 @@ test_that('check_arg_set can catch a bad mutator', {
 })
 
 test_that('check_arg_set can catch a bad fitness_evaluator', {
-  fitness_evaluator = list(fun = "NOTAREALFUNCTIONNAMEBLEH",
+  fitness_evaluator1 <- list(fun = "NOTAREALFUNCTIONNAMEBLEHUGH",
                            args = list(comparators = paste(rep('XXXXA', 100), collapse = ''),
                                        h2fs = "h2fs_univariate_linear_fun"))
   arg_set6 <- arg_set1
-  arg_set6$fitness_evaluator <- fitness_evaluator
-  x <- check_arg_set(arg_set6)
+  arg_set6$fitness_evaluator <- fitness_evaluator1
+  x <- check_arg_set(arg_set6, the_seq = seq_to_check_fitness_evaluator)
   expect_false(x$fe_fun_is_getable)
 })
 
