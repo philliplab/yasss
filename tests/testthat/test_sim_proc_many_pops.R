@@ -3,6 +3,9 @@ context('sim_proc_many_pops')
 if (FALSE){
   library(testthat)
   devtools::load_all()
+  c_arg_set <- arg_set1
+  check_dsum(dcollection[[2]])
+  check_dcollection(dcollection)
 }
 
 n_gen <- 5
@@ -36,9 +39,10 @@ arg_set2 <- list(
 arg_collection1 <- list(arg_set1, arg_set2)
 
 test_that('sim_proc_many_pops work', {
-  y <- sim_proc_many_pops(arg_collection1)
-  expect_equal(class(y), 'list')
-  x <- check_many_pops(y)
-  expect_equal(class(x), 'list')
+  many_pops <- sim_proc_many_pops(arg_collection1)
+  expect_equal(class(many_pops), 'list')
+  x <- check_many_pops(many_pops)
+  for (i in names(x)){
+    expect_true(x[[i]], info = i)
+  }
 })
-

@@ -54,7 +54,9 @@ sim_proc_many_pops <- function(arg_collection){
     dsum$sim_id <- 1
     dsum$label <- c_arg_set$label
     dsum$sampling <- 'none'
-    dcollection <- list(dcollection, dsum)
+#    dcollection[[length(dcollection)+1]] <- dsum
+    dcollection <- c(dcollection, list(dsum))
+
 
     # result packaging
   }
