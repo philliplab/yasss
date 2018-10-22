@@ -166,10 +166,10 @@ test_that('check_dsum find violations', {
   expect_false(result$dens_is_density)
 })
 
-dcol1 <- list(dsum1, dsum2, dsum3, dsum4)
+dcol1 <- list(dsum2, dsum3, dsum4)
 dcol2 <- list()
 dcol3 <- 'a'
-dcol4 <- c(dcol1, 'a')
+dcol4 <- c(dcol2, 'a')
 dcol5 <- dcol1
 names(dcol5) <- paste('got_a_name_', 1:length(dcol5), sep = '')
 

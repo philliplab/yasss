@@ -108,6 +108,10 @@ check_dcollection <- function(dcollection){
   # class list
   result[['is_list']] <- class(dcollection) == 'list'
 
+  if (!result[['is_list']]){
+    return(result)
+  }
+
   # length > 0
   result[['length_gt_zero']] <- length(dcollection) > 0
   if (!result[['length_gt_zero']]){
@@ -116,14 +120,27 @@ check_dcollection <- function(dcollection){
 
   # each element is dsum with identifiers
   all_valid_dsums <- TRUE
+  identifiers <- NULL
   for (i in 1:length(dcollection)){
-    x <- check_dsum(dcollection[[i]])
-    all_valid_dsums <- all_valid_dsums & all(unlist(x))
+    x <- check_dsum(dcollection[[i]], identifiers = TRUE)
+    c_dsum_valid <- all(unlist(x))
+    if (c_dsum_valid){
+      identifiers <- c(identifiers, paste(dcollection[[i]]$sim_id,
+                                          dcollection[[i]]$label,
+                                          dcollection[[i]]$sampling,
+                                          sep = '_'))
+    } else {
+      c_dsum_valid <- FALSE
+    }
+    all_valid_dsums <- all_valid_dsums & c_dsum_valid
   }
   result[['all_valid_dsums']] <- all_valid_dsums
 
   # unnamed
   result[['unnamed']] <- is.null(names(dcollection))
+
+  # identifiers unique
+  result[['identifiers_unique']] <- length(identifiers) == length(unique(identifiers))
 
   return(result)
 }
