@@ -3,6 +3,7 @@ context('arg_set')
 n_gen <- 6
 
 arg_set1 <- list(
+  label = 'A-based epitope',
   ancestors = paste(rep("A", 500), collapse = ''),
   r0 = 2,
   n_gen = n_gen,
@@ -15,6 +16,7 @@ arg_set1 <- list(
 )
 
 arg_set2 <- list(
+  label = 'C-based epitope',
   ancestors = paste(rep("A", 500), collapse = ''),
   r0 = 2,
   n_gen = n_gen,

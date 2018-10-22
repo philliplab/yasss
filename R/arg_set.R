@@ -6,7 +6,7 @@ check_arg_set <- function(arg_set, the_seq = NULL){
   result <- list()
   result[['is_list']] <- class(arg_set) == 'list'
 
-  # ancestor
+  # ancestors
   result[['has_ancestors']] <- 'ancestors' %in% names(arg_set)
   if (result[['has_ancestors']]){
     result[['ancestors_are_character']] <- class(arg_set$ancestors) == 'character'
@@ -14,6 +14,14 @@ check_arg_set <- function(arg_set, the_seq = NULL){
       result[['ancestors_same_length']] <- min(nchar(arg_set$ancestors)) == max(nchar(arg_set$ancestors))
     }
   }
+  
+  # label
+  result[['has_label']] <- 'label' %in% names(arg_set)
+  if (result[['has_label']]){
+    result[['label_are_character']] <- class(arg_set$label) == 'character'
+    result[['label_is_length_one']] <- length(arg_set$label) == 1
+  }
+
 
   # r0
   result[['has_r0']] <- 'r0' %in% names(arg_set)
