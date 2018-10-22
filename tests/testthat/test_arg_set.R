@@ -164,3 +164,10 @@ test_that('check_arg_collection lets correct arg_collections pass', {
     expect_true(x[[i]], info = i)
   }
 })  
+
+test_that('check_arg_collection catches duplicated labels', {
+  with_dups <- list(arg_set1, arg_set1)
+  x <- check_arg_collection(with_dups)
+  expect_false(x$labels_unique)
+})  
+

@@ -81,12 +81,16 @@ check_arg_collection <- function(arg_collection){
   result[['is_list']] <- class(arg_collection) == 'list'
 
   all_arg_sets_valid <- TRUE
+  set_labels <- NULL
   for (arg_set in arg_collection){
     all_arg_sets_valid <- all_arg_sets_valid & all(unlist(check_arg_set(arg_set)))
+    set_labels <- c(set_labels, arg_set$label)
   }
   result[['all_arg_sets_valid']] <- all_arg_sets_valid 
 
   result[['unnamed']] <- is.null(names(arg_collection))
+
+  result[['labels_unique']] <- length(set_labels) == length(unique(set_labels))
 
   return(result)
 }
