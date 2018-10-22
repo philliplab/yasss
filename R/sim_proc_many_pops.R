@@ -16,6 +16,8 @@
 #' @export
 
 sim_proc_many_pops <- function(arg_collection){
+  result <- list(arg_collection = arg_collection)
+  dcollection <- list()
   for (c_arg_set in arg_collection){
 
     # sim_pop
@@ -43,10 +45,15 @@ sim_proc_many_pops <- function(arg_collection){
 
     # dsum
     dsum <- summarize_dmat(dmat)
+    dsum$sim_id <- 1
+    dsum$label <- c_arg_set$label
+    dsum$sampling <- 'none'
+    dcollection <- list(dcollection, dsum)
 
     # result packaging
   }
-  return(dsum)
+  result$dcollection <- dcollection
+  return(result)
 }
 
 #- loop over `arg_collection`
