@@ -1,8 +1,14 @@
 context('sim_proc_many_pops')
 
-n_gen <- 6
+if (FALSE){
+  library(testthat)
+  devtools::load_all()
+}
+
+n_gen <- 5
 
 arg_set1 <- list(
+  label = 'A-based epitope',
   ancestors = paste(rep("A", 500), collapse = ''),
   r0 = 2,
   n_gen = n_gen,
@@ -15,6 +21,7 @@ arg_set1 <- list(
 )
 
 arg_set2 <- list(
+  label = 'C-based epitope',
   ancestors = paste(rep("A", 500), collapse = ''),
   r0 = 2,
   n_gen = n_gen,
@@ -29,6 +36,9 @@ arg_set2 <- list(
 arg_collection1 <- list(arg_set1, arg_set2)
 
 test_that('sim_proc_many_pops work', {
-  result <- sim_proc_many_pops(arg_collection1)
-  expect_equal(class(result), 'list')
+  y <- sim_proc_many_pops(arg_collection1)
+  expect_equal(class(y), 'list')
+  x <- check_many_pops(y)
+  expect_equal(class(x), 'list')
 })
+

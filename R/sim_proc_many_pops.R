@@ -16,8 +16,14 @@
 #' @export
 
 sim_proc_many_pops <- function(arg_collection){
+
+  x <- check_arg_collection(arg_collection)
+  if (!all(unlist(x))){
+    return('error in arg_collection')
+  }
+
   result <- list(arg_collection = arg_collection)
-  dcollection <- list()
+  dcollection <- NULL
   for (c_arg_set in arg_collection){
 
     # sim_pop
@@ -54,6 +60,34 @@ sim_proc_many_pops <- function(arg_collection){
   }
   result$dcollection <- dcollection
   return(result)
+}
+
+#' Checks the results produced by sim_proc_many_pops
+#'
+#' Inspects the return value from sim_proc_many_pops to check for any
+#' deviations from the specification.
+#'
+#' There are no direct tests of this function based on manually created
+#' datasets. The reason is that there are so many steps and most of those
+#' steps already have their own checks. This this function is just designed to
+#' check for obvious major deviations.
+#'
+#' @param many_pops The return value from sim_proc_many_pops
+#' @export
+
+check_many_pops <- function(many_pops){
+  result <- list()
+  result[['is_list']] <- class(many_pops) == 'list'
+
+  result[['has_dcollection']] <- 'dcollection' %in% names(many_pops)
+  if (result[['has_dcollection']]){
+    dcollection_check_result <- check_dcollection(many_pops[['dcollection']])
+    result[['valid_dcollection']] <- all(unlist(dcollection_check_result))
+    if (!all(unlist(dcollection_check_result))){
+      print(dcollection_check_result)
+    }
+  }
+  return (result)
 }
 
 #- loop over `arg_collection`
