@@ -77,7 +77,7 @@ sim_proc_many_pops <- function(arg_collection){
 #' @param many_pops The return value from sim_proc_many_pops
 #' @export
 
-check_many_pops <- function(many_pops){
+check_many_pops <- function(many_pops, verbose = FALSE){
   result <- list()
   result[['is_list']] <- class(many_pops) == 'list'
 
@@ -85,7 +85,7 @@ check_many_pops <- function(many_pops){
   if (result[['has_dcollection']]){
     dcollection_check_result <- check_dcollection(many_pops[['dcollection']])
     result[['valid_dcollection']] <- all(unlist(dcollection_check_result))
-    if (!all(unlist(dcollection_check_result))){
+    if (!all(unlist(dcollection_check_result)) & verbose){
       print(dcollection_check_result)
     }
   }

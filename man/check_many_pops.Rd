@@ -4,7 +4,7 @@
 \alias{check_many_pops}
 \title{Checks the results produced by sim_proc_many_pops}
 \usage{
-check_many_pops(many_pops)
+check_many_pops(many_pops, verbose = FALSE)
 }
 \arguments{
 \item{many_pops}{The return value from sim_proc_many_pops}
