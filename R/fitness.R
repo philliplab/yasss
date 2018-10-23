@@ -104,7 +104,7 @@ check_fitness_evaluator_result <- function(fitness_evaluation, input_args){
 #' @param implementation Which implementation to use. 'df' for data.frame. 'Rvec' for R based vectors.
 #' @export
 
-get_fit_offspring <- function(genealogy, fitness_score, implementation = 'df'){
+get_fit_offspring <- function(genealogy, fitness_score, implementation = 'Rvec'){
   if (implementation == 'df'){
     gfo_internal_Rdf(genealogy, fitness_score)
   } else if (implementation == 'Rvec') {
