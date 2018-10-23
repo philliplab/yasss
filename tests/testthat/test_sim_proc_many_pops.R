@@ -38,11 +38,24 @@ arg_set2 <- list(
 
 arg_collection1 <- list(arg_set1, arg_set2)
 
+many_pops1 <- sim_proc_many_pops(arg_collection1)
+
 test_that('sim_proc_many_pops work', {
-  many_pops <- sim_proc_many_pops(arg_collection1)
-  expect_equal(class(many_pops), 'list')
-  x <- check_many_pops(many_pops)
+  expect_equal(class(many_pops1), 'list')
+  x <- check_many_pops(many_pops1)
   for (i in names(x)){
     expect_true(x[[i]], info = i)
   }
+})
+
+test_that('check_many_pops can catch broken dcollections', {
+  many_pops2_1 <- many_pops1
+  many_pops2_1$dcollection <- 'a'
+  x <- check_many_pops(many_pops2_1)
+  expect_false(x$valid_dcollection)
+
+  many_pops2_2 <- many_pops1
+  many_pops2_2$dcollection[[1]] <- 'a'
+  x <- check_many_pops(many_pops2_2)
+  expect_false(x$valid_dcollection)
 })
