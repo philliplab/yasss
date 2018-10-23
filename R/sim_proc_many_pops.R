@@ -82,7 +82,7 @@ sim_proc_many_pops <- function(arg_collection, n_sims = 1, output_dmat = FALSE, 
                            )
       genea <- do.call(sim_pop, sim_pop_args)
 
-      genea[genea$gen_num <= n_gen_with_perfect_fitness, 'fitness'] <- 1
+      genea[genea$gen_num <= n_gen_with_perfect_fitness, 'fitness_score'] <- 1
 
       genea$sim_id <- sim_id
       genea$label <- c_arg_set$label
