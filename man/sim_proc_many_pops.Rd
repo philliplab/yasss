@@ -5,7 +5,8 @@
 \title{Simulate and process many populations}
 \usage{
 sim_proc_many_pops(arg_collection, n_sims = 1, output_dmat = FALSE,
-  max_dmat_size = 10000, fitness_processing = "none")
+  max_dmat_size = 10000, fitness_processing = "none",
+  n_gen_with_perfect_fitness = 4)
 }
 \arguments{
 \item{arg_collection}{The collection of argument sets to be used in the
@@ -23,6 +24,25 @@ output. Uses lots of memory - default is FALSE.}
 last generation on which a distance matrix is about to be computed, then
 \code{max_dmat_size} sequences will be randomly sampled and the distance
 matrix will only be computed on those sequences. Default is 10000.}
+
+\item{fitness_processing}{The way that the fitness scores should be used to
+ sample from the genealogy. Valid options include:
+ \itemize{
+   \item none: This will produce one dataset per genealogy.
+   \item fit_unfit_pair: This will use the threshold approach to remove all unfit
+   individuals and their offspring. The remaining members of the last
+   generation will be considered to be the fit member of the pair. An equal
+   number of individuals will be sampled at random from the original
+   genealogy to produce the unfit pair such that it is the same size as the
+   fit pair.
+   \item fit_unfit_unmatched_pair: Same as fit_unfit_pair except that the
+   unfit member will not be down sampled to size match the fit member.
+}}
+
+\item{n_gen_with_perfect_fitness}{The number of initial generations that
+must be assigned perfect fitness. If an early ancestor has low fitness and
+is thus removed, the likelihood that the end up with an empty genealogy is
+too large.}
 }
 \value{
 A list with the following elements:

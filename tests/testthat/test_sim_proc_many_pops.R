@@ -20,7 +20,8 @@ arg_set1 <- list(
                  args = list(mu = 1/250)),
   fitness_evaluator = list(fun = "fitness_evaluator_homology_fun",
                            args = list(comparators = paste(rep('XXXXA', 100), collapse = ''),
-                                       h2fs = "h2fs_univariate_linear_fun"))
+                                       h2fs = "h2fs_univariate_linear_fun")),
+  required_fitness = 0.02
 )
 
 arg_set2 <- list(
@@ -33,16 +34,34 @@ arg_set2 <- list(
                  args = list(mu = 1/250)),
   fitness_evaluator = list(fun = "fitness_evaluator_homology_fun",
                            args = list(comparators = paste(rep('XXXXC', 100), collapse = ''),
-                                       h2fs = "h2fs_univariate_linear_fun"))
+                                       h2fs = "h2fs_univariate_linear_fun")),
+  required_fitness = .97
 )
+
+arg_set3 <- list(
+  label = 'A-based epitope',
+  ancestors = paste(rep("A", 500), collapse = ''),
+  r0 = 2,
+  n_gen = n_gen+2,
+  n_pop = Inf,
+  mutator = list(fun = "mutator_uniform_fun",
+                 args = list(mu = 1/250)),
+  fitness_evaluator = list(fun = "fitness_evaluator_homology_fun",
+                           args = list(comparators = paste(rep('XXXXA', 100), collapse = ''),
+                                       h2fs = "h2fs_univariate_linear_fun")),
+  required_fitness = 0.02
+)
+
 
 arg_collection1 <- list(arg_set1, arg_set2)
 arg_collection2 <- list(arg_set1)
+arg_collection3 <- list(arg_set3)
 
 many_pops1 <- sim_proc_many_pops(arg_collection1, n_sims = 1)
 many_pops3 <- sim_proc_many_pops(arg_collection1, n_sims = 2)
 many_pops4 <- sim_proc_many_pops(arg_collection2, n_sims = 1, output_dmat = TRUE)
 many_pops5 <- sim_proc_many_pops(arg_collection2, n_sims = 1, output_dmat = TRUE, max_dmat_size = 10)
+#many_pops6 <- sim_proc_many_pops(arg_collection3, n_sims = 1, output_dmat = TRUE, fitness_processing = 'fit_unfit_pair')
 
 test_that('sim_proc_many_pops work', {
   expect_equal(class(many_pops1), 'list')

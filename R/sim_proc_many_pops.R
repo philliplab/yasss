@@ -25,33 +25,33 @@
 #' last generation on which a distance matrix is about to be computed, then
 #' \code{max_dmat_size} sequences will be randomly sampled and the distance
 #' matrix will only be computed on those sequences. Default is 10000.
+#' @param fitness_processing The way that the fitness scores should be used to
+#'  sample from the genealogy. Valid options include:
+#'  \itemize{
+#'    \item none: This will produce one dataset per genealogy.
+#'    \item fit_unfit_pair: This will use the threshold approach to remove all unfit
+#'    individuals and their offspring. The remaining members of the last
+#'    generation will be considered to be the fit member of the pair. An equal
+#'    number of individuals will be sampled at random from the original
+#'    genealogy to produce the unfit pair such that it is the same size as the
+#'    fit pair.
+#'    \item fit_unfit_unmatched_pair: Same as fit_unfit_pair except that the
+#'    unfit member will not be down sampled to size match the fit member.
+#' }
+#' @param n_gen_with_perfect_fitness The number of initial generations that
+#' must be assigned perfect fitness. If an early ancestor has low fitness and
+#' is thus removed, the likelihood that the end up with an empty genealogy is
+#' too large.
 #' @export
 
-#- `arg_collection`: All the `arg_set`s that will be used to simulate
-#  genealogies with `sim_pop` and `get_fit_offspring`.
-#- `n_pop`: The number of times `sim_pop` will be called each `arg_set`. Note
-#  that the number of datasets generated will depend on the way the fitness
-#  scores are used to sample from the genealogies.
-#- `fitness_processing`: The way that the fitness scores should be used to
-#  sample from the genealogy. Valid options include:
-#  * `none`: This will produce one dataset per genealogy.
-#  * `fit_unfit_pair`: This will use the threshold approach to remove all unfit
-#    individuals and their offspring. The remaining members of the last
-#    generation will be considered to be the fit member of the pair. An equal
-#    number of individuals will be sampled at random from the original
-#    genealogy to produce the unfit pair such that it is the same size as the
-#    fit pair.
-#  * `fit_unfit_unmatched_pair`: Same as `fit_unfit_pair` except that the
-#    unfit member will not be down sampled to size match the fit member.
 #- `output_genealogy`: Should the genealogy data sets be deleted to reduce
 #  memory usage? Valid options:
 #  * `last_gen_only`
 #  * `none`
 #  * `full`
-#- `output_dmat`: Should the distance matrix be included in the output?
 
 sim_proc_many_pops <- function(arg_collection, n_sims = 1, output_dmat = FALSE, max_dmat_size = 10000,
-                               fitness_processing = 'none'){
+                               fitness_processing = 'none', n_gen_with_perfect_fitness = 4){
 
   x <- check_arg_collection(arg_collection)
   if (!all(unlist(x))){
@@ -81,6 +81,9 @@ sim_proc_many_pops <- function(arg_collection, n_sims = 1, output_dmat = FALSE, 
         fitness_evaluator = arg_set$fitness_evaluator
                            )
       genea <- do.call(sim_pop, sim_pop_args)
+
+      genea[genea$gen_num <= n_gen_with_perfect_fitness, 'fitness'] <- 1
+
       genea$sim_id <- sim_id
       genea$label <- c_arg_set$label
 
