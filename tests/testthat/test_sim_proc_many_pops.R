@@ -37,10 +37,12 @@ arg_set2 <- list(
 )
 
 arg_collection1 <- list(arg_set1, arg_set2)
+arg_collection2 <- list(arg_set1)
 
 many_pops1 <- sim_proc_many_pops(arg_collection1, n_sims = 1)
 many_pops3 <- sim_proc_many_pops(arg_collection1, n_sims = 2)
-many_pops4 <- sim_proc_many_pops(arg_collection1, n_sims = 1, output_dmat = TRUE)
+many_pops4 <- sim_proc_many_pops(arg_collection2, n_sims = 1, output_dmat = TRUE)
+many_pops5 <- sim_proc_many_pops(arg_collection2, n_sims = 1, output_dmat = TRUE, max_dmat_size = 10)
 
 test_that('sim_proc_many_pops work', {
   expect_equal(class(many_pops1), 'list')
@@ -69,4 +71,7 @@ test_that('setting n_sims causes more simulations to be run', {
 
 test_that('output_dmats work', {
   expect_true('all_dmats' %in% names(many_pops4))
+})
+test_that('max_dmat_size argument works', {
+  expect_equal(attr(many_pops5$all_dmats[[1]]$dmat, 'Size'), 10)
 })

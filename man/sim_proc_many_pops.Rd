@@ -4,7 +4,8 @@
 \alias{sim_proc_many_pops}
 \title{Simulate and process many populations}
 \usage{
-sim_proc_many_pops(arg_collection, n_sims = 1, output_dmat = FALSE)
+sim_proc_many_pops(arg_collection, n_sims = 1, output_dmat = FALSE,
+  max_dmat_size = 10000)
 }
 \arguments{
 \item{arg_collection}{The collection of argument sets to be used in the
@@ -17,6 +18,11 @@ length(arg_collection) * 2} if any fitness processing is specified.}
 
 \item{output_dmat}{If TRUE, the distance matrices will be included in the
 output. Uses lots of memory - default is FALSE.}
+
+\item{max_dmat_size}{If more sequences than this number is present in a
+last generation on which a distance matrix is about to be computed, then
+\code{max_dmat_size} sequences will be randomly sampled and the distance
+matrix will only be computed on those sequences. Default is 10000.}
 }
 \value{
 A list with the following elements:

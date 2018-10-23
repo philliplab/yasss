@@ -21,6 +21,10 @@
 #' length(arg_collection) * 2} if any fitness processing is specified.
 #' @param output_dmat If TRUE, the distance matrices will be included in the
 #' output. Uses lots of memory - default is FALSE.
+#' @param max_dmat_size If more sequences than this number is present in a
+#' last generation on which a distance matrix is about to be computed, then
+#' \code{max_dmat_size} sequences will be randomly sampled and the distance
+#' matrix will only be computed on those sequences. Default is 10000.
 #' @export
 
 #- `arg_collection`: All the `arg_set`s that will be used to simulate
@@ -46,7 +50,7 @@
 #  * `full`
 #- `output_dmat`: Should the distance matrix be included in the output?
 
-sim_proc_many_pops <- function(arg_collection, n_sims = 1, output_dmat = FALSE){
+sim_proc_many_pops <- function(arg_collection, n_sims = 1, output_dmat = FALSE, max_dmat_size = 10000){
 
   x <- check_arg_collection(arg_collection)
   if (!all(unlist(x))){
@@ -80,7 +84,12 @@ sim_proc_many_pops <- function(arg_collection, n_sims = 1, output_dmat = FALSE){
       last_gen <- genea %>% filter(gen_num == max(gen_num))
 
       # dmat
-      dmat <- stringdistmatrix(last_gen$the_seq)
+      if (length(last_gen$the_seq) > max_dmat_size){
+        seqs_for_dmat <- sample(last_gen$the_seq, max_dmat_size)
+      } else {
+        seqs_for_dmat <- last_gen$the_seq
+      }
+      dmat <- stringdistmatrix(seqs_for_dmat)
       if (output_dmat){
         c_dmat <- list(dmat = dmat,
                        sim_id = sim_id,
@@ -96,7 +105,6 @@ sim_proc_many_pops <- function(arg_collection, n_sims = 1, output_dmat = FALSE){
       dsum$sampling <- 'none'
 #      dcollection[[length(dcollection)+1]] <- dsum
       dcollection <- c(dcollection, list(dsum))
-
 
     # result packaging
     }
