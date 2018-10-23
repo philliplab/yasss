@@ -8,6 +8,8 @@ check_many_pops(many_pops, verbose = FALSE)
 }
 \arguments{
 \item{many_pops}{The return value from sim_proc_many_pops}
+
+\item{verbose}{If TRUE, print details of failures}
 }
 \description{
 Inspects the return value from sim_proc_many_pops to check for any

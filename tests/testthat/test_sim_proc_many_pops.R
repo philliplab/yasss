@@ -38,7 +38,7 @@ arg_set2 <- list(
 
 arg_collection1 <- list(arg_set1, arg_set2)
 
-many_pops1 <- sim_proc_many_pops(arg_collection1)
+many_pops1 <- sim_proc_many_pops(arg_collection1, n_sims = 1)
 
 test_that('sim_proc_many_pops work', {
   expect_equal(class(many_pops1), 'list')

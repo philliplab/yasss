@@ -4,11 +4,16 @@
 \alias{sim_proc_many_pops}
 \title{Simulate and process many populations}
 \usage{
-sim_proc_many_pops(arg_collection)
+sim_proc_many_pops(arg_collection, n_sims = 1)
 }
 \arguments{
 \item{arg_collection}{The collection of argument sets to be used in the
 simulations}
+
+\item{n_sims}{The number of times sim_pop must be called for each arg_set.
+The total number of data sets produced will be \code{n_sims *
+length(arg_collection)} if no fitness processing is specified and \code{n_sims *
+length(arg_collection) * 2} if any fitness processing is specified.}
 }
 \value{
 A list with the following elements:
@@ -21,6 +26,8 @@ A list with the following elements:
   last generations of the genealogies and all the identifier columns.
   \item \code{all_dmats} [OPTIONAL]: A list of lists containing the
   distance matrixes and their indentifiers.
+  \item \code{n_sims}: The input \code{n_sims} indicating the number of
+  datasets you can expect.
 }
 }
 \description{
