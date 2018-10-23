@@ -4,7 +4,7 @@
 \alias{sim_proc_many_pops}
 \title{Simulate and process many populations}
 \usage{
-sim_proc_many_pops(arg_collection, n_sims = 1)
+sim_proc_many_pops(arg_collection, n_sims = 1, output_dmat = FALSE)
 }
 \arguments{
 \item{arg_collection}{The collection of argument sets to be used in the
@@ -14,6 +14,9 @@ simulations}
 The total number of data sets produced will be \code{n_sims *
 length(arg_collection)} if no fitness processing is specified and \code{n_sims *
 length(arg_collection) * 2} if any fitness processing is specified.}
+
+\item{output_dmat}{If TRUE, the distance matrices will be included in the
+output. Uses lots of memory - default is FALSE.}
 }
 \value{
 A list with the following elements:

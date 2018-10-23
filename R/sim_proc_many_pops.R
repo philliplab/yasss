@@ -19,9 +19,34 @@
 #' The total number of data sets produced will be \code{n_sims *
 #' length(arg_collection)} if no fitness processing is specified and \code{n_sims *
 #' length(arg_collection) * 2} if any fitness processing is specified.
+#' @param output_dmat If TRUE, the distance matrices will be included in the
+#' output. Uses lots of memory - default is FALSE.
 #' @export
 
-sim_proc_many_pops <- function(arg_collection, n_sims = 1){
+#- `arg_collection`: All the `arg_set`s that will be used to simulate
+#  genealogies with `sim_pop` and `get_fit_offspring`.
+#- `n_pop`: The number of times `sim_pop` will be called each `arg_set`. Note
+#  that the number of datasets generated will depend on the way the fitness
+#  scores are used to sample from the genealogies.
+#- `fitness_processing`: The way that the fitness scores should be used to
+#  sample from the genealogy. Valid options include:
+#  * `none`: This will produce one dataset per genealogy.
+#  * `fit_unfit_pair`: This will use the threshold approach to remove all unfit
+#    individuals and their offspring. The remaining members of the last
+#    generation will be considered to be the fit member of the pair. An equal
+#    number of individuals will be sampled at random from the original
+#    genealogy to produce the unfit pair such that it is the same size as the
+#    fit pair.
+#  * `fit_unfit_unmatched_pair`: Same as `fit_unfit_pair` except that the
+#    unfit member will not be down sampled to size match the fit member.
+#- `output_genealogy`: Should the genealogy data sets be deleted to reduce
+#  memory usage? Valid options:
+#  * `last_gen_only`
+#  * `none`
+#  * `full`
+#- `output_dmat`: Should the distance matrix be included in the output?
+
+sim_proc_many_pops <- function(arg_collection, n_sims = 1, output_dmat = FALSE){
 
   x <- check_arg_collection(arg_collection)
   if (!all(unlist(x))){
@@ -30,6 +55,7 @@ sim_proc_many_pops <- function(arg_collection, n_sims = 1){
 
   result <- list(arg_collection = arg_collection)
   dcollection <- NULL
+  all_dmats <- NULL
   for (c_arg_set in arg_collection){
     for (sim_id in 1:n_sims){
 
@@ -55,6 +81,13 @@ sim_proc_many_pops <- function(arg_collection, n_sims = 1){
 
       # dmat
       dmat <- stringdistmatrix(last_gen$the_seq)
+      if (output_dmat){
+        c_dmat <- list(dmat = dmat,
+                       sim_id = sim_id,
+                       label = c_arg_set$label,
+                       sampling = 'none')
+        all_dmats <- c(all_dmats, list(c_dmat))
+      }
 
       # dsum
       dsum <- summarize_dmat(dmat)
@@ -70,6 +103,9 @@ sim_proc_many_pops <- function(arg_collection, n_sims = 1){
   }
   result$dcollection <- dcollection
   result$n_sims <- n_sims
+  if (output_dmat){
+    result$all_dmats <- all_dmats
+  }
   return(result)
 }
 
@@ -109,6 +145,11 @@ check_many_pops <- function(many_pops, verbose = FALSE){
     if (!all(unlist(dcollection_check_result)) & verbose){
       print(dcollection_check_result)
     }
+  }
+
+  # all_dmats
+  if ('all_dmats' %in% names(many_pops)){
+    result[['valid_all_dmats']] <- class(result[['all_dmats']]) == 'list'
   }
   return (result)
 }
