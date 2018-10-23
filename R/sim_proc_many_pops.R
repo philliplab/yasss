@@ -93,6 +93,7 @@ sim_proc_many_pops <- function(arg_collection, n_sims = 1, output_dmat = FALSE, 
 
         new_last_gens <- list(last_gen)
 
+
       } else if (fitness_processing == 'fit_unfit_pair'){
         genea$sampling <- 'size_matched_sample'
         fit_genea <- get_fit_offspring(genea, c_arg_set$required_fitness, 'Rvec')
@@ -100,9 +101,9 @@ sim_proc_many_pops <- function(arg_collection, n_sims = 1, output_dmat = FALSE, 
 
         fit_last_gen <- fit_genea %>% filter(gen_num == max(gen_num))
 
-        n_fit_last_gens <- nrow(fit_last_gen)
+        n_fit_last_gen <- nrow(fit_last_gen)
         unfit_last_gen <- genea %>% filter(gen_num == max(gen_num))
-        unfit_last_gen <- unfit_last_gen[sample(1:nrow(unfit_last_gens), n_fit_last_gens), ]
+        unfit_last_gen <- unfit_last_gen[sample(1:nrow(unfit_last_gen), n_fit_last_gen), ]
 
         new_last_gens <- list(fit_last_gen, unfit_last_gen)
       
