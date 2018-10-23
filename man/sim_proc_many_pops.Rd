@@ -6,7 +6,7 @@
 \usage{
 sim_proc_many_pops(arg_collection, n_sims = 1, output_dmat = FALSE,
   max_dmat_size = 10000, fitness_processing = "none",
-  n_gen_with_perfect_fitness = 4)
+  n_gen_with_perfect_fitness = 4, output_genealogy = "none")
 }
 \arguments{
 \item{arg_collection}{The collection of argument sets to be used in the
@@ -43,6 +43,9 @@ matrix will only be computed on those sequences. Default is 10000.}
 must be assigned perfect fitness. If an early ancestor has low fitness and
 is thus removed, the likelihood that the end up with an empty genealogy is
 too large.}
+
+\item{output_genealogy}{Should the genealogy be output? Valid options
+include: 'none', 'last_gen_only', and 'full'.}
 }
 \value{
 A list with the following elements:

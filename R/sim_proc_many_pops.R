@@ -42,6 +42,8 @@
 #' must be assigned perfect fitness. If an early ancestor has low fitness and
 #' is thus removed, the likelihood that the end up with an empty genealogy is
 #' too large.
+#' @param output_genealogy Should the genealogy be output? Valid options
+#' include: 'none', 'last_gen_only', and 'full'.
 #' @export
 
 #- `output_genealogy`: Should the genealogy data sets be deleted to reduce
@@ -51,7 +53,8 @@
 #  * `full`
 
 sim_proc_many_pops <- function(arg_collection, n_sims = 1, output_dmat = FALSE, max_dmat_size = 10000,
-                               fitness_processing = 'none', n_gen_with_perfect_fitness = 4){
+                               fitness_processing = 'none', n_gen_with_perfect_fitness = 4,
+                               output_genealogy = 'none'){
 
   x <- check_arg_collection(arg_collection)
   if (!all(unlist(x))){
@@ -61,6 +64,7 @@ sim_proc_many_pops <- function(arg_collection, n_sims = 1, output_dmat = FALSE, 
   result <- list(arg_collection = arg_collection)
   dcollection <- NULL
   all_dmats <- NULL
+  all_genealogies <- NULL
   for (c_arg_set in arg_collection){
     for (sim_id in 1:n_sims){
 
@@ -93,6 +97,9 @@ sim_proc_many_pops <- function(arg_collection, n_sims = 1, output_dmat = FALSE, 
 
         new_last_gens <- list(last_gen)
 
+        if (output_genealogy == 'full'){
+          all_genealogies <- c(all_genealogies, list(genea))
+        }
 
       } else if (fitness_processing == 'fit_unfit_pair'){
         genea$sampling <- 'size_matched_sample'
@@ -106,6 +113,11 @@ sim_proc_many_pops <- function(arg_collection, n_sims = 1, output_dmat = FALSE, 
         unfit_last_gen <- unfit_last_gen[sample(1:nrow(unfit_last_gen), n_fit_last_gen), ]
 
         new_last_gens <- list(fit_last_gen, unfit_last_gen)
+        
+        if (output_genealogy == 'full'){
+          unfit_non_last_gens <- genea %>% filter(gen_num != max(gen_num))
+          all_genealogies <- c(all_genealogies, list(fit_genea, rbind(unfit_non_last_gens, unfit_last_gen)))
+        }
       
       } else {
         stop('not implemented')
@@ -148,6 +160,9 @@ sim_proc_many_pops <- function(arg_collection, n_sims = 1, output_dmat = FALSE, 
   result$n_sims <- n_sims
   if (output_dmat){
     result$all_dmats <- all_dmats
+  }
+  if (output_genealogy != 'none'){
+    result$all_genealogies <- all_genealogies
   }
   return(result)
 }
