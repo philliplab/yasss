@@ -316,4 +316,33 @@ Return value from `sim_proc_many_pops` is a list with the following elements:
   last generations of the genealogies and all the identifier columns.
 - `arg_collection`: The input `arg_collection`.
 
+### Intended use
+
+All this data management functionality is build to make it easier to simulate
+batches of data to illustrate key concepts. There are three primary types of
+comparison that are of interest (right now):
+
+- Summary of primary metrics based on multiple similar simulations.
+  * Produce data by specifying an `arg_collection` with just one `arg_set`
+    with `fitness_processing` set to `none`.
+- Comparison of metrics between non-fitness restricted and fitness-restricted
+  evolutionary processes.
+  * Produce data by specifying an `arg_collection` with just one `arg_set`
+    with `fitness_processing` specified to either `fit_unfit_pair` or
+    `fit_unfit_unmatched_pair`.
+- Comparison of the effects of different evolutionary processes.
+  * Produce data by specifying an `arg_collection` with just multiple
+    `arg_set`s where the based simulation parameters are not modified, with
+    different `fitness_evaluator`s and/or different `fitness_requirements`
+    specified.
+- LATER: effect of recombination?
+- LATER: effect of different mutators?
+
+In almost all cases, only the summarized distance matrix will be produced. As
+far as I can tell, PFitter only requires the average pairwise hamming
+distance as input, we do not need to hack in PFitter?
+
+
+
+
 
