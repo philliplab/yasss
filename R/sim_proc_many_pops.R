@@ -80,32 +80,43 @@ sim_proc_many_pops <- function(arg_collection, n_sims = 1, output_dmat = FALSE, 
         fitness_evaluator = arg_set$fitness_evaluator
                            )
       genea <- do.call(sim_pop, sim_pop_args)
+      genea$sim_id = sim_id
+      genea$label = c_arg_set$label
+      genea$sampling = 'none'
 
       last_gen <- genea %>% filter(gen_num == max(gen_num))
+      new_last_gens <- list(last_gen)
 
       # dmat
-      if (length(last_gen$the_seq) > max_dmat_size){
-        seqs_for_dmat <- sample(last_gen$the_seq, max_dmat_size)
-      } else {
-        seqs_for_dmat <- last_gen$the_seq
-      }
-      dmat <- stringdistmatrix(seqs_for_dmat)
-      if (output_dmat){
-        c_dmat <- list(dmat = dmat,
-                       sim_id = sim_id,
-                       label = c_arg_set$label,
-                       sampling = 'none')
-        all_dmats <- c(all_dmats, list(c_dmat))
-      }
+      for (c_last_gen in new_last_gens){
+        
+        # parse out identifiers
+        c_sim_id <- unique(c_last_gen$sim_id)
+        c_label <- unique(c_last_gen$label)
+        c_sampling <- unique(c_last_gen$sampling)
 
-      # dsum
-      dsum <- summarize_dmat(dmat)
-      dsum$sim_id <- sim_id
-      dsum$label <- c_arg_set$label
-      dsum$sampling <- 'none'
-#      dcollection[[length(dcollection)+1]] <- dsum
-      dcollection <- c(dcollection, list(dsum))
+        if (length(c_last_gen$the_seq) > max_dmat_size){
+          seqs_for_dmat <- sample(c_last_gen$the_seq, max_dmat_size)
+        } else {
+          seqs_for_dmat <- c_last_gen$the_seq
+        }
+        dmat <- stringdistmatrix(seqs_for_dmat)
+        if (output_dmat){
+          c_dmat <- list(dmat = dmat,
+                         sim_id = c_sim_id,
+                         label = c_label,
+                         sampling = c_sampling)
+          all_dmats <- c(all_dmats, list(c_dmat))
+        }
 
+        # dsum
+        dsum <- summarize_dmat(dmat)
+        dsum$sim_id <- c_sim_id
+        dsum$label <- c_label
+        dsum$sampling <- c_sampling
+#        dcollection[[length(dcollection)+1]] <- dsum
+        dcollection <- c(dcollection, list(dsum))
+      }
     # result packaging
     }
   }

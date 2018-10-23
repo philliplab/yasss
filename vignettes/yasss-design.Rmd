@@ -275,7 +275,9 @@ Algorithm:
 
 - call `sim_pop`
 
-- if `fitness_processing == none`: just add in the columns
+- if `fitness_processing == none`: 
+  * add in identifying columns
+  * append into `new_genealogies`
 - if `fitness_processing == fit_unfit_pair`:
   * `get_fit_offspring` with `fitness_threshold`
     + add in identifying columns
