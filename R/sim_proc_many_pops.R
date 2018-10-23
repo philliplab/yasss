@@ -136,7 +136,7 @@ sim_proc_many_pops <- function(arg_collection, n_sims = 1, output_dmat = FALSE, 
         } else {
           seqs_for_dmat <- c_last_gen$the_seq
         }
-        dmat <- stringdistmatrix(seqs_for_dmat)
+        dmat <- stringdistmatrix(seqs_for_dmat, method = 'hamming')
         if (output_dmat){
           c_dmat <- list(dmat = dmat,
                          sim_id = c_sim_id,
