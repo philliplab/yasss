@@ -72,6 +72,8 @@ test_that('setting n_sims causes more simulations to be run', {
 test_that('output_dmats work', {
   expect_true('all_dmats' %in% names(many_pops4))
 })
+
 test_that('max_dmat_size argument works', {
   expect_equal(attr(many_pops5$all_dmats[[1]]$dmat, 'Size'), 10)
 })
+

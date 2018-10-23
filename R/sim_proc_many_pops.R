@@ -50,7 +50,8 @@
 #  * `full`
 #- `output_dmat`: Should the distance matrix be included in the output?
 
-sim_proc_many_pops <- function(arg_collection, n_sims = 1, output_dmat = FALSE, max_dmat_size = 10000){
+sim_proc_many_pops <- function(arg_collection, n_sims = 1, output_dmat = FALSE, max_dmat_size = 10000,
+                               fitness_processing = 'none'){
 
   x <- check_arg_collection(arg_collection)
   if (!all(unlist(x))){
@@ -80,12 +81,31 @@ sim_proc_many_pops <- function(arg_collection, n_sims = 1, output_dmat = FALSE, 
         fitness_evaluator = arg_set$fitness_evaluator
                            )
       genea <- do.call(sim_pop, sim_pop_args)
-      genea$sim_id = sim_id
-      genea$label = c_arg_set$label
-      genea$sampling = 'none'
+      genea$sim_id <- sim_id
+      genea$label <- c_arg_set$label
 
-      last_gen <- genea %>% filter(gen_num == max(gen_num))
-      new_last_gens <- list(last_gen)
+      if (fitness_processing == 'none'){
+        genea$sampling <- 'none'
+        last_gen <- genea %>% filter(gen_num == max(gen_num))
+
+        new_last_gens <- list(last_gen)
+
+      } else if (fitness_processing == 'fit_unfit_pair'){
+        genea$sampling <- 'size_matched_sample'
+        fit_genea <- get_fit_offspring(genea, c_arg_set$required_fitness, 'Rvec')
+        fit_genea$sampling <- 'fitness_restricted'
+
+        fit_last_gen <- fit_genea %>% filter(gen_num == max(gen_num))
+
+        n_fit_last_gens <- nrow(fit_last_gen)
+        unfit_last_gen <- genea %>% filter(gen_num == max(gen_num))
+        unfit_last_gen <- unfit_last_gen[sample(1:nrow(unfit_last_gens), n_fit_last_gens), ]
+
+        new_last_gens <- list(fit_last_gen, unfit_last_gen)
+      
+      } else {
+        stop('not implemented')
+      }
 
       # dmat
       for (c_last_gen in new_last_gens){

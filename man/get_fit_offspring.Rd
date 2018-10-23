@@ -4,7 +4,7 @@
 \alias{get_fit_offspring}
 \title{Retrieves the fit offspring with fit ancestry}
 \usage{
-get_fit_offspring(genealogy, fitness_score, implementation = "df")
+get_fit_offspring(genealogy, fitness_score, implementation = "Rvec")
 }
 \arguments{
 \item{genealogy}{The genealogy from which the fit individuals must be selected}
