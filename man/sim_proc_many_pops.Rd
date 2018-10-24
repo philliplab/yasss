@@ -6,7 +6,8 @@
 \usage{
 sim_proc_many_pops(arg_collection, n_sims = 1, output_dmat = FALSE,
   max_dmat_size = 10000, fitness_processing = "none",
-  n_gen_with_perfect_fitness = 4, output_genealogy = "none")
+  n_gen_with_perfect_fitness = 4, output_genealogy = "none",
+  verbose = FALSE)
 }
 \arguments{
 \item{arg_collection}{The collection of argument sets to be used in the
@@ -46,6 +47,8 @@ too large.}
 
 \item{output_genealogy}{Should the genealogy be output? Valid options
 include: 'none', 'last_gen_only', and 'full'.}
+
+\item{verbose}{If TRUE, progress is printed to STDOUT.}
 }
 \value{
 A list with the following elements:

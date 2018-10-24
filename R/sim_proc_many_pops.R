@@ -44,6 +44,7 @@
 #' too large.
 #' @param output_genealogy Should the genealogy be output? Valid options
 #' include: 'none', 'last_gen_only', and 'full'.
+#' @param verbose If TRUE, progress is printed to STDOUT.
 #' @export
 
 #- `output_genealogy`: Should the genealogy data sets be deleted to reduce
@@ -54,7 +55,7 @@
 
 sim_proc_many_pops <- function(arg_collection, n_sims = 1, output_dmat = FALSE, max_dmat_size = 10000,
                                fitness_processing = 'none', n_gen_with_perfect_fitness = 4,
-                               output_genealogy = 'none'){
+                               output_genealogy = 'none', verbose = FALSE){
 
   x <- check_arg_collection(arg_collection)
   if (!all(unlist(x))){
@@ -67,6 +68,9 @@ sim_proc_many_pops <- function(arg_collection, n_sims = 1, output_dmat = FALSE, 
   all_genealogies <- NULL
   for (c_arg_set in arg_collection){
     for (sim_id in 1:n_sims){
+      if (verbose){
+        cat(paste('\nArg Set Label', c_arg_set$label, '; sim_id = ', sim_id, '\n', sep = ''))
+      }
 
       # sim_pop
       arg_set <- c_arg_set
@@ -85,6 +89,10 @@ sim_proc_many_pops <- function(arg_collection, n_sims = 1, output_dmat = FALSE, 
         fitness_evaluator = arg_set$fitness_evaluator
                            )
       genea <- do.call(sim_pop, sim_pop_args)
+      if (verbose){
+        cat('Genealogy Simulated\n')
+      }
+
 
       genea[genea$gen_num <= n_gen_with_perfect_fitness, 'fitness_score'] <- 1
 
@@ -124,6 +132,9 @@ sim_proc_many_pops <- function(arg_collection, n_sims = 1, output_dmat = FALSE, 
       } else {
         stop('not implemented')
       }
+      if (verbose){
+        cat('Fit offspring selected\n')
+      }
 
       # dmat
       for (c_last_gen in new_last_gens){
@@ -154,6 +165,9 @@ sim_proc_many_pops <- function(arg_collection, n_sims = 1, output_dmat = FALSE, 
         dsum$sampling <- c_sampling
 #        dcollection[[length(dcollection)+1]] <- dsum
         dcollection <- c(dcollection, list(dsum))
+        if (verbose){
+          cat('A distance matrix computed and summarized\n')
+        }
       }
     # result packaging
     }
