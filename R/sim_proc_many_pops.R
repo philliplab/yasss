@@ -69,7 +69,7 @@ sim_proc_many_pops <- function(arg_collection, n_sims = 1, output_dmat = FALSE, 
   for (c_arg_set in arg_collection){
     for (sim_id in 1:n_sims){
       if (verbose){
-        cat(paste('\nArg Set Label', c_arg_set$label, '; sim_id = ', sim_id, '\n', sep = ''))
+        cat(paste('\nArg Set Label ', c_arg_set$label, '; sim_id = ', sim_id, '\n', sep = ''))
       }
 
       # sim_pop

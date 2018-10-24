@@ -9,9 +9,11 @@
 
 summarize_dmat <- function(dmat) {
   avg_hd <- mean(dmat)
+  sd_hd <- sd(dmat)
   perc <- quantile(dmat, (0:100)/100)
   dens <- density(dmat)
   return(list(avg_hd = avg_hd,
+              sd_hd = sd_hd,
               perc = perc,
               dens = dens))
 }
@@ -30,7 +32,7 @@ summarize_dmat <- function(dmat) {
 check_dsum <- function(dsum, identifiers = FALSE){
   result <- list()
   result[['is_a_list']] <- class(dsum) == 'list'
-  col_names <- c('avg_hd', 'perc', 'dens')
+  col_names <- c('avg_hd', 'sd_hd', 'perc', 'dens')
   identifier_col_names <- c('sim_id', 'label', 'sampling')
 
   for (col_name in col_names){
@@ -73,6 +75,10 @@ check_dsum <- function(dsum, identifiers = FALSE){
   # avg_hd
   result[['avg_hd_is_numeric']] <- class(dsum$avg_hd) == 'numeric'
   result[['avg_hd_length_one']] <- length(dsum$avg_hd) == 1
+
+  # sd_hd
+  result[['sd_hd_is_numeric']] <- class(dsum$sd_hd) == 'numeric'
+  result[['sd_hd_length_one']] <- length(dsum$sd_hd) == 1
 
   # perc
   result[['perc_length_101']] <- length(dsum$perc) == 101

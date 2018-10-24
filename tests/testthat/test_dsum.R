@@ -14,6 +14,7 @@ z <- quantile(dmat, (0:100)/100)
 names(z) <- NULL
 
 dsum1 <- list(avg_hd = mean(dmat),
+              sd_hd = sd(dmat),
               perc = z,
               dens = density(dmat))
 
@@ -77,6 +78,12 @@ dsum14$sim_id <- 1:2
 
 dsum15 <- dsum2
 dsum15$label <- c('A', 'B')
+
+dsum16 <- dsum2
+dsum16$sd_hd <- 'A'
+
+dsum16_1 <- dsum2
+dsum16_1$sd_hd <- 50:51
 
 
 if (FALSE){
@@ -164,6 +171,13 @@ test_that('check_dsum find violations', {
   
   result <- check_dsum(dsum10, identifiers = TRUE)
   expect_false(result$dens_is_density)
+  
+  result <- check_dsum(dsum16, identifiers = TRUE)
+  expect_false(result$sd_hd_is_numeric)
+  
+  result <- check_dsum(dsum16_1, identifiers = TRUE)
+  expect_false(result$sd_hd_length_one)
+  
 })
 
 dcol1 <- list(dsum2, dsum3, dsum4)
