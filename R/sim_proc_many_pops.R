@@ -104,6 +104,8 @@ sim_proc_many_pops <- function(arg_collection, n_sims = 1, output_dmat = FALSE, 
       } else if (fitness_processing == 'fit_unfit_pair'){
         genea$sampling <- 'size_matched_sample'
         fit_genea <- get_fit_offspring(genea, c_arg_set$required_fitness, 'Rvec')
+        fit_genea$sim_id <- sim_id
+        fit_genea$label <- c_arg_set$label
         fit_genea$sampling <- 'fitness_restricted'
 
         fit_last_gen <- fit_genea %>% filter(gen_num == max(gen_num))
