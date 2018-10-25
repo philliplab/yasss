@@ -105,11 +105,11 @@ sim_proc_many_pops <- function(arg_collection, n_sims = 1, output_dmat = FALSE, 
         }
 
         fitness_processing_metrics <- c(fitness_processing_metrics,
-          list(sim_id = sim_id,
-               label = c_arg_set$label,
-               sampling = 'none',
-               input_seqs_lg = nrow(last_gen),
-               output_seqs_lg = nrow(last_gen)))
+          list(list(sim_id = sim_id,
+                    label = c_arg_set$label,
+                    sampling = 'none',
+                    input_seqs_lg = nrow(last_gen),
+                    output_seqs_lg = nrow(last_gen))))
 
 
       } else if (fitness_processing == 'fit_unfit_pair'){
@@ -134,23 +134,21 @@ sim_proc_many_pops <- function(arg_collection, n_sims = 1, output_dmat = FALSE, 
           all_genealogies <- c(all_genealogies, list(fit_genea, rbind(unfit_non_last_gens, unfit_last_gen)))
         }
         fitness_processing_metrics <- c(fitness_processing_metrics,
-          list(sim_id = sim_id,
-               label = c_arg_set$label,
-               sampling = 'fitness_restricted',
-               input_seqs_lg = input_seqs_lg,
-               output_seqs_lg = output_seqs_lg))
+          list(list(sim_id = sim_id,
+                    label = c_arg_set$label,
+                    sampling = 'fitness_restricted',
+                    input_seqs_lg = input_seqs_lg,
+                    output_seqs_lg = output_seqs_lg)))
         fitness_processing_metrics <- c(fitness_processing_metrics,
-          list(sim_id = sim_id,
-               label = c_arg_set$label,
-               sampling = 'none',
-               input_seqs_lg = input_seqs_lg,
-               output_seqs_lg = output_seqs_lg))
+          list(list(sim_id = sim_id,
+                    label = c_arg_set$label,
+                    sampling = 'none',
+                    input_seqs_lg = input_seqs_lg,
+                    output_seqs_lg = output_seqs_lg)))
       
       } else {
         stop('not implemented')
       }
-
-
 
       if (verbose){
         cat('Fit offspring selected\n')
@@ -250,6 +248,16 @@ check_many_pops <- function(many_pops, verbose = FALSE){
 
   # fitness_processing_metrics
   result[['has_fitness_processing_metrics']] <- 'fitness_processing_metrics' %in% names(many_pops)
+  all_fpm_valid <- TRUE
+  for (i in 1:length(many_pops$fitness_processing_metrics)){
+    valid_fpm <- list()
+    c_fpm <- many_pops$fitness_processing_metrics[[i]]
+    valid_fpm[['is_list']] <- class(c_fpm) == 'list'
+
+    valid_fpm <- all(unlist(valid_fpm))
+    all_fpm_valid <- all_fpm_valid & valid_fpm
+  }
+  result[['valid_fitness_processing_metrics']] <- all_fpm_valid
   return (result)
 }
 
