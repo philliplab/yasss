@@ -47,12 +47,6 @@
 #' @param verbose If TRUE, progress is printed to STDOUT.
 #' @export
 
-#- `output_genealogy`: Should the genealogy data sets be deleted to reduce
-#  memory usage? Valid options:
-#  * `last_gen_only`
-#  * `none`
-#  * `full`
-
 sim_proc_many_pops <- function(arg_collection, n_sims = 1, output_dmat = FALSE, max_dmat_size = 10000,
                                fitness_processing = 'none', n_gen_with_perfect_fitness = 4,
                                output_genealogy = 'none', verbose = FALSE){
@@ -66,6 +60,7 @@ sim_proc_many_pops <- function(arg_collection, n_sims = 1, output_dmat = FALSE, 
   dcollection <- NULL
   all_dmats <- NULL
   all_genealogies <- NULL
+  fitness_processing_metrics <- NULL
   for (c_arg_set in arg_collection){
     for (sim_id in 1:n_sims){
       if (verbose){
@@ -109,9 +104,19 @@ sim_proc_many_pops <- function(arg_collection, n_sims = 1, output_dmat = FALSE, 
           all_genealogies <- c(all_genealogies, list(genea))
         }
 
+        fitness_processing_metrics <- c(fitness_processing_metrics,
+          list(sim_id = sim_id,
+               label = c_arg_set$label,
+               sampling = 'none',
+               input_seqs_lg = nrow(last_gen),
+               output_seqs_lg = nrow(last_gen)))
+
+
       } else if (fitness_processing == 'fit_unfit_pair'){
         genea$sampling <- 'size_matched_sample'
+        input_seqs_lg <- sum(genea$gen_num == max(genea$gen_num))
         fit_genea <- get_fit_offspring(genea, c_arg_set$required_fitness, 'Rvec')
+        output_seqs_lg <- sum(fit_genea$gen_num == max(fit_genea$gen_num))
         fit_genea$sim_id <- sim_id
         fit_genea$label <- c_arg_set$label
         fit_genea$sampling <- 'fitness_restricted'
@@ -128,10 +133,25 @@ sim_proc_many_pops <- function(arg_collection, n_sims = 1, output_dmat = FALSE, 
           unfit_non_last_gens <- genea %>% filter(gen_num != max(gen_num))
           all_genealogies <- c(all_genealogies, list(fit_genea, rbind(unfit_non_last_gens, unfit_last_gen)))
         }
+        fitness_processing_metrics <- c(fitness_processing_metrics,
+          list(sim_id = sim_id,
+               label = c_arg_set$label,
+               sampling = 'fitness_restricted',
+               input_seqs_lg = input_seqs_lg,
+               output_seqs_lg = output_seqs_lg))
+        fitness_processing_metrics <- c(fitness_processing_metrics,
+          list(sim_id = sim_id,
+               label = c_arg_set$label,
+               sampling = 'none',
+               input_seqs_lg = input_seqs_lg,
+               output_seqs_lg = output_seqs_lg))
       
       } else {
         stop('not implemented')
       }
+
+
+
       if (verbose){
         cat('Fit offspring selected\n')
       }
@@ -143,8 +163,9 @@ sim_proc_many_pops <- function(arg_collection, n_sims = 1, output_dmat = FALSE, 
         c_sim_id <- unique(c_last_gen$sim_id)
         c_label <- unique(c_last_gen$label)
         c_sampling <- unique(c_last_gen$sampling)
+        n_input_seqs_dsum <- length(c_last_gen$the_seq)
 
-        if (length(c_last_gen$the_seq) > max_dmat_size){
+        if (n_input_seqs_dsum  > max_dmat_size){
           seqs_for_dmat <- sample(c_last_gen$the_seq, max_dmat_size)
         } else {
           seqs_for_dmat <- c_last_gen$the_seq
@@ -174,6 +195,7 @@ sim_proc_many_pops <- function(arg_collection, n_sims = 1, output_dmat = FALSE, 
   }
   result$dcollection <- dcollection
   result$n_sims <- n_sims
+  result$fitness_processing_metrics <- fitness_processing_metrics
   if (output_dmat){
     result$all_dmats <- all_dmats
   }
@@ -225,6 +247,9 @@ check_many_pops <- function(many_pops, verbose = FALSE){
   if ('all_dmats' %in% names(many_pops)){
     result[['valid_all_dmats']] <- class(result[['all_dmats']]) == 'list'
   }
+
+  # fitness_processing_metrics
+  result[['has_fitness_processing_metrics']] <- 'fitness_processing_metrics' %in% names(many_pops)
   return (result)
 }
 

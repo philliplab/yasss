@@ -16,7 +16,8 @@ names(z) <- NULL
 dsum1 <- list(avg_hd = mean(dmat),
               sd_hd = sd(dmat),
               perc = z,
-              dens = density(dmat))
+              dens = density(dmat)
+              )
 
 dsum2 <- dsum1
 dsum2$sim_id <- 1
