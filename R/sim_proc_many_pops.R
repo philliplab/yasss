@@ -51,7 +51,7 @@ sim_proc_many_pops <- function(arg_collection, n_sims = 1, output_dmat = FALSE, 
                                fitness_processing = 'none', n_gen_with_perfect_fitness = 4,
                                output_genealogy = 'none', verbose = FALSE){
 
-  x <- check_arg_collection(arg_collection)
+  x <- check_arg_collection(arg_collection, required_fitness = fitness_processing != 'none')
   if (!all(unlist(x))){
     return('error in arg_collection')
   }
