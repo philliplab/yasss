@@ -1,5 +1,7 @@
 context('dsum')
 
+# bottom of document contains context fitness_processing_metrics
+
 x <- sim_pop(ancestors = paste(rep("A", 500), sep = '', collapse = ''), 
              r0 = 2,
              n_gen = 6)
@@ -211,4 +213,27 @@ test_that('check_dcollection catches issues', {
 
 
 
+context('fitness_processing_metrics')
 
+fpm1 <- list(sim_id = 1,
+             label = 'A',
+             sampling = 'none',
+             input_seqs = 100,
+             output_seqs = 100)
+
+fpm2 <- fpm1
+fpm2$sim_id <- 'A'
+fpm2$label <- 1:2
+fpm2$sampling <- 'oops'
+
+test_that('check_fitness_processing_metrics work', {
+  x <- check_fitness_processing_metrics(fpm1)
+  for (i in names(x)){
+    expect_true(x[[i]], info = i)
+  }
+
+  x <- check_fitness_processing_metrics(fpm2)
+  expect_false(x$sim_id_integer)
+  expect_false(x$label_length_one)
+  expect_false(x$sampling_valid)
+})
