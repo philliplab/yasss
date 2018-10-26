@@ -299,6 +299,17 @@ check_fitness_processing_metrics <- function(fitness_processing_metrics, verbose
     result[['input_seqs_integer']] <- FALSE
   }
 
+  # output_seqs
+  result[['has_output_seqs']] <- 'output_seqs' %in% names(c_fpm)
+  result[['output_seqs_length_one']] <- length(c_fpm$output_seqs) == 1
+
+  result[['output_seqs_integer']] <- class(c_fpm$output_seqs) %in% c('numeric', 'integer')
+  if (result[['output_seqs_integer']] & result[['output_seqs_length_one']]){
+    result[['output_seqs_integer']] <- floor(c_fpm$output_seqs) == ceiling(c_fpm$output_seqs)
+  } else {
+    result[['output_seqs_integer']] <- FALSE
+  }
+
   if (verbose){
     print(result)
   }

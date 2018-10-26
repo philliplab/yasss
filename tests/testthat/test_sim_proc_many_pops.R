@@ -3,6 +3,7 @@ context('sim_proc_many_pops')
 # fitness processing metrics at bottom
 
 if (FALSE){
+  yasss:::restart_r()
   library(testthat)
   devtools::load_all()
   c_arg_set <- arg_set1
@@ -142,5 +143,12 @@ test_that('check_fitness_processing_metrics work', {
   expect_false(x$input_seqs_length_one)
   x <- check_fitness_processing_metrics(fpm5)
   expect_false(x$input_seqs_integer)
+
+  x <- check_fitness_processing_metrics(fpm6)
+  expect_false(x$output_seqs_integer)
+  x <- check_fitness_processing_metrics(fpm7)
+  expect_false(x$output_seqs_length_one)
+  x <- check_fitness_processing_metrics(fpm8)
+  expect_false(x$output_seqs_integer)
 
 })
