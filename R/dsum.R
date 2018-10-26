@@ -151,3 +151,48 @@ check_dcollection <- function(dcollection){
   return(result)
 }
 
+#' Convert dcollection into a data.frame
+#'
+#' @param dcollection The dcollection to convert
+#' @export
+
+dcollection_to_df <- function(dcollection){
+  dmat_metrics <- data.frame(sim_id = numeric(0),
+                             group_label = character(0),
+                             metric = character(0),
+                             value = numeric(0))
+
+  dmat_distribution_df <- NULL
+
+  for (i in 1:length(dcollection)){
+    c_dsum <- dcollection[[i]]
+
+    decile_labels <- paste((0:10)*10, '%', sep = '')
+    metric_vector <- c('avg_hd', 'sd_hd', decile_labels)
+
+    value_vector <- c(c_dsum$avg_hd, c_dsum$sd_hd, c_dsum$perc[decile_labels])
+
+    dmat_metrics <- rbind(dmat_metrics,
+      data.frame(sim_id = c_dsum$sim_id,
+                 label = c_dsum$label,
+                 sampling = c_dsum$sampling,
+                 group_label = paste(c_dsum$label, c_dsum$sampling, sep = '_'),
+                 uniq_id = paste(c_dsum$label, c_dsum$sampling, c_dsum$sim_id, sep = '_'),
+                 metric = metric_vector,
+                 value = value_vector))
+
+    dmat_distribution_df <- rbind(dmat_distribution_df,
+      data.frame(sim_id = c_dsum$sim_id,
+                 label = c_dsum$label,
+                 sampling = c_dsum$sampling,
+                 group_label = paste(c_dsum$label, c_dsum$sampling, sep = '_'),
+                 uniq_id = paste(c_dsum$label, c_dsum$sampling, c_dsum$sim_id, sep = '_'),
+                 x = c_dsum$dens$x,
+                 y = c_dsum$dens$y
+                 )
+      )
+  }
+  return(list(dmat_metrics = dmat_metrics,
+              dmat_distribution_df = dmat_distribution_df))
+}
+

@@ -215,5 +215,9 @@ test_that('check_dcollection catches issues', {
   expect_false(result[['unnamed']])
 })
 
-
-
+test_that('dcollection_to_df works', {
+  x <- dcollection_to_df(dcol1)
+  expect_true(class(x) == 'list')
+  expect_true('dmat_metrics' %in% names(x))
+  expect_true('dmat_distribution_df' %in% names(x))
+})
