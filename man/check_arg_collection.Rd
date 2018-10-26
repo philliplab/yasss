@@ -4,7 +4,15 @@
 \alias{check_arg_collection}
 \title{Checks an arg_collection (skeleton only)}
 \usage{
-check_arg_collection(arg_collection)
+check_arg_collection(arg_collection, required_fitness = TRUE,
+  verbose = FALSE)
+}
+\arguments{
+\item{arg_collection}{The arg_collection to test}
+
+\item{required_fitness}{Should the required_fitness element be present in the arg_sets?}
+
+\item{verbose}{Prints out result of each check}
 }
 \description{
 Checks an arg_collection (skeleton only)

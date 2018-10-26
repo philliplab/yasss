@@ -150,5 +150,4 @@ test_that('check_fitness_processing_metrics work', {
   expect_false(x$output_seqs_length_one)
   x <- check_fitness_processing_metrics(fpm8)
   expect_false(x$output_seqs_integer)
-
 })

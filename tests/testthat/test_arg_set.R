@@ -1,5 +1,11 @@
 context('arg_set')
 
+if (FALSE){
+  yasss:::restart_r()
+  devtools::load_all()
+  library(testthat)
+}
+
 n_gen <- 6
 
 arg_set1 <- list(
@@ -12,7 +18,8 @@ arg_set1 <- list(
                  args = list(mu = 1/250)),
   fitness_evaluator = list(fun = "fitness_evaluator_homology_fun",
                            args = list(comparators = paste(rep('XXXXA', 100), collapse = ''),
-                                       h2fs = "h2fs_univariate_linear_fun"))
+                                       h2fs = "h2fs_univariate_linear_fun")),
+  required_fitness = 0.02
 )
 
 arg_set2 <- list(
@@ -25,7 +32,8 @@ arg_set2 <- list(
                  args = list(mu = 1/250)),
   fitness_evaluator = list(fun = "fitness_evaluator_homology_fun",
                            args = list(comparators = paste(rep('XXXXC', 100), collapse = ''),
-                                       h2fs = "h2fs_univariate_linear_fun"))
+                                       h2fs = "h2fs_univariate_linear_fun")),
+  required_fitness = 0.97
 )
 
 arg_collection1 <- list(arg_set1, arg_set2)
@@ -159,7 +167,7 @@ test_that('check_arg_set can catch a bad fitness_evaluator', {
 })
 
 test_that('check_arg_collection lets correct arg_collections pass', {
-  x <- check_arg_collection(arg_collection1)
+  x <- check_arg_collection(arg_collection1, verbose = FALSE)
   for (i in names(x)){
     expect_true(x[[i]], info = i)
   }

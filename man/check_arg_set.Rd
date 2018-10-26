@@ -4,7 +4,15 @@
 \alias{check_arg_set}
 \title{Checks an arg_set (skeleton only)}
 \usage{
-check_arg_set(arg_set, the_seq = NULL)
+check_arg_set(arg_set, the_seq = NULL, required_fitness = TRUE,
+  verbose = FALSE)
+}
+\arguments{
+\item{arg_set}{The arg_set to test}
+
+\item{required_fitness}{Should the required_fitness element be present in the arg_sets?}
+
+\item{verbose}{Prints out result of each check}
 }
 \description{
 Checks an arg_set (skeleton only)

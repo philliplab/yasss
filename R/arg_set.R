@@ -1,8 +1,11 @@
 #' Checks an arg_set (skeleton only)
 #'
+#' @param arg_set The arg_set to test
+#' @param required_fitness Should the required_fitness element be present in the arg_sets?
+#' @param verbose Prints out result of each check
 #' @export
 
-check_arg_set <- function(arg_set, the_seq = NULL){
+check_arg_set <- function(arg_set, the_seq = NULL, required_fitness = TRUE, verbose = FALSE){
   result <- list()
   result[['is_list']] <- class(arg_set) == 'list'
 
@@ -61,12 +64,28 @@ check_arg_set <- function(arg_set, the_seq = NULL){
   result <- c(result, mutator_result)
 
   # fitness_evaluator
-  fe_result <- check_fitness_evaluator(the_seq, arg_set$fitness_evaluator$fun, arg_set$fitness_evaluator$args)
-  for (i in 1:length(fe_result)){
-    names(fe_result)[[i]] <- paste('fe', names(fe_result)[[i]], sep = '_')
-  }
   if (!is.null(the_seq)){
+    fe_result <- check_fitness_evaluator(the_seq, arg_set$fitness_evaluator$fun, arg_set$fitness_evaluator$args)
+    for (i in 1:length(fe_result)){
+      names(fe_result)[[i]] <- paste('fe', names(fe_result)[[i]], sep = '_')
+    }
     result <- c(result, fe_result)
+  }
+
+  # required_fitness
+  if (required_fitness){
+    result[['has_required_fitness']] <- 'required_fitness' %in% names(arg_set)
+    if (result[['has_required_fitness']]){
+      result[['required_fitness_is_numeric']] <- class(arg_set$required_fitness) %in% c('numeric', 'integer')
+      result[['required_fitness_is_length_one']] <- length(arg_set$required_fitness) == 1
+      if (result[['required_fitness_is_numeric']] & result[['required_fitness_is_length_one']]){
+        result[['required_fitness_between_zero_one']] <- arg_set$required_fitness >= 0 & arg_set$required_fitness <= 1
+      }
+    }
+  }
+
+  if (verbose){
+    print(result)
   }
 
   return(result)
@@ -74,16 +93,20 @@ check_arg_set <- function(arg_set, the_seq = NULL){
 
 #' Checks an arg_collection (skeleton only)
 #'
+#' @param arg_collection The arg_collection to test
+#' @param required_fitness Should the required_fitness element be present in the arg_sets?
+#' @param verbose Prints out result of each check
 #' @export
 
-check_arg_collection <- function(arg_collection){
+check_arg_collection <- function(arg_collection, required_fitness = TRUE, verbose = FALSE){
   result <- list()
   result[['is_list']] <- class(arg_collection) == 'list'
 
   all_arg_sets_valid <- TRUE
   set_labels <- NULL
   for (arg_set in arg_collection){
-    all_arg_sets_valid <- all_arg_sets_valid & all(unlist(check_arg_set(arg_set)))
+    c_arg_set_result <- check_arg_set(arg_set, required_fitness = required_fitness, verbose = verbose)
+    all_arg_sets_valid <- all_arg_sets_valid & all(unlist(c_arg_set_result))
     set_labels <- c(set_labels, arg_set$label)
   }
   result[['all_arg_sets_valid']] <- all_arg_sets_valid 
