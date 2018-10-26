@@ -250,35 +250,45 @@ check_many_pops <- function(many_pops, verbose = FALSE){
   result[['has_fitness_processing_metrics']] <- 'fitness_processing_metrics' %in% names(many_pops)
   all_fpm_valid <- TRUE
   for (i in 1:length(many_pops$fitness_processing_metrics)){
-    valid_fpm <- list()
-    c_fpm <- many_pops$fitness_processing_metrics[[i]]
-    valid_fpm[['is_list']] <- class(c_fpm) == 'list'
-
-    # sim_id
-    valid_fpm[['has_sim_id']] <- 'sim_id' %in% names(c_fpm)
-    valid_fpm[['sim_id_length_one']] <- length(c_fpm$sim_id) == 1
-
-    valid_fpm[['sim_id_integer']] <- class(c_fpm$sim_id) %in% c('numeric', 'integer')
-    if (valid_fpm[['sim_id_integer']] & valid_fpm[['sim_id_length_one']]){
-      valid_fpm[['sim_id_integer']] <- floor(c_fpm$sim_id) == ceiling(c_fpm$sim_id)
-    } else {
-      valid_fpm[['sim_id_integer']] <- FALSE
-    }
-  
-    # label
-    valid_fpm[['has_label']] <- 'label' %in% names(c_fpm)
-    valid_fpm[['label_length_one']] <- length(c_fpm$label) == 1
-
-    # sampling
-    valid_fpm[['has_sampling']] <- 'sampling' %in% names(c_fpm)
-    valid_fpm[['sampling_length_one']] <- length(c_fpm$sampling) == 1
-    valid_fpm[['sampling_valid']] <- c_fpm$sampling %in% c('fit_threshold', 'size_matched_sampling', 'none')
-
+    valid_fpm <- check_fitness_processing_metrics(many_pops$fitness_processing_metrics[[i]])
     valid_fpm <- all(unlist(valid_fpm))
     all_fpm_valid <- all_fpm_valid & valid_fpm
   }
   result[['valid_fitness_processing_metrics']] <- all_fpm_valid
   return (result)
+}
+
+#' Checks that a list tracking the fitness_processing_metrics is valid
+#'
+#' @param fitness_processing_metrics The fitness_processing_metrics list to check
+#' @export
+
+check_fitness_processing_metrics <- function(fitness_processing_metrics){
+  result <- list()
+  c_fpm <- fitness_processing_metrics
+  result[['is_list']] <- class(c_fpm) == 'list'
+
+  # sim_id
+  result[['has_sim_id']] <- 'sim_id' %in% names(c_fpm)
+  result[['sim_id_length_one']] <- length(c_fpm$sim_id) == 1
+
+  result[['sim_id_integer']] <- class(c_fpm$sim_id) %in% c('numeric', 'integer')
+  if (result[['sim_id_integer']] & result[['sim_id_length_one']]){
+    result[['sim_id_integer']] <- floor(c_fpm$sim_id) == ceiling(c_fpm$sim_id)
+  } else {
+    result[['sim_id_integer']] <- FALSE
+  }
+  
+  # label
+  result[['has_label']] <- 'label' %in% names(c_fpm)
+  result[['label_length_one']] <- length(c_fpm$label) == 1
+
+  # sampling
+  result[['has_sampling']] <- 'sampling' %in% names(c_fpm)
+  result[['sampling_length_one']] <- length(c_fpm$sampling) == 1
+  result[['sampling_valid']] <- c_fpm$sampling %in% c('fit_threshold', 'size_matched_sampling', 'none')
+
+  return(result)
 }
 
 #- loop over `arg_collection`
