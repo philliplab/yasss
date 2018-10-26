@@ -4,7 +4,8 @@
 \alias{check_fitness_processing_metrics}
 \title{Checks that a list tracking the fitness_processing_metrics is valid}
 \usage{
-check_fitness_processing_metrics(fitness_processing_metrics)
+check_fitness_processing_metrics(fitness_processing_metrics,
+  verbose = FALSE)
 }
 \arguments{
 \item{fitness_processing_metrics}{The fitness_processing_metrics list to check}

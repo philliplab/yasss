@@ -108,15 +108,15 @@ sim_proc_many_pops <- function(arg_collection, n_sims = 1, output_dmat = FALSE, 
           list(list(sim_id = sim_id,
                     label = c_arg_set$label,
                     sampling = 'none',
-                    input_seqs_lg = nrow(last_gen),
-                    output_seqs_lg = nrow(last_gen))))
+                    input_seqs = nrow(last_gen),
+                    output_seqs = nrow(last_gen))))
 
 
       } else if (fitness_processing == 'fit_unfit_pair'){
         genea$sampling <- 'size_matched_sample'
-        input_seqs_lg <- sum(genea$gen_num == max(genea$gen_num))
+        input_seqs <- sum(genea$gen_num == max(genea$gen_num))
         fit_genea <- get_fit_offspring(genea, c_arg_set$required_fitness, 'Rvec')
-        output_seqs_lg <- sum(fit_genea$gen_num == max(fit_genea$gen_num))
+        output_seqs <- sum(fit_genea$gen_num == max(fit_genea$gen_num))
         fit_genea$sim_id <- sim_id
         fit_genea$label <- c_arg_set$label
         fit_genea$sampling <- 'fitness_restricted'
@@ -137,14 +137,14 @@ sim_proc_many_pops <- function(arg_collection, n_sims = 1, output_dmat = FALSE, 
           list(list(sim_id = sim_id,
                     label = c_arg_set$label,
                     sampling = 'fitness_restricted',
-                    input_seqs_lg = input_seqs_lg,
-                    output_seqs_lg = output_seqs_lg)))
+                    input_seqs = input_seqs,
+                    output_seqs = output_seqs)))
         fitness_processing_metrics <- c(fitness_processing_metrics,
           list(list(sim_id = sim_id,
                     label = c_arg_set$label,
                     sampling = 'none',
-                    input_seqs_lg = input_seqs_lg,
-                    output_seqs_lg = output_seqs_lg)))
+                    input_seqs = input_seqs,
+                    output_seqs = output_seqs)))
       
       } else {
         stop('not implemented')
@@ -250,7 +250,7 @@ check_many_pops <- function(many_pops, verbose = FALSE){
   result[['has_fitness_processing_metrics']] <- 'fitness_processing_metrics' %in% names(many_pops)
   all_fpm_valid <- TRUE
   for (i in 1:length(many_pops$fitness_processing_metrics)){
-    valid_fpm <- check_fitness_processing_metrics(many_pops$fitness_processing_metrics[[i]])
+    valid_fpm <- check_fitness_processing_metrics(many_pops$fitness_processing_metrics[[i]], verbose = FALSE)
     valid_fpm <- all(unlist(valid_fpm))
     all_fpm_valid <- all_fpm_valid & valid_fpm
   }
@@ -263,7 +263,7 @@ check_many_pops <- function(many_pops, verbose = FALSE){
 #' @param fitness_processing_metrics The fitness_processing_metrics list to check
 #' @export
 
-check_fitness_processing_metrics <- function(fitness_processing_metrics){
+check_fitness_processing_metrics <- function(fitness_processing_metrics, verbose = FALSE){
   result <- list()
   c_fpm <- fitness_processing_metrics
   result[['is_list']] <- class(c_fpm) == 'list'
@@ -287,6 +287,21 @@ check_fitness_processing_metrics <- function(fitness_processing_metrics){
   result[['has_sampling']] <- 'sampling' %in% names(c_fpm)
   result[['sampling_length_one']] <- length(c_fpm$sampling) == 1
   result[['sampling_valid']] <- c_fpm$sampling %in% c('fit_threshold', 'size_matched_sampling', 'none')
+
+  # input_seqs
+  result[['has_input_seqs']] <- 'input_seqs' %in% names(c_fpm)
+  result[['input_seqs_length_one']] <- length(c_fpm$input_seqs) == 1
+
+  result[['input_seqs_integer']] <- class(c_fpm$input_seqs) %in% c('numeric', 'integer')
+  if (result[['input_seqs_integer']] & result[['input_seqs_length_one']]){
+    result[['input_seqs_integer']] <- floor(c_fpm$input_seqs) == ceiling(c_fpm$input_seqs)
+  } else {
+    result[['input_seqs_integer']] <- FALSE
+  }
+
+  if (verbose){
+    print(result)
+  }
 
   return(result)
 }
