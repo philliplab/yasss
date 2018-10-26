@@ -53,7 +53,7 @@ sim_proc_many_pops <- function(arg_collection, n_sims = 1, output_dmat = FALSE, 
 
   x <- check_arg_collection(arg_collection, required_fitness = fitness_processing != 'none')
   if (!all(unlist(x))){
-    return('error in arg_collection')
+    stop('error in arg_collection')
   }
 
   result <- list(arg_collection = arg_collection)

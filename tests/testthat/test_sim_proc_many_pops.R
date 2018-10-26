@@ -173,6 +173,5 @@ test_that('required_fitness required if non-none fitness processing',{
                                          h2fs = "h2fs_univariate_linear_fun"))
   )
   arg_collection4 <- list(arg_set4)
-  many_pops7 <- sim_proc_many_pops(arg_collection4, n_sims = 1, fitness_processing = 'fit_unfit_pair', output_genealogy = 'full')
-  expect_equal(many_pops7, 'error in arg_collection')
+  expect_error(many_pops7 <- sim_proc_many_pops(arg_collection4, n_sims = 1, fitness_processing = 'fit_unfit_pair', output_genealogy = 'full'), 'error in arg_collection')
 })
