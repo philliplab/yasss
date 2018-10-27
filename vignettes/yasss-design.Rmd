@@ -237,6 +237,31 @@ Summarizes a distance matrix into an average pairwise distance (`avg_hd`), a
 set of percentile (`perc`) and a density estimate (`dens`). No identifiers are
 added, that is not part of this function.
 
+**Complications related to the bandwidth**
+
+The `density` function estimates the height of the density function of the
+distribution by considering a number of points in a certain region. (More
+complex, but this idea is good enough to explain what is wrong). Since
+mutations are such rare events, if we simulate short reads, then number of
+mutations that occur can be low. Thus, the set of possible pairwise distances
+than can occur can be limited to say, 0, 1, 2, ..., 10. This means that the
+'density function' has only 11 possible values that it can assume so it really
+is a probability mass function and not a density function.
+
+The estimation performed by the `density` function in R is designed to capture
+complex function which might possibly have high levels of squiggliness. This
+means that such a probability mass function as described above is modelled as
+a multimodel distribution with high density at the mentioned points and much
+lower density elsewhere. This is not what we want from an estimate of the
+density function of the pairwise distances between the sequences.
+
+To fix this, one of two things can be done:
+
+1) Detect when the distribution should be considered discete, and then
+estimate it as a probability mass functions
+2) Auto-tune the bandwith argument of the `density` function so that it always
+covers at least one real point with each kernel.
+
 #### `sim_proc_many_pops`
 
 A large wrapper for `sim_pop`, `get_fit_offspring` and `summarize_dmat`. It
