@@ -46,6 +46,40 @@ structure was added to yasss.
 
 Recombination must be added into sim_pop before the fitness computation step.
 
+The problem with recombination is always the same. There are too many
+parameters and under certain thresholds, the recombination is just
+inconsequential. Getting the various parameters and their interactions just
+right is the key.
+
+The paramters of interest:
+
+* Breakpoint: The location where the break occurred
+* LHS: The sequence on the left hand side of the break point
+* RHS: The sequence on the right hand side of the break point
+* Recombination Rate: A per nucleotide chance of that nucleotide being a break
+  point. (Note that this definition is not useful when thinking about
+  something like PCR where the rate must be quoted on a per nucleotide per
+  cycle basis.)
+* Global distance: The distance between the two sequences that recombined
+* LHS distance: The distance from the recombinant to the sequence matching on
+  the LHS of the breakpoint
+* RHS distance: The distance from the recombinant to the sequence matching on
+  the RHS of the breakpoint
+* Recombination effect: The minimum of the LHS and RHS distances
+
+Why do you need all these parameters? Because you need to describe the levels
+of recombination accurately. Consider a statement like: 25% of sequences are
+recombinants. If all the sequences are identical, then this means nothing and
+you can seriously question whether or not it is possible to know that the
+sequences actually are recombinants. If 50% of the sequences are duplicates,
+then do the 25% rate also apply to recombination between duplicates? How about
+recombination between sequences that differ by only one position? That means
+that the recombinant will be identical to one of the input sequences so the
+effect of the recombination is just to remove a unique sequence and to include
+a duplicate.
+
+How is this relevant to our project?
+
 ## Mutators
 
 **This section must be updates**
