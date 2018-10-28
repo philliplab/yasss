@@ -44,7 +44,7 @@ structure was added to yasss.
 
 ### ?recombination
 
-Recombination must be added into sim_pop before the fitness computation step.
+Recombination must be added into `sim_pop` before the fitness computation step.
 
 The problem with recombination is always the same. There are too many
 parameters and under certain thresholds, the recombination is just
@@ -56,10 +56,14 @@ The paramters of interest:
 * Breakpoint: The location where the break occurred
 * LHS: The sequence on the left hand side of the break point
 * RHS: The sequence on the right hand side of the break point
-* Recombination Rate: A per nucleotide chance of that nucleotide being a break
+* Recombinant Prevalence: The chance that a sequence has at least one
+  breakpoint in it.
+* Breakpoint Prevalence: A per nucleotide chance of that nucleotide being a break
   point. (Note that this definition is not useful when thinking about
   something like PCR where the rate must be quoted on a per nucleotide per
   cycle basis.)
+* Recombination Rate: The chance per nucleotide per cycle of generative
+  process of a recombination event occurring.
 * Global distance: The distance between the two sequences that recombined
 * LHS distance: The distance from the recombinant to the sequence matching on
   the LHS of the breakpoint
@@ -78,7 +82,25 @@ that the recombinant will be identical to one of the input sequences so the
 effect of the recombination is just to remove a unique sequence and to include
 a duplicate.
 
-How is this relevant to our project?
+Note that there is another super key detail that is not even captured by any
+of the above definitions:
+
+* Suppose there are two very similar clusters of sequences, cluster A and B.
+* Two sequences, one from each cluster, recombines to form a recombinant.
+* Then AFTER this event, one cluster gets wiped out, but just one sequence
+  with a key new mutation (mutation X) survives and repopulates the cluster.
+* Then the recombinant sequence is a recombinant between these two cluster,
+  one of the clusters being defined by mutation X, but it was never even
+  exposed to mutation X.
+* This just highlights how hard it is to design good metrics for reporting
+  recombination, meaning that, the metric communicates the right value to the
+  reader so that the reader's understanding and broader intuition aligns well
+  with what is really going on.
+
+How is this relevant to yasss?
+
+When simulating recombination, the effect of the recombination should be
+reported in a sensible way. 
 
 ## Mutators
 
