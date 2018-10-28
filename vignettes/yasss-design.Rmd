@@ -44,6 +44,8 @@ structure was added to yasss.
 
 ### ?recombination
 
+#### Overview of recombination
+
 Recombination must be added into `sim_pop` before the fitness computation step.
 
 The problem with recombination is always the same. There are too many
@@ -97,18 +99,49 @@ of the above definitions:
   reader so that the reader's understanding and broader intuition aligns well
   with what is really going on.
 
+Is a sequence a recombinant if it is the result of recombination between
+identical sequences?
+
+Is a sequence a recombinant if the recombinant is identical to one of the
+input sequences?
+
+Is a recombinant if the recombination event occurred 5 cycles ago? What about
+10 cycles ago?
+
+If one sequence recombined in the previous cycle and another sequence
+recombined 10 cycles ago, do we differentiate between them?
+
 How is this relevant to yasss?
 
 When simulating recombination, the effect of the recombination should be
-reported in a sensible way. 
+reported in a sensible way. Attached to a simulated dataset should be some
+number indicating the amount of recombination that is present in the dataset.
+Given what was discussed above, it is really hard to figure out what metric
+should be used.
+
+**FOR NOW** I am only comfortable reporting the per nucleotide per cycle
+recombination rate and reporting the number of recombination events per cycle.
+(cycles coincide with generations, so that cycle 0 (which doesn't happen) is
+linked with the ancestral sequences and then cycle 1 produces generation 1).
+
+Note that there is also some implications for how to implement recombination
+in the simulation process. For computational purposes we will treat
+recombination as if it replaces one of the two sequences that recombined and
+that it does not affect the other sequence. But which of the two sequences
+that recombined will be replaced? **Just pick at random.**
+
+#### Implementation details.
 
 ## Mutators
 
-**This section must be updates**
+**This section must be updated**
 
-To simulate the quasispecies, a function is needed that will take a parent sequence as input and produce a child sequence by possibly producing some mutations in the sequence.
+To simulate the quasispecies, a function is needed that will take a parent
+sequence as input and produce a child sequence by possibly producing some
+mutations in the sequence.
 
-The constructs yasss uses to produce single children from a parent are called mutators, introduced as an S3 class into yasss.
+The constructs yasss uses to produce single children from a parent are called
+mutators, introduced as an S3 class into yasss.
 
 It simply is a list with three elements: fun, args and arg_checker.
 
@@ -116,7 +149,12 @@ The fun element is a function with the argument the_seq and an arbitrary number 
 
 The args element is a list with the actual arguments that fun will use.
 
-The arg_checker performs basic sanity checks on the arguments and is seperated from the actual function itself so that error checking and debigging can be simplified by checking the construction of the mutator at the start of the program without generating a very deep trace. (Since the calls will happen through mechanisms like `do.call(mutator$fun, args)` the trace will be hard to read also.
+The arg_checker performs basic sanity checks on the arguments and is seperated
+from the actual function itself so that error checking and debigging can be
+simplified by checking the construction of the mutator at the start of the
+program without generating a very deep trace. (Since the calls will happen
+through mechanisms like `do.call(mutator$fun, args)` the trace will be hard to
+read also.
 
 A constructor lives in mutator_constructor.
 
