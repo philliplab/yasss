@@ -132,6 +132,38 @@ that recombined will be replaced? **Just pick at random.**
 
 #### Implementation details.
 
+After producing the next generation and before assigning fitness scores:
+
+* Loop over all sequences
+  - draw from uniform
+  - if draw > binom(1 out of length seq, per nuc. per cycle rate)
+    + randomly select another sequence
+    + randomly select a position for the break point
+    + randomly select which sequence is LHS and which is RHS
+    + form recombinant
+    + replace sequence corresponding to index in outer loop with recombinant
+
+What metrics should be produced during this process?
+
+Only fill out the columns provided by the genealogy data structure.
+
+* `recomb_pos`: The position of the breakpoint.
+* `recomb_replaced`: Which side of the sequence was replaced? To the `left` of
+  the breakpoint, or to the `right` of the breakpoint?
+* `recomb_partner`: The id of the sequence that the recombination was with.
+* `recomb_muts`: The number of mutations introduced into the sequence due to
+  the recombination. Specifically, this is how many mutations would have been
+  required to modify the sequence that was removed to make it identical the
+  recombinant. 
+  
+**NOTE:** For `recomb_muts`, is the above the most useful version of this
+metric? Since the reference sequence is gone, it may not have any value. If
+instead the definition was, how many mutations would have to be introduced
+into the recombination partner (the one that stays in the dataset) to make it
+identical to the recombinant, then the measure is relative to something that
+still exists. The sequence that was deleted can be summarized with some
+general distance to the rest of the sequences in the dataset.
+
 ## Mutators
 
 **This section must be updated**
