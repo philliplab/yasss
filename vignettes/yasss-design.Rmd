@@ -162,7 +162,43 @@ instead the definition was, how many mutations would have to be introduced
 into the recombination partner (the one that stays in the dataset) to make it
 identical to the recombinant, then the measure is relative to something that
 still exists. The sequence that was deleted can be summarized with some
-general distance to the rest of the sequences in the dataset.
+general distance to the rest of the sequences in the dataset. An important
+detail that is lost in treating this a the distance to the remaining sequence
+is that you no longer know in what percentage of cases the recombination event
+introduced no changes. Also, since the recombinant is in the dataset and and
+you have the id of the partner, you can easily recompute the number of
+mutations required in the partner to make it identical to the recombinant.
+
+Two functions are needed to implement this:
+
+* `recombine_gen`: Given a generation and some parameters, add recombination
+  to some sequences based on random draws.
+* `recombine_seqs`: Given two sequences, recombine them
+
+The `recombine_gen` function is responsible for:
+
+* looping over the whole generation
+* draw to determine if a sequence has a recombination breakpoint in it
+* draw to determine the recombination partner
+* call `recombine_seqs`
+* update the genealogy data structure
+
+Ignore optimizations for now. By migrating to a vector based system as for
+`get_fit_offpring` large performance boosts can be obtained. Since only
+updates are required, it might be really simple to implement the vector based
+system. But first build a reference implementation using data.frames.
+
+The `recombine_seqs` function is responsible for:
+
+* drawing the breakpoint location
+* extracting the substrings
+* concatenating them to form the recombinant
+* computing the `recomb_muts` value
+* packaging all the recombination goodies into either a
+  - data.frame row (for the initial implementation)
+  - a list (or an environment?) (for the optimized implementation)
+
+All the recombination functionality lives in the `recombine.R` script.
 
 ## Mutators
 
