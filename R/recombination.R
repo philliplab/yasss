@@ -19,7 +19,7 @@ recombine_seqs <- function(target_seq, recombination_partner_seq, min_dist_to_ed
   stopifnot(min_dist_to_edge < nchar(target_seq)/2.2)
   stopifnot(min_dist_to_edge >= 0 & min_dist_to_edge <= nchar(target_seq))
 
-  breakpoint <- runif(1, min_dist_to_edge, nchar(target_seq) - min_dist_to_edge)
+  breakpoint <- round(runif(1, min_dist_to_edge, nchar(target_seq) - min_dist_to_edge), 0)
   target_on_LHS <- ifelse(runif(1) > 0.5, TRUE, FALSE)
 
   if (target_on_LHS){
@@ -34,6 +34,7 @@ recombine_seqs <- function(target_seq, recombination_partner_seq, min_dist_to_ed
   dist_to_target_seq <- stringdist(recombinant, target_seq, method = 'hamming')
 
   return(list(recombinant = recombinant,
-              dist_to_target_seq = dist_to_target_seq,
-              target_on_LHS = target_on_LHS))
+              recomb_muts = dist_to_target_seq,
+              recomb_replaced = ifelse(target_on_LHS, 'right', 'left'),
+              recomb_pos = breakpoint))
 }
