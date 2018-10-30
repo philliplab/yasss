@@ -20,6 +20,13 @@ test_that('recombine_seqs works', {
   expect_true('recomb_replaced' %in% names(x))
   expect_true('recomb_pos' %in% names(x))
 
+  expect_true(class(x$recombinant) == 'character')
+  expect_true(class(x$recomb_muts) == 'numeric')
+  expect_true(class(x$recomb_replaced) == 'character')
+  expect_true(class(x$recomb_pos) == 'numeric')
+
+  expect_equal(x$recomb_muts, stringdist(target_seq, x$recombinant))
+
   first_char <- substr(x$recombinant, 1, 1)
   last_char <- substr(x$recombinant, 10, 10)
   if (x$recomb_replaced == 'right'){
