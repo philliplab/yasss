@@ -166,6 +166,27 @@ test_that('check_arg_set can catch a bad fitness_evaluator', {
   expect_false(x$fe_fun_is_getable)
 })
 
+test_that('check_arg_set can catch a bad ps_rate', {
+  arg_set7_1 <- arg_set1
+  arg_set7_2 <- arg_set1
+  arg_set7_3 <- arg_set1
+  arg_set7_4 <- arg_set1
+  
+  arg_set7_1$ps_rate <- -1
+  arg_set7_2$ps_rate <- 1
+  arg_set7_3$ps_rate <- 'A'
+  arg_set7_4$ps_rate <- c(0.1, 0.2)
+
+  x <- check_arg_set(arg_set7_1)
+  expect_false(x$ps_rate_between_0_1)
+  x <- check_arg_set(arg_set7_2)
+  expect_false(x$ps_rate_between_0_1)
+  x <- check_arg_set(arg_set7_3)
+  expect_false(x$ps_rate_numeric)
+  x <- check_arg_set(arg_set7_4)
+  expect_false(x$ps_rate_length_one)
+})
+
 test_that('check_arg_collection lets correct arg_collections pass', {
   x <- check_arg_collection(arg_collection1, verbose = FALSE)
   for (i in names(x)){
