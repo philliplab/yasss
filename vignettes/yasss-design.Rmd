@@ -51,6 +51,11 @@ sequence has two chances of being a recombinant: Once when the recombinants
 are chosen and 'once' when the partners are chosen. How should we modify the
 parameters because of this? Should we modify the parameters because of this?
 
+**NOTE:** The `recomb_x` columns in the genealogy data structure does not
+inherit the values of the parent sequences. This makes sense because you can
+easily recompute it later using the `parent_id`s. However, it should be
+communicated clearly to the user.
+
 Recombination must be added into `sim_pop` before the fitness computation step.
 
 The problem with recombination is always the same. There are too many
