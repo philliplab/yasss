@@ -78,6 +78,13 @@ test_that("sim_pop prints progress", {
                    n_gen = 11,
                    verbose = TRUE)
     })
+    profvis({
+      x <- sim_pop(ancestors = paste(rep('A', 500), collapse = ''), 
+                   r0 = 2,
+                   n_gen = 15,
+                   ps_rate = 0.1,
+                   verbose = TRUE)
+    })
     
     profvis({
       x <- sim_pop(ancestors = paste(rep('AAAAAA'), collapse = ''), 
@@ -199,9 +206,10 @@ test_that("n_pop and n_gen arguments of sim_pop interact correctly", {
 })
 
 test_that('sim_pop can produce recombinants', {
-  x <- sim_pop(ancestors = paste(rep('A', 500), collapse = ''), 
+  x <- sim_pop(ancestors = c(paste(rep('A', 500), collapse = ''), 
+                             paste(rep('C', 500), collapse = '')),
                r0 = 2,
-               n_gen = 5,
+               n_gen = 4,
                verbose = FALSE,
                ps_rate = 0.2)
   expect_false(all(is.na(x$recomb_pos)))

@@ -12,6 +12,13 @@ recombine_gen <- function(gen, ps_rate = 0){
     stop('ps_rate must be greater than or equal to zero and strictly smaller than one')
   }
   recombinants <- which(runif(nrow(gen)) < ps_rate)
+
+  the_seq <- gen[,'the_seq']
+  recomb_partner <- gen[,'recomb_partner']
+  recomb_replaced <- gen[,'recomb_replaced']
+  recomb_muts <- gen[,'recomb_muts']
+  recomb_pos <- gen[,'recomb_pos']
+
   for (i in recombinants){
     # don't allow 2 breakpoints in one sequence
     if (!is.na(gen$recomb_pos[i])){
@@ -32,12 +39,24 @@ recombine_gen <- function(gen, ps_rate = 0){
     recombination_partner_seq <- gen[partner, 'the_seq']
     recombinant <- recombine_seqs(target_seq = target_seq,
                                   recombination_partner_seq = recombination_partner_seq)
-    gen[i, 'the_seq'] <- recombinant$recombinant
-    gen[i, 'recomb_partner'] <- partner
-    gen[i, 'recomb_replaced'] <- recombinant$recomb_replaced
-    gen[i, 'recomb_muts'] <- recombinant$recomb_muts
-    gen[i, 'recomb_pos'] <- recombinant$recomb_pos
+
+    the_seq[i] <- recombinant$recombinant
+    recomb_partner[i] <- partner
+    recomb_replaced[i] <- recombinant$recomb_replaced
+    recomb_muts[i] <- recombinant$recomb_muts
+    recomb_pos[i] <- recombinant$recomb_pos
+
+#    gen[i, 'the_seq'] <- recombinant$recombinant
+#    gen[i, 'recomb_partner'] <- partner
+#    gen[i, 'recomb_replaced'] <- recombinant$recomb_replaced
+#    gen[i, 'recomb_muts'] <- recombinant$recomb_muts
+#    gen[i, 'recomb_pos'] <- recombinant$recomb_pos
   }
+  gen[, 'the_seq'] <- the_seq
+  gen[, 'recomb_partner'] <- recomb_partner
+  gen[, 'recomb_replaced'] <- recomb_replaced
+  gen[, 'recomb_muts'] <- recomb_muts
+  gen[, 'recomb_pos'] <- recomb_pos
   return(gen)
 }
 
