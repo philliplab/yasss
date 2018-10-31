@@ -75,6 +75,9 @@ sim_proc_many_pops <- function(arg_collection, n_sims = 1, output_dmat = FALSE, 
       if (is.null(arg_set$n_pop)){
         arg_set$n_pop <- Inf
       }
+      if (is.null(arg_set$ps_rate)){
+        arg_set$ps_rate <- 0
+      }
       sim_pop_args <- list(
         ancestors = arg_set$ancestors,
         r0 = arg_set$r0,
