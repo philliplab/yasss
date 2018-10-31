@@ -46,6 +46,11 @@ structure was added to yasss.
 
 #### Overview of recombination
 
+**NOTE:** Issue to resolve: Since a sequence recombines with a partner, each
+sequence has two chances of being a recombinant: Once when the recombinants
+are chosen and 'once' when the partners are chosen. How should we modify the
+parameters because of this? Should we modify the parameters because of this?
+
 Recombination must be added into `sim_pop` before the fitness computation step.
 
 The problem with recombination is always the same. There are too many
