@@ -27,6 +27,11 @@ test_that('recombine_gen works', {
   expect_false(all(is.na(x$recomb_replaced)))
 })
 
+test_that('recombine_gen checks arguments correctly', {
+  ERR_MSG <- 'ps_rate must be greater than or equal to zero and strictly smaller than one'
+  expect_error(x <- recombine_gen(last_gen, ps_rate = -1), ERR_MSG, info = 'ps_rate = -1')
+  expect_error(x <- recombine_gen(last_gen, ps_rate = 1), ERR_MSG, info = 'ps_rate = 1')
+})
 
 context('recombine_seqs')
 

@@ -50,6 +50,11 @@ structure was added to yasss.
 sequence has two chances of being a recombinant: Once when the recombinants
 are chosen and 'once' when the partners are chosen. How should we modify the
 parameters because of this? Should we modify the parameters because of this?
+**CORRECTION**: It is a double chance to be involved in a recombination event
+- not double chance to become a recombinant. However, we do not allow
+recombinants to recombine with other recombinants that were formed in the same
+generation, so there is a little weirdness going on with the selection of the
+recombination partner.
 
 **NOTE:** The `recomb_x` columns in the genealogy data structure does not
 inherit the values of the parent sequences. This makes sense because you can

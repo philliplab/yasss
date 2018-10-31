@@ -5,6 +5,12 @@
 #' @export
 
 recombine_gen <- function(gen, ps_rate = 0){
+  if (ps_rate == 0){
+    return(gen)
+  }
+  if (ps_rate < 0 | ps_rate >= 1){
+    stop('ps_rate must be greater than or equal to zero and strictly smaller than one')
+  }
   recombinants <- which(runif(nrow(gen)) < ps_rate)
   for (i in recombinants){
     # don't allow 2 breakpoints in one sequence
