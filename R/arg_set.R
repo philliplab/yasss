@@ -84,6 +84,13 @@ check_arg_set <- function(arg_set, the_seq = NULL, required_fitness = TRUE, verb
     }
   }
 
+  if ('ps_rate' %in% names(arg_set)){
+    result[['ps_rate_numeric']] <- class(arg_set$ps_rate) == 'numeric'
+    if (result[['ps_rate_numeric']]){
+      result[['ps_rate_between_0_1']] <- arg_set$ps_rate >= 0 & arg_set$ps_rate < 1
+    }
+  }
+
   if (verbose){
     print(result)
   }
