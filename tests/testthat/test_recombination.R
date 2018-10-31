@@ -16,11 +16,15 @@ genealogy_cols <-
     "recomb_replaced", "recomb_partner", "recomb_muts", "fitness_score")
 
 test_that('recombine_gen works', {
-  x <- recombine_gen(last_gen)
+  x <- recombine_gen(last_gen, ps_rate = .5)
   expect_true(class(x) == 'data.frame')
   for (i in genealogy_cols){
     expect_true(i %in% names(x), info = paste("Column ", i, " in output", sep = ''))
   }
+  expect_false(all(is.na(x$recomb_pos)))
+  expect_false(all(is.na(x$recomb_partner)))
+  expect_false(all(is.na(x$recomb_muts)))
+  expect_false(all(is.na(x$recomb_replaced)))
 })
 
 

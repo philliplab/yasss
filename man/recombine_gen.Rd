@@ -4,11 +4,13 @@
 \alias{recombine_gen}
 \title{Recombines sequences in a generation}
 \usage{
-recombine_gen(gen)
+recombine_gen(gen, ps_rate = 0)
 }
 \arguments{
 \item{gen}{A data.frame from a genealogy that contains just one
 generation}
+
+\item{ps_rate}{The chance that any given sequence will be a recombinant.}
 }
 \description{
 Recombines sequences in a generation

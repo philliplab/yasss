@@ -1,9 +1,37 @@
 #' Recombines sequences in a generation
 #' @param gen A data.frame from a genealogy that contains just one
 #' generation
+#' @param ps_rate The chance that any given sequence will be a recombinant.
 #' @export
 
-recombine_gen <- function(gen){
+recombine_gen <- function(gen, ps_rate = 0){
+  recombinants <- which(runif(nrow(gen)) < ps_rate)
+  for (i in recombinants){
+    # don't allow 2 breakpoints in one sequence
+    if (!is.na(gen$recomb_pos[i])){
+      next
+    }
+    partner <- FALSE
+    while (!partner){
+      partner <- sample(1:nrow(gen), 1)
+# Need more logic to prevent infinite loop
+#      if (!is.na(gen$recomb_pos[partner])){
+#        partner <- FALSE
+#      }
+      if (partner == i){
+        partner <- FALSE
+      }
+    }
+    target_seq <- gen[i, 'the_seq']
+    recombination_partner_seq <- gen[partner, 'the_seq']
+    recombinant <- recombine_seqs(target_seq = target_seq,
+                                  recombination_partner_seq = recombination_partner_seq)
+    gen[i, 'the_seq'] <- recombinant$recombinant
+    gen[i, 'recomb_partner'] <- partner
+    gen[i, 'recomb_replaced'] <- recombinant$recomb_replaced
+    gen[i, 'recomb_muts'] <- recombinant$recomb_muts
+    gen[i, 'recomb_pos'] <- recombinant$recomb_pos
+  }
   return(gen)
 }
 
