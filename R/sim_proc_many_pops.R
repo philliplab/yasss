@@ -81,7 +81,8 @@ sim_proc_many_pops <- function(arg_collection, n_sims = 1, output_dmat = FALSE, 
         n_gen = arg_set$n_gen,
         n_pop = arg_set$n_pop,
         mutator = arg_set$mutator,
-        fitness_evaluator = arg_set$fitness_evaluator
+        fitness_evaluator = arg_set$fitness_evaluator,
+        ps_rate = arg_set$ps_rate
                            )
       genea <- do.call(sim_pop, sim_pop_args)
       if (verbose){

@@ -157,8 +157,6 @@ test_that('check_fitness_processing_metrics work', {
   expect_false(x$output_seqs_integer)
 })
 
-
-
 test_that('required_fitness required if non-none fitness processing',{
   arg_set4 <- list(
     label = 'A-based epitope',
@@ -175,3 +173,35 @@ test_that('required_fitness required if non-none fitness processing',{
   arg_collection4 <- list(arg_set4)
   expect_error(many_pops7 <- sim_proc_many_pops(arg_collection4, n_sims = 1, fitness_processing = 'fit_unfit_pair', output_genealogy = 'full'), 'error in arg_collection')
 })
+
+test_that('recombination occurs',{
+  arg_set4 <- list(
+    label = 'A-based epitope',
+    ancestors = paste(rep("A", 500), collapse = ''),
+    r0 = 2,
+    n_gen = n_gen,
+    n_pop = Inf,
+    mutator = list(fun = "mutator_uniform_fun",
+                   args = list(mu = 1/250)),
+    fitness_evaluator = list(fun = "fitness_evaluator_homology_fun",
+                             args = list(comparators = paste(rep('XXXXA', 100), collapse = ''),
+                                         h2fs = "h2fs_univariate_linear_fun")),
+    required_fitness = 0.02,
+    ps_rate = 0.2
+  )
+  arg_collection4 <- list(arg_set4)
+  many_pops7 <- sim_proc_many_pops(arg_collection4, n_sims = 1, fitness_processing = 'fit_unfit_pair', output_genealogy = 'full')
+
+  x <- many_pops7$all_genealogies[[1]]
+
+  expect_false(all(is.na(x$recomb_pos)))
+  expect_false(all(is.na(x$recomb_partner)))
+  expect_false(all(is.na(x$recomb_muts)))
+  expect_false(all(is.na(x$recomb_replaced)))
+})
+
+
+
+
+
+
