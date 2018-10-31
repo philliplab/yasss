@@ -12,6 +12,7 @@
 #' @param n_pop Stop the simulation when the population size exceeds this number.
 #' @param mutator A list with two elements fun and args specifying the name of the function that mutates parents into their offspring and the list of arguments said function requires. 
 #' @param fitness_evaluator A list with two elements fun and args, specifying the name of the function that evaluates the fitness of each sequence and the list of arguments the function requires.
+#' @param ps_rate The chance that any given sequence will be a recombinant.
 #' @param verbose If TRUE, progress is printed to STDOUT.
 #' 
 #' @examples
@@ -42,6 +43,7 @@ sim_pop <- function(ancestors,
                                    args = list(mu = 0.01)),
                     fitness_evaluator = list(fun = "fitness_evaluator_uniform_fun",
                                              args = NULL),
+                    ps_rate = 0,
                     verbose = FALSE){
 
   r0 <- tryCatch(round(as.numeric(r0), 0),
@@ -92,19 +94,17 @@ sim_pop <- function(ancestors,
       cat ("Simulating generation ", c_gen, "\n", sep = '')
     }
     
-#    new_generation <- sim_next_gen(genealogy[genealogy$gen_num == (c_gen-1),], 
-#                                   r0 = r0,
-#                                   mutator, gen_num = c_gen)
-#
-
     args <- list(genealogy = genealogy,
                  r0 = r0,
                  mutator = mutator,
                  gen_num = c_gen)
-#    dput(args)
     new_generation <- do.call(sim_next_gen, args)
 
     # insert recomb here (act on new_generation)
+    if (ps_rate > 0){
+      new_generation <- recombine_gen(gen = new_generation, 
+                                      ps_rate = ps_rate)
+    }
 
     # insert fitness here (act on new_generation)
     new_generation <- assign_fitness(new_generation, fitness_evaluator = fitness_evaluator)
