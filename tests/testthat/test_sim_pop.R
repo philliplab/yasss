@@ -1,6 +1,11 @@
 context('sim_pop')
 
-library(yasss)
+if (FALSE){
+  library(yasss)
+  yasss:::restart_r()
+  library(devtools)
+  library(testthat)
+}
 
 test_that("sim_pop checks arguments correctly", {
 #  N_GEN_N_POP_INF_NULL <- "Either n_gen or n_pop must be specified and at least one must be finite"
@@ -191,4 +196,16 @@ test_that("n_pop and n_gen arguments of sim_pop interact correctly", {
 # Pretty slow
 #  sim_pop_expector(ancestors = c("AAAA", "TTTT", "CCCC"), r0 = 5,
 #               n_pop = 3000, n_gen = 10)
+})
+
+test_that('sim_pop can produce recombinants', {
+  x <- sim_pop(ancestors = paste(rep('A', 500), collapse = ''), 
+               r0 = 2,
+               n_gen = 5,
+               verbose = FALSE,
+               ps_rate = 0.2)
+  expect_false(all(is.na(x$recomb_pos)))
+  expect_false(all(is.na(x$recomb_partner)))
+  expect_false(all(is.na(x$recomb_muts)))
+  expect_false(all(is.na(x$recomb_replaced)))
 })
