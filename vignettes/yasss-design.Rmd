@@ -269,20 +269,20 @@ occurance tracker.
   - `max_indx <- min(which(cm[,i] == max_freq))`
   - `max_nuc[i] <- c('A', 'C', 'G', 'T')[max_indx]`
 
-* `for p1 in 1:(seq_length-1)`
-  - n1 <- most frequent nucleotide @ p1
+* `for L1 in 1:(seq_length-1)`
+  - n1 <- most frequent nucleotide @ L1
     + if n1 not in (.2, .8) CONTINUE
-    + `for p2 in (p1+1):seq_length`
-      * n2 <- most frequent nucleotide @ p2
+    + `for L2 in (L1+1):seq_length`
+      * n2 <- most frequent nucleotide @ L2
       * if n2 not in (.2, .8) CONTINUE
-      * jot[p1, p2] += 1
+      * jot[L1, L2] += 1
 
-* check that upper triangle is all zero
+* check that lower triangle is all zero
 
-* `for p1 in 1:nrow(jot)`
-  - `for p2 in (p1+1):ncol(jot)`
-    + `link_dist <- p2 - p1`
-    + `D = jot[p1, p2] - max_freq[p1]*max_freq[p2]`
+* `for L1 in 1:nrow(jot)`
+  - `for L2 in (L1+1):ncol(jot)`
+    + `link_dist <- L2 - L1`
+    + `D = jot[L1, L2] - max_freq[L1]*max_freq[L2]`
     + `linkages[[link_dist]] <- c(linkages[[link_dist]], D)`
 
 **Tests for linkage diseq. calculation**
