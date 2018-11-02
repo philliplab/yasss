@@ -4,7 +4,7 @@
 #' \itemize{
 #'   \item linkage The linkage scores for various distances and starting
 #'   positions.
-#'   \item cm The consensusMatrix. Only included if verbose is specified.
+#'   \item cmat The consensusMatrix. Only included if verbose is specified.
 #' }
 #'
 #' @param seqs The sequences on which the linkage disequilibrium is to be
@@ -17,9 +17,16 @@
 #' @export
 
 linkage_diseq <- function(seqs, min_prev = 0.2, max_prev = 0.8, verbose = FALSE){
-  cm <- consensusMatrix_character(seqs)
+  cmat <- consensusMatrix_character(seqs)
+  max_freq <- apply(cmat, 2, max)
+  max_nuc <- rep('X', length(max_freq))
+  for (i in 1:length(max_freq)){
+    cmat_max_freq_row <- which(max_freq[i] == cmat[,i])[1]
+    max_nuc[i] <- row.names(cmat)[cmat_max_freq_row]
+  }
 
-  max_freq <- apply(cm, 2, max)
-  return(list(cm = cm,
-              max_freq = max_freq))
+  return(list(cmat = cmat,
+              max_freq = max_freq,
+              max_nuc = max_nuc)
+  )
 }

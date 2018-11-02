@@ -23,7 +23,7 @@ A list with multiple elements:
 \itemize{
   \item linkage The linkage scores for various distances and starting
   positions.
-  \item cm The consensusMatrix. Only included if verbose is specified.
+  \item cmat The consensusMatrix. Only included if verbose is specified.
 }
 }
 \description{

@@ -20,11 +20,19 @@ i <- V1
 test_that('linkage_diseq computes the consensusMatrix correctly', {
   for (i in list(V1, V2, V3)){
     ld <- linkage_diseq(seqs = i, verbose = FALSE)
-    cm <- ld$cm
-    expect_equal(cm, consensusMatrix_character(i))
+    cmat <- ld$cmat
+    expect_equal(cmat, consensusMatrix_character(i))
 
     max_freq <- ld$max_freq
     expect_equal(max_freq[1:8], c(10, 5, 10, 10, 10, 10, 10, 10))
+
+    max_nuc <- ld$max_nuc
+    expect_equal(max_nuc[1:8], rep('A', 8))
+    if (cmat['C',9] == 6){
+      expect_equal(max_nuc[9], 'C')
+    } else {
+      expect_equal(max_nuc[9], 'A')
+    }
   }
 })
 
