@@ -215,6 +215,51 @@ The `recombine_seqs` function is responsible for:
 
 All the recombination functionality lives in the `recombine.R` script.
 
+#### Linkage Disequilibrium
+
+A popular way to interpret recombination rates is as linkage disequilibrium.
+Linkage disequilibrium is a way to measure how much the co-occurance of SNPs
+deviate from random. This changes with the distance between the SNPs.
+
+To compute the linkage disequilibrium:
+
+* Consider two positions, $x_{1}$ and $x_{2}$,
+* the most frequent nucleotides at each position, $n_{1}$ and $n_{2}$,
+* the prevalence of these two individual nucleotides, $p_{1}$ and $p_{2}$, and
+* their joint prevalence, i.e. the percentage of sequences in which they bot
+  occur, $p_{12}$.
+
+The metric used to measure the linkage disequilibrium between these two
+positions is: 
+
+$$D = \frac{|p_{12} - p_{1}p_{2}|}{D_{max}}$$
+
+where
+
+$$D_{max} = min(p_{1}p_{2}, (1-p_{1})(1-p_{2})) if p_{12} < p_{1}p_{2}$$
+
+and
+
+$$D_{max} = min((1-p_{1})p_{2}, (1-p_{1})p_{2}) if p_{12} > p_{1}p_{2}$$
+
+**Computation of linkage disequilibrium**
+
+Computing the joint occurance probability $(p_{12})$ is non-trivial. To ensure
+that minor mutations do not skew the result, only consider positions where the
+major variant is prevalent in between 20% nd 80% of the sequences. Each
+sequence must be considered individually for each pair of positions.
+
+The co-occurance data is summarized in a four dimensional list:
+
+* Dimension 1: The first position
+* Dimension 2: The nucleotide at the first position
+* Dimension 3: The second position
+* Dimension 4: The nucleotide at the second position
+
+The element is the number of sequences where both nucleotides corresponded
+with the nucleotides in the 2nd and 4th dimensions at the positions listed in
+the 1st and 3rd dimensions.
+
 ## Mutators
 
 **This section must be updated**
