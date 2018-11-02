@@ -49,6 +49,8 @@ linkage_diseq <- function(seqs, min_prev = 0.2, max_prev = 0.8, verbose = FALSE)
         n2 <- max_nuc[L2]
         if (max_freq[L2]/n_seqs < 0.2 | max_freq[L2]/n_seqs > 0.8){
           next
+        } else if (jot[L1, L2] == -1) {
+          jot[L1, L2] <- 0
         }
         if (seq_matrix[i, L2] != n2){
           next
