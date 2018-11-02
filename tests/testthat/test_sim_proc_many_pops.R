@@ -55,8 +55,6 @@ arg_set3 <- list(
   required_fitness = 0.02
 )
 
-
-
 arg_collection1 <- list(arg_set1, arg_set2)
 arg_collection2 <- list(arg_set1)
 arg_collection3 <- list(arg_set3)
@@ -66,10 +64,6 @@ many_pops3 <- sim_proc_many_pops(arg_collection1, n_sims = 2)
 many_pops4 <- sim_proc_many_pops(arg_collection2, n_sims = 1, output_dmat = TRUE)
 many_pops5 <- sim_proc_many_pops(arg_collection2, n_sims = 1, output_dmat = TRUE, max_dmat_size = 10)
 many_pops6 <- sim_proc_many_pops(arg_collection3, n_sims = 1, output_dmat = TRUE, fitness_processing = 'fit_unfit_pair', output_genealogy = 'full')
-
-
-
-
 
 test_that('sim_proc_many_pops work', {
   expect_equal(class(many_pops1), 'list')
@@ -199,9 +193,4 @@ test_that('recombination occurs',{
   expect_false(all(is.na(x$recomb_muts)))
   expect_false(all(is.na(x$recomb_replaced)))
 })
-
-
-
-
-
 
