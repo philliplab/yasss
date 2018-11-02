@@ -22,7 +22,8 @@ consensusMatrix_character <- function(x){
   max_length <- max(sapply(x, nchar))
 
   seq_matrix <- unlist(strsplit(x, ''))
-  seq_matrix <- matrix(seq_matrix, ncol = max_length, nrow = length(x))
+  seq_matrix <- matrix(seq_matrix, ncol = max_length, nrow = length(x),
+                       byrow = TRUE)
 
   cons_matrix <- matrix(0, nrow = 18, ncol = max_length)
   row.names(cons_matrix) <- c("A", "C", "G", "T", "M", "R", "W", "S", "Y",
@@ -33,6 +34,6 @@ consensusMatrix_character <- function(x){
     cons_matrix[match(names(col_tab), row.names(cons_matrix)), i] <- col_tab
   }
 
-  cons_matrix
+  return(cons_matrix)
 }
 
