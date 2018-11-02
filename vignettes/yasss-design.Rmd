@@ -236,11 +236,11 @@ $$D = \frac{|p_{12} - p_{1}p_{2}|}{D_{max}}$$
 
 where
 
-$$D_{max} = min(p_{1}p_{2}, (1-p_{1})(1-p_{2})) if p_{12} < p_{1}p_{2}$$
+$$D_{max} = min(p_{1}p_{2}, (1-p_{1})(1-p_{2})) \quad if \quad p_{12} < p_{1}p_{2}$$
 
 and
 
-$$D_{max} = min((1-p_{1})p_{2}, (1-p_{1})p_{2}) if p_{12} > p_{1}p_{2}$$
+$$D_{max} = min((1-p_{1})p_{2}, (1-p_{1})p_{2}) \quad if \quad p_{12} > p_{1}p_{2}$$
 
 **Computation of linkage disequilibrium**
 
@@ -249,16 +249,41 @@ that minor mutations do not skew the result, only consider positions where the
 major variant is prevalent in between 20% nd 80% of the sequences. Each
 sequence must be considered individually for each pair of positions.
 
-The co-occurance data is summarized in a four dimensional list:
+The co-occurance data is summarized in a 2-d array:
 
 * Dimension 1: The first position
-* Dimension 2: The nucleotide at the first position
-* Dimension 3: The second position
-* Dimension 4: The nucleotide at the second position
+* Dimension 2: The second position
 
-The element is the number of sequences where both nucleotides corresponded
-with the nucleotides in the 2nd and 4th dimensions at the positions listed in
-the 1st and 3rd dimensions.
+The element is the number of sequences where both sequences each had the
+majority variant at each of the two positions.
+
+The structure storing the co-occurance is called `jot`, short for joint
+occurance tracker.
+
+**Algorithm to compute linkage disequilibrium**
+
+* `cm <- consensusMatrix(all_sequences)`
+* `max_freq <- apply(cm, 1, max)`
+* `max_nuc <- rep('X', length(max_freq))`
+* `for i in 1:ncol(cm)`
+  - `max_indx <- min(which(cm[,i] == max_freq))`
+  - `max_nuc[i] <- c('A', 'C', 'G', 'T')[max_indx]`
+
+* `for p1 in 1:(seq_length-1)`
+  - n1 <- most frequent nucleotide @ p1
+    + if n1 not in (.2, .8) CONTINUE
+    + `for p2 in (p1+1):seq_length`
+      * n2 <- most frequent nucleotide @ p2
+      * if n2 not in (.2, .8) CONTINUE
+      * jot[p1, p2] += 1
+
+* check that upper triangle is all zero
+
+* `for p1 in 1:nrow(jot)`
+  - `for p2 in (p1+1):ncol(jot)`
+    + `link_dist <- p2 - p1`
+    + `D = jot[p1, p2] - max_freq[p1]*max_freq[p2]`
+    + `linkages[[link_dist]] <- c(linkages[[link_dist]], D)`
 
 ## Mutators
 
