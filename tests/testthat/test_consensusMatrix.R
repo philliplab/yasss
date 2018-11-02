@@ -10,10 +10,11 @@ test_that("consensusMatrix works", {
                     "D", "B", "N", "-", "+", ".")
   expect_equal(attr(cm, "dimnames")[[1]], the_rownames)
 
-  expect_equal(min(apply(cm, 2, sum)), min(apply(cm, 2, sum)))
-  
-  expect_equal(unique(apply(cm, 2, sum)), 5)
+  expect_equal(min(apply(cm, 2, sum)), max(apply(cm, 2, sum)))
+  expect_equal(min(apply(cm, 2, sum)), 10)
+
   expect_equal(dim(cm), c(18, 5))
+
 })
 
 
