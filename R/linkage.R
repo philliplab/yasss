@@ -31,7 +31,7 @@ linkage_diseq <- function(seqs, min_prev = 0.2, max_prev = 0.8, verbose = FALSE)
     max_nuc[i] <- row.names(cmat)[cmat_max_freq_row]
   }
 
-  jot <- matrix(0, nrow = ncol(cmat)-1, ncol = ncol(cmat))
+  jot <- matrix(-1, nrow = ncol(cmat)-1, ncol = ncol(cmat))
 
   for (i in 1:nrow(seq_matrix)){
     for (L1 in 1:(ncol(cmat)-1)){
@@ -54,15 +54,48 @@ linkage_diseq <- function(seqs, min_prev = 0.2, max_prev = 0.8, verbose = FALSE)
           next
         }
 
+        if (jot[L1, L2] == -1){
+          jot[L1, L2] <- 0
+        }
+
         jot[L1, L2] <- jot[L1, L2] + 1
 
       }
     }
   }
 
+  linkages <- NULL
+
+  for (L1 in 1:nrow(jot)){
+    for (L2 in 1:ncol(jot)){
+      if (jot[L1, L2] < 0){
+        next
+      }
+      link_dist <- L2 - L1
+      p1 <- max_freq[L1]/n_seqs
+      p2 <- max_freq[L2]/n_seqs
+      p12 <- jot[L1, L2]/n_seqs
+
+      D_numerator = p12 - p1*p2
+      
+      if (p12 > p1*p2){
+        D_max = min((1-p1)*p2, p1*(1-p2))
+      } else {
+        D_max = min(p1*p2, (1-p1)*(1-p2))
+      }
+      D_prime = abs(D_numerator / D_max)
+      linkages <- rbind(linkages,
+        data.frame(link_dist = link_dist,
+                   D_prime = D_prime)
+        )
+    }
+  }
+
   return(list(cmat = cmat,
               max_freq = max_freq,
               max_nuc = max_nuc,
-              jot = jot)
+              jot = jot,
+              linkages = linkages)
   )
 }
+
