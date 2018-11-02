@@ -17,6 +17,12 @@
 #' @export
 
 linkage_diseq <- function(seqs, min_prev = 0.2, max_prev = 0.8, verbose = FALSE){
+  n_seqs <- length(seqs)
+  seq_length <- nchar(seqs[1])
+
+  seq_matrix <- unlist(strsplit(seqs, ''))
+  seq_matrix <- matrix(seq_matrix, ncol = seq_length, nrow = length(seqs),
+                       byrow = TRUE)
   cmat <- consensusMatrix_character(seqs)
   max_freq <- apply(cmat, 2, max)
   max_nuc <- rep('X', length(max_freq))
@@ -25,8 +31,38 @@ linkage_diseq <- function(seqs, min_prev = 0.2, max_prev = 0.8, verbose = FALSE)
     max_nuc[i] <- row.names(cmat)[cmat_max_freq_row]
   }
 
+  jot <- matrix(0, nrow = ncol(cmat)-1, ncol = ncol(cmat))
+
+  for (i in 1:nrow(seq_matrix)){
+    for (L1 in 1:(ncol(cmat)-1)){
+      
+      n1 <- max_nuc[L1]
+      if (max_freq[L1]/n_seqs < 0.2 | max_freq[L1]/n_seqs > 0.8){
+        next
+      }
+      if (seq_matrix[i, L1] != n1){
+        next
+      }
+
+      for (L2 in (L1+1):ncol(cmat)){
+
+        n2 <- max_nuc[L2]
+        if (max_freq[L2]/n_seqs < 0.2 | max_freq[L2]/n_seqs > 0.8){
+          next
+        }
+        if (seq_matrix[i, L2] != n2){
+          next
+        }
+
+        jot[L1, L2] <- jot[L1, L2] + 1
+
+      }
+    }
+  }
+
   return(list(cmat = cmat,
               max_freq = max_freq,
-              max_nuc = max_nuc)
+              max_nuc = max_nuc,
+              jot = jot)
   )
 }
