@@ -18,5 +18,8 @@
 
 linkage_diseq <- function(seqs, min_prev = 0.2, max_prev = 0.8, verbose = FALSE){
   cm <- consensusMatrix_character(seqs)
-  return(list(cm = cm))
+
+  max_freq <- apply(cm, 2, max)
+  return(list(cm = cm,
+              max_freq = max_freq))
 }

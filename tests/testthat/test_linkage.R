@@ -15,10 +15,16 @@ V3 <- link_dat
 V3[3:8,9] <- 'C'
 V3 <- apply(V3, 1, paste, collapse = '')
 
+i <- V1
+
 test_that('linkage_diseq computes the consensusMatrix correctly', {
   for (i in list(V1, V2, V3)){
-    cm <- linkage_diseq(i, verbose = FALSE)[['cm']]
+    ld <- linkage_diseq(seqs = i, verbose = FALSE)
+    cm <- ld$cm
     expect_equal(cm, consensusMatrix_character(i))
+
+    max_freq <- ld$max_freq
+    expect_equal(max_freq[1:8], c(10, 5, 10, 10, 10, 10, 10, 10))
   }
 })
 
