@@ -32,6 +32,9 @@ i <- 'V4'
 test_that('linkage_diseq checks arguments correctly', {
   expect_error(ld <- linkage_diseq(seqs = 2:5),
                'seqs must be of class character')
+
+  expect_error(ld <- linkage_diseq(seqs = 'AAAACCCCCAAAGT'),
+               'At least two sequences must be provided')
 })
 
 test_that('linkage_diseq computes the consensusMatrix correctly', {

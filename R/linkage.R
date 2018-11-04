@@ -20,6 +20,9 @@ linkage_diseq <- function(seqs, min_prev = 0.2, max_prev = 0.8, verbose = FALSE)
   if (class(seqs) != 'character'){
     stop('seqs must be of class character')
   }
+  if (length(seqs) < 2){
+    stop('At least two sequences must be provided')
+  }
   n_seqs <- length(seqs)
   seq_length <- nchar(seqs[1])
 
