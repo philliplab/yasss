@@ -292,12 +292,14 @@ Create 10 sequences of length 10, with a base of all A:
 * V1: Replace first 5 As at pos 2 with C; Replace first 5 As at pos 9 with C
 * V2: Replace first 5 As at pos 2 with C; Replace last 5 As at pos 9 with C
 * V3: Replace first 5 As at pos 2 with C; Replace middle 6 As at pos 9 with C
+* V4: Replace first 5 As at pos 2 with C; Replace middle 7(3:9) As at pos 9 with C
 
 These should result in D scores of:
 
-* V1: 2
+* V1: 1
 * V2: 1
 * V3: 0
+* V4: 1/3
 
 Then swap them around so that position 9 becomes position 2 and check that
 that same results are obtained.
