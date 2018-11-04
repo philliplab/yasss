@@ -29,6 +29,11 @@ i <- 'V2'
 i <- 'V3'
 i <- 'V4'
 
+test_that('linkage_diseq checks arguments correctly', {
+  expect_error(ld <- linkage_diseq(seqs = 2:5),
+               'seqs must be of class character')
+})
+
 test_that('linkage_diseq computes the consensusMatrix correctly', {
   for (i in names(link_dat)){
     c_dat <- link_dat[[i]]

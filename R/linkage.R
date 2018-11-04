@@ -17,6 +17,9 @@
 #' @export
 
 linkage_diseq <- function(seqs, min_prev = 0.2, max_prev = 0.8, verbose = FALSE){
+  if (class(seqs) != 'character'){
+    stop('seqs must be of class character')
+  }
   n_seqs <- length(seqs)
   seq_length <- nchar(seqs[1])
 
