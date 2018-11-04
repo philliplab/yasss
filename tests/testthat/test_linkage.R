@@ -34,6 +34,7 @@ test_that('linkage_diseq computes the consensusMatrix correctly', {
     c_dat <- link_dat[[i]]
     ld <- linkage_diseq(seqs = c_dat, verbose = FALSE)
     rld <- linkage_diseq(seqs = rev(c_dat), verbose = FALSE)
+    sld <- linkage_diseq(seqs = sample(c_dat), verbose = FALSE)
     cmat <- ld$cmat
     expect_equal(cmat, consensusMatrix_character(c_dat))
 
@@ -67,21 +68,26 @@ test_that('linkage_diseq computes the consensusMatrix correctly', {
       next
     }
     rlinkages <- rld$linkages
+    slinkages <- sld$linkages
     expect_equal(class(linkages), 'data.frame')
     expect_true('link_dist' %in% names(linkages))
     expect_true('D_prime' %in% names(linkages))
     if (i == 'V1'){
       expect_equal(linkages[1,2], 1)
       expect_equal(rlinkages[1,2], 1)
+      expect_equal(slinkages[1,2], 1)
     } else if (i == 'V2'){
       expect_equal(linkages[1,2], 1)
       expect_equal(rlinkages[1,2], 1)
+      expect_equal(slinkages[1,2], 1)
     } else if (i == 'V3'){
       expect_equal(linkages[1,2], 0)
       expect_equal(rlinkages[1,2], 0)
+      expect_equal(slinkages[1,2], 0)
     } else if (i == 'V4'){
       expect_equal(linkages[1,2], 1/3)
       expect_equal(rlinkages[1,2], 1/3)
+      expect_equal(slinkages[1,2], 1/3)
     } else {
       stop('not implemented')
     }
