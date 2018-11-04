@@ -36,8 +36,14 @@ test_that('linkage_diseq checks arguments correctly', {
   expect_error(ld <- linkage_diseq(seqs = 'AAAACCCCCAAAGT'),
                'At least two sequences must be provided')
   
+  expect_error(ld <- linkage_diseq(seqs = V1, min_prev = 'A'),
+               'min_prev must be of class numeric')
+
   expect_error(ld <- linkage_diseq(seqs = V1, max_prev = 'A'),
                'max_prev must be of class numeric')
+
+  expect_error(ld <- linkage_diseq(seqs = V1, min_prev = 1:2),
+               'min_prev must be of length 1')
 })
 
 test_that('linkage_diseq computes the consensusMatrix correctly', {

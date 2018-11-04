@@ -23,11 +23,14 @@ linkage_diseq <- function(seqs, min_prev = 0.2, max_prev = 0.8, verbose = FALSE)
   if (length(seqs) < 2){
     stop('At least two sequences must be provided')
   }
-  if (class(min_prev) != 'numeric'){
+  if (!(class(min_prev) %in% c('integer', 'numeric'))){
     stop('min_prev must be of class numeric')
   }
-  if (class(max_prev) != 'numeric'){
+  if (!(class(max_prev) %in% c('integer', 'numeric'))){
     stop('max_prev must be of class numeric')
+  }
+  if (length(min_prev) != 1){
+    stop('min_prev must be of length 1')
   }
   n_seqs <- length(seqs)
   seq_length <- nchar(seqs[1])
