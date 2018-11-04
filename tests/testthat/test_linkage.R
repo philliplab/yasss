@@ -44,6 +44,9 @@ test_that('linkage_diseq checks arguments correctly', {
 
   expect_error(ld <- linkage_diseq(seqs = V1, min_prev = 1:2),
                'min_prev must be of length 1')
+
+  expect_error(ld <- linkage_diseq(seqs = V1, max_prev = 1:2),
+               'max_prev must be of length 1')
 })
 
 test_that('linkage_diseq computes the consensusMatrix correctly', {

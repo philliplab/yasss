@@ -32,6 +32,9 @@ linkage_diseq <- function(seqs, min_prev = 0.2, max_prev = 0.8, verbose = FALSE)
   if (length(min_prev) != 1){
     stop('min_prev must be of length 1')
   }
+  if (length(max_prev) != 1){
+    stop('max_prev must be of length 1')
+  }
   n_seqs <- length(seqs)
   seq_length <- nchar(seqs[1])
 
