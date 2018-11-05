@@ -268,3 +268,4 @@ gfo_internal_Rvec <- function(genealogy, fitness_score){
     return(genealogy[0,])
   }
 }
+
