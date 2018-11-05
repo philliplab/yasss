@@ -51,3 +51,7 @@ test_that('check_fitness_processing_metrics work', {
   expect_false(x$output_seqs_integer)
 })
 
+test_that('fitness_processing_metrics_to_df works', {
+  fpm_df <- fitness_processing_metrics_to_df(c(list(fpm1), list(fpm1)))
+  expect_equal(class(fpm_df), 'data.frame')
+})

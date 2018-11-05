@@ -56,3 +56,26 @@ check_fitness_processing_metrics <- function(fitness_processing_metrics, verbose
 
   return(result)
 }
+
+#' Converts a fitness_processing_metrics list to a data.frame
+#'
+#' @param fitness_processing_metrics The list containing the fitness
+#' processing metrics as produced by \code{sim_proc_many_pops}
+#' @export
+
+fitness_processing_metrics_to_df <- function(fitness_processing_metrics){
+  fpm <- fitness_processing_metrics
+  fpm_df <- NULL
+  for (i in 1:length(fpm)){
+    c_df <- data.frame(sim_id = fpm[[i]]$sim_id,
+                       label = fpm[[i]]$label,
+                       sampling = fpm[[i]]$sampling,
+                       input_seqs = fpm[[i]]$input_seqs,
+                       output_seqs = fpm[[i]]$output_seqs,
+                       stringsAsFactors = FALSE)
+    fpm_df <- rbind(fpm_df,
+                    c_df)
+  }
+  return(fpm_df)
+}
+
