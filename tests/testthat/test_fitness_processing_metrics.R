@@ -52,6 +52,20 @@ test_that('check_fitness_processing_metrics work', {
 })
 
 test_that('fitness_processing_metrics_to_df works', {
-  fpm_df <- fitness_processing_metrics_to_df(c(list(fpm1), list(fpm1)))
+  fpm_df1 <- fpm1
+  fpm_df1$sampling <- 'fit_threshold'
+  fpm_df2 <- fpm1
+  fpm_df2$sampling <- 'size_matched_sampling'
+
+  fpm_for_df <- c(list(fpm_df1), list(fpm_df2))
+  fpm_df <- fitness_processing_metrics_to_df(fpm_for_df)
   expect_equal(class(fpm_df), 'data.frame')
+  expect_equal(nrow(fpm_df), length(fpm_for_df))
+
+  col_names <- c("sim_id", "label", "sampling", "input_seqs", "output_seqs")
+  for (col_name in col_names){
+    expect_true(col_name %in% names(fpm_df))
+  }
 })
+
+
