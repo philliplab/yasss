@@ -4,8 +4,6 @@ if (FALSE){
   library(testthat)
 }
 
-# bottom of document contains context fitness_processing_metrics
-
 x <- sim_pop(ancestors = paste(rep("A", 500), sep = '', collapse = ''), 
              r0 = 2,
              n_gen = 6)
@@ -221,3 +219,24 @@ test_that('dcollection_to_df works', {
   expect_true('dmat_metrics' %in% names(x))
   expect_true('dmat_distribution_df' %in% names(x))
 })
+
+test_that('clara2 clustering in summarize_dmat works', {
+  x <- sim_pop(ancestors = c(paste(rep("A", 500), sep = '', collapse = ''), 
+                             paste(rep("C", 500), sep = '', collapse = '')),
+               r0 = 2,
+               n_gen = 5)
+  
+  y <- x %>% 
+    filter(gen_num == max(gen_num)) %>%
+    select(the_seq)
+  
+  dsum <- summarize_dmat(stringdistmatrix(y$the_seq, method = 'hamming'))
+  z <- check_dsum(dsum)
+  for (i in names(z)){
+    expect_true(z[[i]], info = i)
+  }
+  expect_true(dsum$clara2$avg_within_cluster < 80)
+  expect_true(dsum$clara2$avg_between_cluster > 400)
+  expect_equal(dsum$clara2$cluster_sizes, c(32, 32))
+})
+
