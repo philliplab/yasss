@@ -12,7 +12,8 @@ Depends:
     dplyr,
     simpleCache,
     digest,
-    data.table
+    data.table,
+    cluster
 Imports: Rcpp
 Suggests:
     testthat,

@@ -12,10 +12,32 @@ summarize_dmat <- function(dmat) {
   sd_hd <- sd(dmat)
   perc <- quantile(dmat, (0:100)/100)
   dens <- density(dmat)
+
+  dmat <- as.matrix(dmat)
+
+  ## Using clara with number of clusters equal to 2
+  clusts <- clara(dmat, 2)
+  cluster1 <- which(clusts$clustering==1)
+  cluster2 <- which(clusts$clustering==2)
+
+  within_cluster <- c(as.vector(dmat[cluster1, cluster1]), as.vector(dmat[cluster2, cluster2]))
+  between_cluster <- c(as.vector(dmat[cluster1, cluster2]), as.vector(dmat[cluster2, cluster1]))
+
+  avg_within_cluster <- mean(within_cluster)
+  avg_between_cluster <- mean(between_cluster)
+  cluster_sizes <- c(length(cluster1), length(cluster2))
+  
+  clara2 <- list(
+    avg_within_cluster  = avg_within_cluster,
+    avg_between_cluster = avg_between_cluster,
+    cluster_sizes       = cluster_sizes
+  )
+
   return(list(avg_hd = avg_hd,
               sd_hd = sd_hd,
               perc = perc,
-              dens = dens))
+              dens = dens,
+              clara2 = clara2))
 }
 
 #' Checks a dsum list
@@ -34,6 +56,7 @@ check_dsum <- function(dsum, identifiers = FALSE){
   result[['is_a_list']] <- class(dsum) == 'list'
   col_names <- c('avg_hd', 'sd_hd', 'perc', 'dens')
   identifier_col_names <- c('sim_id', 'label', 'sampling')
+  optional_cols <- c('clara2')
 
   for (col_name in col_names){
     result_label <- paste(col_name, 'exists', sep = '_')
@@ -90,7 +113,7 @@ check_dsum <- function(dsum, identifiers = FALSE){
 
   only_valid_columns <- TRUE
   for (element_name in names(dsum)){
-    only_valid_columns <- only_valid_columns & element_name %in% c(col_names, identifier_col_names)
+    only_valid_columns <- only_valid_columns & element_name %in% c(col_names, identifier_col_names, optional_cols)
   }
   result[['only_valid_columns']] <- only_valid_columns
 
