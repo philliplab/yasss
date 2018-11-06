@@ -1,6 +1,8 @@
 context('dsum')
 
 if (FALSE){
+  yasss:::restart_r()
+  devtools::load_all()
   library(testthat)
 }
 
@@ -213,11 +215,34 @@ test_that('check_dcollection catches issues', {
   expect_false(result[['unnamed']])
 })
 
+dsum17 <- dsum2
+dsum17$clara2 <- list(
+  avg_within_cluster = 50,
+  avg_between_cluster = 100,
+  cluster_sizes = c(10, 10))
+dcol2 <- c(dcol1, list(dsum17))
+
 test_that('dcollection_to_df works', {
   x <- dcollection_to_df(dcol1)
   expect_true(class(x) == 'list')
   expect_true('dmat_metrics' %in% names(x))
   expect_true('dmat_distribution_df' %in% names(x))
+  
+  x <- dcollection_to_df(dcol2)
+  expect_true(class(x) == 'list')
+  expect_true('dmat_metrics' %in% names(x))
+  expect_true('dmat_distribution_df' %in% names(x))
+  expect_true('dmat_clara2_df' %in% names(x))
+  clara2_metrics <- c(
+        'avg_within_cluster',
+        'avg_between_cluster',
+        'cluster_size_ratio',
+        'within_between_ratio',
+        'smallest_cluster'
+      )
+  for (i in clara2_metrics){
+    expect_true(i %in% x$dmat_clara2_df$metric, info = i)
+  }
 })
 
 test_that('clara2 clustering in summarize_dmat works', {

@@ -180,12 +180,9 @@ check_dcollection <- function(dcollection){
 #' @export
 
 dcollection_to_df <- function(dcollection){
-  dmat_metrics <- data.frame(sim_id = numeric(0),
-                             group_label = character(0),
-                             metric = character(0),
-                             value = numeric(0))
-
+  dmat_metrics <- NULL
   dmat_distribution_df <- NULL
+  dmat_clara2 <- NULL
 
   for (i in 1:length(dcollection)){
     c_dsum <- dcollection[[i]]
@@ -214,8 +211,36 @@ dcollection_to_df <- function(dcollection){
                  y = c_dsum$dens$y
                  )
       )
+
+    if ('clara2' %in% names(c_dsum)){
+      clara2_vals <- c(
+        c_dsum$clara2$avg_within_cluster,
+        c_dsum$clara2$avg_between_cluster,
+        min(c_dsum$clara2$cluster_sizes) / sum(c_dsum$clara2$cluster_sizes),
+        c_dsum$clara2$avg_within_cluster/c_dsum$clara2$avg_between_cluster,
+        min(c_dsum$clara2$cluster_sizes)
+      )
+      clara2_metrics <- c(
+        'avg_within_cluster',
+        'avg_between_cluster',
+        'cluster_size_ratio',
+        'within_between_ratio',
+        'smallest_cluster'
+      )
+
+      dmat_clara2 <- rbind(dmat_clara2,
+        data.frame(sim_id = c_dsum$sim_id,
+                  label = c_dsum$label,
+                  sampling = c_dsum$sampling,
+                  group_label = paste(c_dsum$label, c_dsum$sampling, sep = '_'),
+                  uniq_id = paste(c_dsum$label, c_dsum$sampling, c_dsum$sim_id, sep = '_'),
+                  metric = clara2_metrics,
+                  value = clara2_vals))
+    }
+
   }
   return(list(dmat_metrics = dmat_metrics,
-              dmat_distribution_df = dmat_distribution_df))
+              dmat_distribution_df = dmat_distribution_df,
+              dmat_clara2_df = dmat_clara2))
 }
 
