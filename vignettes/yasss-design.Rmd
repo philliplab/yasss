@@ -582,6 +582,35 @@ estimate it as a probability mass functions
 2) Auto-tune the bandwith argument of the `density` function so that it always
 covers at least one real point with each kernel.
 
+**Clustering the distance matrix**
+
+It is sometimes of interest to see if there are clusters in the resulting
+simulations. Specifically, to see if the consideration of the fitness scores
+split the population into sub-clusters.
+
+There are multiple ways to approach this question. The simplest is to just
+divide the population into two clusters and to compare the within and between
+distances to each other. Within `yasss` this is referred to as the `clara2`
+approach.
+
+**clara2**
+
+Use the `clara` function to split the population into two different clusters
+based on the distance matrix. Using the clustering vector produced by `clara`,
+then compute all the within cluster distances and average that to obtain a
+single average within cluster distance metric. Likewise, compute the average
+of the between cluster distances.
+
+These metrics are stored inside the `dsum` result in a list called `clara2`.
+The `clara2` sub-list of the `dsum` list contains the elements:
+
+* `avg_within_cluster`: A single numeric value that is the average of all the
+  within cluster distances.
+* `avg_between_cluster`: A single numeric value that is the average of all the
+  between cluster distances.
+* `cluster_sizes`: An integer vector of length two that lists the sizes of the
+  clusters.
+
 #### `sim_proc_many_pops`
 
 A large wrapper for `sim_pop`, `get_fit_offspring` and `summarize_dmat`. It

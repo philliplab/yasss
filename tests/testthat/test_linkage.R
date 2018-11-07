@@ -49,7 +49,7 @@ test_that('linkage_diseq checks arguments correctly', {
                'max_prev must be of length 1')
 })
 
-test_that('linkage_diseq computes the consensusMatrix correctly', {
+test_that('linkage_diseq works', {
   for (i in names(link_dat)){
     c_dat <- link_dat[[i]]
     ld <- linkage_diseq(seqs = c_dat, verbose = FALSE)
