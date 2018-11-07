@@ -1,15 +1,22 @@
 #' Summarize distance matrix
 #'
-#' Summarizes a distance matrix into an average pairwise distance
-#' (\code{avg_hd}), a set of percentile (\code{perc}) and a density estimate
-#' (\code{dens}). No identifiers are added, that is not part of this function.
+#' Summarizes a distance matrix into a basic set of metrics. The full list of
+#' metrics is described in the section detailing the return value of this
+#' function. Additionally, the distance matrix is divided into two clusters
+#' using the \code{clara} function. Using this clustering, the within and
+#' between cluster distances are computed and added into the final result.
 #'
-#' Additionally, the distance matrix is divided into two clusters using the
-#' \code{clara} function. Using this clustering, the within and between cluster
-#' distances are computed and added into the final result.
+#' @return A list with the following elements: 
+#' \itemize{ 
+#'   \item avg_hd The average of the pairwise distances in the distance matrix.
+#'   \item sd_hd The standard deviation of the pairwise distances in the distance matrix.
+#'   \item perc The percentiles of the distribution of the pairwise distances.
+#'   \item dens The result obtained when calling \code{density} on the distribution.
+#'   \item clara2 The summary of the metrics related to the clustering of the distance matrix.
+#' } 
 #'
-#' @param dmat A distance matrix, or any set of observations from a
-#' distribution really.  @export
+#' @param dmat A distance
+#' matrix, or any set of observations from a distribution really.  @export
 
 summarize_dmat <- function(dmat) {
   avg_hd <- mean(dmat)
