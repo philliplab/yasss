@@ -41,24 +41,17 @@ recombine_gen <- function(gen, ps_rate = 0){
     if (!is.na(gen$recomb_pos[i])){
       next
     }
-    partner <- FALSE
 
-    # na recombination partner indicates unrecombined sequence.
-    if (sum(is.na(recomb_partner)) <= 1){
+    unrecombined_seq <- which(is.na(recomb_partner))
+    potential_partners <- unrecombined_seq[unrecombined_seq != i]
+    
+    if (length(potential_partners) == 0){
       # not enough unrecombined sequences to select a recombination partner
       next
     }
 
-    while (!partner){
-      unrecombined_seqs <- which(is.na(recomb_partner))
-      partner <- sample(unrecombined_seqs, 1)
-      if (partner == i){
-        partner <- FALSE
-      }
-      if (!is.na(recomb_partner[i])){
-        partner <- FALSE
-      }
-    }
+    partner <- sample(potential_partners, 1)
+
     target_seq <- gen[i, 'the_seq']
     recombination_partner_seq <- gen[partner, 'the_seq']
     recombinant <- recombine_seqs(target_seq = target_seq,
