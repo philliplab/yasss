@@ -45,12 +45,6 @@ recombine_gen <- function(gen, ps_rate = 0){
     recomb_replaced[i] <- recombinant$recomb_replaced
     recomb_muts[i] <- recombinant$recomb_muts
     recomb_pos[i] <- recombinant$recomb_pos
-
-#    gen[i, 'the_seq'] <- recombinant$recombinant
-#    gen[i, 'recomb_partner'] <- partner
-#    gen[i, 'recomb_replaced'] <- recombinant$recomb_replaced
-#    gen[i, 'recomb_muts'] <- recombinant$recomb_muts
-#    gen[i, 'recomb_pos'] <- recombinant$recomb_pos
   }
   gen[, 'the_seq'] <- the_seq
   gen[, 'recomb_partner'] <- recomb_partner

@@ -94,25 +94,24 @@ sim_pop <- function(ancestors,
       cat ("Simulating generation ", c_gen, "\n", sep = '')
     }
     
+    # NEW GENERATION
     args <- list(genealogy = genealogy,
                  r0 = r0,
                  mutator = mutator,
                  gen_num = c_gen)
     new_generation <- do.call(sim_next_gen, args)
 
-    # insert recomb here (act on new_generation)
+    # RECOMBINATION
     if (ps_rate > 0){
       new_generation <- recombine_gen(gen = new_generation, 
                                       ps_rate = ps_rate)
     }
 
-    # insert fitness here (act on new_generation)
+    # FITNESS
     new_generation <- assign_fitness(new_generation, fitness_evaluator = fitness_evaluator)
 
-#    genealogy <- rbind(genealogy, new_generation)
     genealogy <- new_generation
 
-    #TODO: Think about this - how will the fitness bit affect this next line?
     c_pop <- sum(genealogy$gen_num == c_gen)
   }
   return(genealogy)
