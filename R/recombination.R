@@ -42,13 +42,20 @@ recombine_gen <- function(gen, ps_rate = 0){
       next
     }
     partner <- FALSE
+
+    # na recombination partner indicates unrecombined sequence.
+    if (sum(is.na(recomb_partner)) <= 1){
+      # not enough unrecombined sequences to select a recombination partner
+      next
+    }
+
     while (!partner){
-      partner <- sample(1:nrow(gen), 1)
-# Need more logic to prevent infinite loop
-#      if (!is.na(gen$recomb_pos[partner])){
-#        partner <- FALSE
-#      }
+      unrecombined_seqs <- which(is.na(recomb_partner))
+      partner <- sample(unrecombined_seqs, 1)
       if (partner == i){
+        partner <- FALSE
+      }
+      if (!is.na(recomb_partner[i])){
         partner <- FALSE
       }
     }
