@@ -11,7 +11,23 @@ recombine_seqs(target_seq, recombination_partner_seq,
 \item{target_seq}{The sequence that will be replaced by the recombination}
 
 \item{recombination_partner_seq}{The recombination partner sequence}
+
+\item{min_dist_to_edge}{The closest that a recombination event can be to
+the start or end of either sequence.}
+}
+\value{
+A list with the following elements:
+\itemize{
+  \item recombinant The recombined sequence
+  \item recomb_muts The number of mutations that would have to be
+  introduced into the target_seq to make it identical to the recombinant.
+  \item recomb_replaced Was the portion of the target sequence that is to
+  the right or left of the break point replaced?
+  \item recomb_pos The location of the breakpoint
+}
 }
 \description{
-Recombines two sequences
+Given two sequence, pick a breakpoint and form a new sequence using the
+content to the LHS of the breakpoint of one sequence and the content to the
+RHS of the breakpoint in the other sequence.
 }
