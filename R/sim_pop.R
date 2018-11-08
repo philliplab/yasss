@@ -68,7 +68,6 @@ sim_pop <- function(ancestors,
     stop(YASSS_ERR_MSG[['NO_X_IN_ANCESTOR']])
   }
 
-  
   parents <- ancestors
 
   c_gen <- 0
@@ -116,7 +115,6 @@ sim_pop <- function(ancestors,
   }
   return(genealogy)
 }
-
 
 #' @useDynLib yasss
 NULL

@@ -61,7 +61,12 @@ inherit the values of the parent sequences. This makes sense because you can
 easily recompute it later using the `parent_id`s. However, it should be
 communicated clearly to the user.
 
-Recombination must be added into `sim_pop` before the fitness computation step.
+Recombination is added into `sim_pop` before the fitness computation step. It
+must be performed before the fitness computation step since recombination
+alters the sequence and fitness depends on the sequence. Also, the sequences
+generated before the recombination step should be seen as placeholder
+sequences that will only be finalized after they have been exposed to
+recombination.
 
 The problem with recombination is always the same. There are too many
 parameters and under certain thresholds, the recombination is just
@@ -106,7 +111,7 @@ of the above definitions:
 * Two sequences, one from each cluster, recombines to form a recombinant.
 * Then AFTER this event, one cluster gets wiped out, but just one sequence
   with a key new mutation (mutation X) survives and repopulates the cluster.
-* Then the recombinant sequence is a recombinant between these two cluster,
+* Then the recombinant sequence is a recombinant between these two clusters,
   one of the clusters being defined by mutation X, but it was never even
   exposed to mutation X.
 * This just highlights how hard it is to design good metrics for reporting
@@ -120,8 +125,8 @@ identical sequences?
 Is a sequence a recombinant if the recombinant is identical to one of the
 input sequences?
 
-Is a recombinant if the recombination event occurred 5 cycles ago? What about
-10 cycles ago?
+Is a sequence a recombinant if the recombination event occurred 5 cycles ago?
+What about 10 cycles ago?
 
 If one sequence recombined in the previous cycle and another sequence
 recombined 10 cycles ago, do we differentiate between them?
@@ -142,8 +147,7 @@ linked with the ancestral sequences and then cycle 1 produces generation 1).
 Note that there is also some implications for how to implement recombination
 in the simulation process. For computational purposes we will treat
 recombination as if it replaces one of the two sequences that recombined and
-that it does not affect the other sequence. But which of the two sequences
-that recombined will be replaced? **Just pick at random.**
+that it does not affect the other sequence. 
 
 #### Implementation details.
 
@@ -198,10 +202,9 @@ The `recombine_gen` function is responsible for:
 * call `recombine_seqs`
 * update the genealogy data structure
 
-Ignore optimizations for now. By migrating to a vector based system as for
-`get_fit_offpring` large performance boosts can be obtained. Since only
-updates are required, it might be really simple to implement the vector based
-system. But first build a reference implementation using data.frames.
+The `recombine_gen` function is implemented using vectors where frequent
+updates are performed. This yields massive performance gains over updating a
+data.frame directly.
 
 The `recombine_seqs` function is responsible for:
 
@@ -209,11 +212,9 @@ The `recombine_seqs` function is responsible for:
 * extracting the substrings
 * concatenating them to form the recombinant
 * computing the `recomb_muts` value
-* packaging all the recombination goodies into either a
-  - data.frame row (for the initial implementation)
-  - a list (or an environment?) (for the optimized implementation)
+* packaging all the recombination goodies into a list
 
-All the recombination functionality lives in the `recombine.R` script.
+All the recombination functionality lives in the `recombination.R` script.
 
 #### Linkage Disequilibrium
 
