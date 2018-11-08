@@ -198,7 +198,12 @@ The `recombine_gen` function is responsible for:
 
 * looping over the whole generation
 * draw to determine if a sequence has a recombination breakpoint in it
-* draw to determine the recombination partner
+* determine the recombination partner
+  - first select out all sequences in the current generation that are not
+    recombinants.
+  - if there are no such sequences available, then the current sequence will
+    not be turned into a recombinant. (Can only happen on the last sequence)
+  - draw one of these randomly
 * call `recombine_seqs`
 * update the genealogy data structure
 

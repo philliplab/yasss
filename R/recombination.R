@@ -1,6 +1,23 @@
 #' Recombines sequences in a generation
-#' @param gen A data.frame from a genealogy that contains just one
-#' generation
+#'
+#' Loops over the sequences in a generation, this function executes the
+#' following steps:
+#' \itemize{
+#'   \item Determine if the current sequence should undergo recombination
+#'   \item Select the sequence that will be the recombinant partner
+#'   \item Call \code{recombine_seqs} to recombine the sequences, and 
+#'   \item Populate the genealogy data.frame with all the recombination 
+#' information.
+#' }
+#' 
+#' The selection of the recombination partner is a random draw from all
+#' non-recombinant sequences in the generation. This is to prevent a sequences
+#' from effective under going two recombination events in a single cycle.
+#'
+#' @return A genealogy data.frame with the recombinants and the recombination
+#' related columns populated for each recombinant sequence.
+#'
+#' @param gen A data.frame from a genealogy that contains just one generation
 #' @param ps_rate The chance that any given sequence will be a recombinant.
 #' @export
 
