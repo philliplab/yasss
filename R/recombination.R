@@ -50,8 +50,12 @@ recombine_gen <- function(gen, ps_rate = 0){
       next
     }
 
-    partner <- sample(potential_partners, 1)
-
+    if (length(potential_partners) == 1){
+      partner <- potential_partners
+    } else {
+      partner <- sample(potential_partners, 1)
+    }
+    
     target_seq <- gen[i, 'the_seq']
     recombination_partner_seq <- gen[partner, 'the_seq']
     recombinant <- recombine_seqs(target_seq = target_seq,

@@ -50,9 +50,17 @@ test_that('recombine_gen do not construct recombinants with multiple breakpoints
   for (i in 1:50){
     x <- recombine_gen(wacko_gen, 0.99)
     c_seq <- x$the_seq[1]
-    for (c_seq in x$the_seq){
+    for (j in 1:length(x$the_seq)){
+      c_seq <- x$the_seq[j]
+      s_length <- nchar(c_seq)
       lets <- strsplit(c_seq, '')[[1]]
-      expect_true(length(table(lets)) %in% c(1,2))
+      if (is.na(x$recomb_pos[j])){
+        expect_equal(length(table(lets)), 1)
+      } else {
+        expect_equal(length(table(lets)), 2)
+        obs_breakpoint <- which(lets[1:(s_length-1)] != lets[2:s_length])
+        expect_equal(obs_breakpoint, x$recomb_pos[j])
+      }
     }
   }
 })
