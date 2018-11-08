@@ -1,5 +1,11 @@
 context('recombine_gen')
 
+if (FALSE){
+  yasss:::restart_r()
+  devtools::load_all()
+  library(testthat)
+}
+
 genea <- sim_pop(ancestors = paste(rep("A", 60), collapse = ''),
                  r0 = 2,
                  n_gen = 5,
@@ -31,6 +37,24 @@ test_that('recombine_gen checks arguments correctly', {
   ERR_MSG <- 'ps_rate must be greater than or equal to zero and strictly smaller than one'
   expect_error(x <- recombine_gen(last_gen, ps_rate = -1), ERR_MSG, info = 'ps_rate = -1')
   expect_error(x <- recombine_gen(last_gen, ps_rate = 1), ERR_MSG, info = 'ps_rate = 1')
+})
+
+test_that('recombine_gen do not construct recombinants with multiple breakpoints', {
+  wacko_gen <- last_gen[1:4,]
+  wacko_gen$the_seq <- c(
+    paste(rep('A', 60), collapse = ''),
+    paste(rep('C', 60), collapse = ''),
+    paste(rep('G', 60), collapse = ''),
+    paste(rep('T', 60), collapse = '')
+                         )
+  for (i in 1:50){
+    x <- recombine_gen(wacko_gen, 0.99)
+    c_seq <- x$the_seq[1]
+    for (c_seq in x$the_seq){
+      lets <- strsplit(c_seq, '')[[1]]
+      expect_true(length(table(lets)) %in% c(1,2))
+    }
+  }
 })
 
 context('recombine_seqs')
@@ -70,5 +94,4 @@ test_that('recombine_seqs works', {
   expect_false(last_lhs == first_rhs)
   expect_true(x$recomb_pos >= min_dist_to_edge)
   expect_true(x$recomb_pos <= nchar(target_seq) - min_dist_to_edge)
-
 })
