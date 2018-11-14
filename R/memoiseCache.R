@@ -51,7 +51,7 @@ memoiseCache <- function(fun, args, cacheNamePrefix = NULL, seed = NULL, ...){
     seed,
     sep = '_')
 
-  x <- simpleCache(cacheName, do.call(fun, args), reload = TRUE, lifespan = 7)
+  x <- simpleCache(cacheName, do.call(fun, args), reload = TRUE)
 
   return(x)
 }

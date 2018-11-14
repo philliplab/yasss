@@ -50,6 +50,7 @@ test_that('recombine_gen do not construct recombinants with multiple breakpoints
   for (i in 1:50){
     x <- recombine_gen(wacko_gen, 0.99)
     c_seq <- x$the_seq[1]
+    j <- 1
     for (j in 1:length(x$the_seq)){
       c_seq <- x$the_seq[j]
       s_length <- nchar(c_seq)
