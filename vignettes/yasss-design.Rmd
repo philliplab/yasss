@@ -170,23 +170,15 @@ Only fill out the columns provided by the genealogy data structure.
 * `recomb_replaced`: Which side of the sequence was replaced? To the `left` of
   the breakpoint, or to the `right` of the breakpoint?
 * `recomb_partner`: The id of the sequence that the recombination was with.
-* `recomb_muts`: The number of mutations introduced into the sequence due to
+* `recomb_muts`: The number of mutations introduced into the sequence as a result of
   the recombination. Specifically, this is how many mutations would have been
   required to modify the sequence that was removed to make it identical the
   recombinant. 
   
-**NOTE:** For `recomb_muts`, is the above the most useful version of this
-metric? Since the reference sequence is gone, it may not have any value. If
-instead the definition was, how many mutations would have to be introduced
-into the recombination partner (the one that stays in the dataset) to make it
-identical to the recombinant, then the measure is relative to something that
-still exists. The sequence that was deleted can be summarized with some
-general distance to the rest of the sequences in the dataset. An important
-detail that is lost in treating this a the distance to the remaining sequence
-is that you no longer know in what percentage of cases the recombination event
-introduced no changes. Also, since the recombinant is in the dataset and and
-you have the id of the partner, you can easily recompute the number of
-mutations required in the partner to make it identical to the recombinant.
+It is appropriate for `recomb_muts` to track the number of mutations relative
+to the sequence that was removed since the same concept can be computed for the
+recombination partner at any time. The usefulness of this column lies in
+reporting the size of the effect of recombination.
 
 Two functions are needed to implement this:
 
