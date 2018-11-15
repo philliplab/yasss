@@ -218,9 +218,11 @@ dcol2 <- c(dcol1, list(dsum17))
 
 test_that('dcollection_to_df works', {
   x <- dcollection_to_df(dcol1)
-  expect_true(class(x) == 'list')
-  expect_true('dmat_metrics' %in% names(x))
-  expect_true('dmat_distribution_df' %in% names(x))
+
+  y <- check_dcollection_df(x)
+  for (i in names(y)){
+    expect_true(y[[i]], info = i)
+  }
   
   # tests for dmat_metrics
   expect_equal(class(x$dmat_metrics), 'data.frame')
@@ -240,10 +242,13 @@ test_that('dcollection_to_df works', {
 
   # tests for the clara2 metrics
   x <- dcollection_to_df(dcol2)
-  expect_true(class(x) == 'list')
-  expect_true('dmat_metrics' %in% names(x))
-  expect_true('dmat_distribution_df' %in% names(x))
   expect_true('dmat_clara2_df' %in% names(x))
+  
+  y <- check_dcollection_df(x)
+  for (i in names(y)){
+    expect_true(y[[i]], info = i)
+  }
+  
   clara2_metrics <- c(
         'avg_within_cluster',
         'avg_between_cluster',

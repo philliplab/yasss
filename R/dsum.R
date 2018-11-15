@@ -255,3 +255,27 @@ dcollection_to_df <- function(dcollection){
               dmat_clara2_df = dmat_clara2))
 }
 
+#' Checks the result of dcollection_to_df
+#'
+#' Checks that the output produced by a call of dcollection_to_df on a
+#' dcollection produced the expected result. Optionally, the dcollection on
+#' which dcollection_to_df was called can be included to check that the values
+#' are present in the result.
+#'
+#' @param dcollection_df The result returned by dcollection_to_df.
+#' @param dcollection The dcollection on which dcollection_to_df was called.
+#' @export
+
+check_dcollection_df <- function(dcollection_df, dcollection = NULL){
+
+  result <- list()
+  result$is_list <- class(dcollection_df) == 'list'
+  result$has_dmat_metrics <- 'dmat_metrics' %in% names(dcollection_df)
+  result$has_dmat_distribution_df <- 'dmat_distribution_df' %in% names(dcollection_df)
+
+  return(result)
+}
+
+
+
+
