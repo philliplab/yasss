@@ -295,6 +295,16 @@ check_dcollection_df <- function(dcollection_df, dcollection = NULL, has_clara2 
   # dmat_clara2_df
   if (has_clara2){
     result$has_clara2 <- 'dmat_clara2_df' %in% names(dcollection_df)
+    clara2_metrics <- c(
+          'avg_within_cluster',
+          'avg_between_cluster',
+          'cluster_size_ratio',
+          'within_between_ratio',
+          'smallest_cluster'
+        )
+    for (i in clara2_metrics){
+      expect_true(i %in% dcollection_df$dmat_clara2_df$metric, info = i)
+    }
   }
 
   return(result)

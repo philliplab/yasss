@@ -217,39 +217,18 @@ dsum17$clara2 <- list(
 dcol2 <- c(dcol1, list(dsum17))
 
 test_that('dcollection_to_df works', {
+  # WITHOUT clara2 metrics
   x <- dcollection_to_df(dcol1)
-
   y <- check_dcollection_df(x, has_clara2 = FALSE)
   for (i in names(y)){
     expect_true(y[[i]], info = i)
   }
-  
-  # tests for dmat_distribution_df
-  expect_equal(class(x$dmat_distribution_df), 'data.frame')
-  dmat_distribution_df_names <- c('sim_id', 'label', 'sampling', 
-    'group_label', 'uniq_id', 'x', 'y')
-  for (col_name in dmat_distribution_df_names){
-    expect_true(col_name %in% names(x$dmat_distribution_df))
-  }
 
-  # tests for the clara2 metrics
+  # WITH clara2 metrics
   x <- dcollection_to_df(dcol2)
-  expect_true('dmat_clara2_df' %in% names(x))
-  
   y <- check_dcollection_df(x)
   for (i in names(y)){
     expect_true(y[[i]], info = i)
-  }
-  
-  clara2_metrics <- c(
-        'avg_within_cluster',
-        'avg_between_cluster',
-        'cluster_size_ratio',
-        'within_between_ratio',
-        'smallest_cluster'
-      )
-  for (i in clara2_metrics){
-    expect_true(i %in% x$dmat_clara2_df$metric, info = i)
   }
 })
 
