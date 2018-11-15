@@ -264,14 +264,19 @@ dcollection_to_df <- function(dcollection){
 #'
 #' @param dcollection_df The result returned by dcollection_to_df.
 #' @param dcollection The dcollection on which dcollection_to_df was called.
+#' @param has_clara2 Should the dcollection_df have clara2 metrics?
 #' @export
 
-check_dcollection_df <- function(dcollection_df, dcollection = NULL){
+check_dcollection_df <- function(dcollection_df, dcollection = NULL, has_clara2 = TRUE){
 
   result <- list()
   result$is_list <- class(dcollection_df) == 'list'
   result$has_dmat_metrics <- 'dmat_metrics' %in% names(dcollection_df)
   result$has_dmat_distribution_df <- 'dmat_distribution_df' %in% names(dcollection_df)
+
+  if (has_clara2){
+    result$has_clara2 <- 'dmat_clara2_df' %in% names(dcollection_df)
+  }
 
   return(result)
 }

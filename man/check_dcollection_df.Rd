@@ -4,12 +4,15 @@
 \alias{check_dcollection_df}
 \title{Checks the result of dcollection_to_df}
 \usage{
-check_dcollection_df(dcollection_df, dcollection = NULL)
+check_dcollection_df(dcollection_df, dcollection = NULL,
+  has_clara2 = TRUE)
 }
 \arguments{
 \item{dcollection_df}{The result returned by dcollection_to_df.}
 
 \item{dcollection}{The dcollection on which dcollection_to_df was called.}
+
+\item{has_clara2}{Should the dcollection_df have clara2 metrics?}
 }
 \description{
 Checks that the output produced by a call of dcollection_to_df on a

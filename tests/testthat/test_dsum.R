@@ -219,7 +219,7 @@ dcol2 <- c(dcol1, list(dsum17))
 test_that('dcollection_to_df works', {
   x <- dcollection_to_df(dcol1)
 
-  y <- check_dcollection_df(x)
+  y <- check_dcollection_df(x, has_clara2 = FALSE)
   for (i in names(y)){
     expect_true(y[[i]], info = i)
   }
