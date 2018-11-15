@@ -274,6 +274,7 @@ check_dcollection_df <- function(dcollection_df, dcollection = NULL, has_clara2 
   
   # dmat_metrics
   result$has_dmat_metrics <- 'dmat_metrics' %in% names(dcollection_df)
+  
   expect_equal(class(dcollection_df$dmat_metrics), 'data.frame')
   dmat_metrics_names <- c('sim_id', 'label', 'sampling', 
     'group_label', 'uniq_id', 'metric', 'value')
@@ -281,9 +282,15 @@ check_dcollection_df <- function(dcollection_df, dcollection = NULL, has_clara2 
     expect_true(col_name %in% names(dcollection_df$dmat_metrics))
   }
 
-
   # dmat_distribution_df
   result$has_dmat_distribution_df <- 'dmat_distribution_df' %in% names(dcollection_df)
+  
+  expect_equal(class(dcollection_df$dmat_distribution_df), 'data.frame')
+  dmat_distribution_df_names <- c('sim_id', 'label', 'sampling', 
+    'group_label', 'uniq_id', 'x', 'y')
+  for (col_name in dmat_distribution_df_names){
+    expect_true(col_name %in% names(dcollection_df$dmat_distribution_df))
+  }
 
   # dmat_clara2_df
   if (has_clara2){
