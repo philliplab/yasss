@@ -279,7 +279,8 @@ check_dcollection_df <- function(dcollection_df, dcollection = NULL, has_clara2 
   dmat_metrics_names <- c('sim_id', 'label', 'sampling', 
     'group_label', 'uniq_id', 'metric', 'value')
   for (col_name in dmat_metrics_names){
-    expect_true(col_name %in% names(dcollection_df$dmat_metrics))
+    result[[paste('dmat_metrics_has_', col_name, sep = '')]] <-
+      col_name %in% names(dcollection_df$dmat_metrics)
   }
 
   # dmat_distribution_df
@@ -289,7 +290,8 @@ check_dcollection_df <- function(dcollection_df, dcollection = NULL, has_clara2 
   dmat_distribution_df_names <- c('sim_id', 'label', 'sampling', 
     'group_label', 'uniq_id', 'x', 'y')
   for (col_name in dmat_distribution_df_names){
-    expect_true(col_name %in% names(dcollection_df$dmat_distribution_df))
+    result[[paste('dmat_distribution_df_has_', col_name, sep = '')]] <-
+      col_name %in% names(dcollection_df$dmat_distribution_df)
   }
 
   # dmat_clara2_df
@@ -302,8 +304,9 @@ check_dcollection_df <- function(dcollection_df, dcollection = NULL, has_clara2 
           'within_between_ratio',
           'smallest_cluster'
         )
-    for (i in clara2_metrics){
-      expect_true(i %in% dcollection_df$dmat_clara2_df$metric, info = i)
+    for (col_name in clara2_metrics){
+      result[[paste('dmat_clara2_df_has_', col_name, sep = '')]] <-
+        col_name %in% dcollection_df$dmat_clara2_df$metric
     }
   }
 
