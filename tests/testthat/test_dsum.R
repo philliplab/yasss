@@ -224,14 +224,6 @@ test_that('dcollection_to_df works', {
     expect_true(y[[i]], info = i)
   }
   
-  # tests for dmat_metrics
-  expect_equal(class(x$dmat_metrics), 'data.frame')
-  dmat_metrics_names <- c('sim_id', 'label', 'sampling', 
-    'group_label', 'uniq_id', 'metric', 'value')
-  for (col_name in dmat_metrics_names){
-    expect_true(col_name %in% names(x$dmat_metrics))
-  }
-
   # tests for dmat_distribution_df
   expect_equal(class(x$dmat_distribution_df), 'data.frame')
   dmat_distribution_df_names <- c('sim_id', 'label', 'sampling', 
