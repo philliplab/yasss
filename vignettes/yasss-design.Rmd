@@ -483,7 +483,7 @@ The extra columns that must be added:
   * `size_matched_sampling`
   * `none`
 
-#### `dsum`
+#### `dsum` and `dcollection`
 
 Due to the memory requiremented of storing full genealogies (or distance
 matrices), it is often preferable to immediately compute and summarize a
@@ -513,13 +513,38 @@ summary metrics:
 * `avg_hd`: the average of all the pairwise distances,
 * `dens` : an estimate of the distribution as produced by `density()`
 * `clara2` : The key summary metrics of the call to clara:
-  - `avg_within_cluster`: The average of all the pairwise distances between all the elements in the same cluster.
-  - `avg_between_cluster`: The average of all the pairwise distances between all the elements not in the same cluster.
+  - `avg_within_cluster`: The average of all the pairwise distances between all
+    the elements in the same cluster.
+  - `avg_between_cluster`: The average of all the pairwise distances between
+    all the elements not in the same cluster.
   - `cluste_sizes`: The number of sequences in each cluster.
 
 The root level elements of the `dcollection` list should not be named since the
 identifier elements that match the extra columns of a `gcol` should be used to
 identify the elements.
+
+To make analysis easier, specifically plotting with `ggplot`, a function that
+converts a `dcollection` into a `data.frame` is also provided. The function
+`dcollection_to_df` produces a `dcollection_df` that is a list with three
+elements, each a data.frame containing all the data of a specific kind from all
+the datasets summarized in the `dcollection`. The three data.frames are:
+
+* `dmat_metrics`: High level summary metrics of the distribution of the
+  pairwise distances. Uses `metric`, `value` columns to record many different
+  metric types in the same data.frame.
+* `dmat_distribution_df`: The `x` and `y` output of the `density` function so
+  that a density function can be plotted with `geom_smooth`. Uses columns with names x and y.
+* `dmat_clara2_df`: The summary statistics of the clustering of the distanct
+  matrix into 2 sub clusters using the `clara` function. Uses `metric`, `value`
+  columns to record many different metric types in the same `data.frame`.
+
+Each of these data.frame use the identifying columns:
+
+* `sim_id`
+* `label`
+* `sampling`
+* `group_label`: Concatenate the `label` and `sampling` columns.
+* `uniq_id`: Concatenate the `group_label` and `sim_id` columns.
 
 ### Functions
 
@@ -722,7 +747,7 @@ In almost all cases, only the summarized distance matrix will be produced. As
 far as I can tell, PFitter only requires the average pairwise hamming
 distance as input, we do not need to hack in PFitter?
 
-### Very optomistic pie in the sky dreams
+## Very optomistic pie in the sky dreams
 
 Simulate the growth of the quasispecies
 - Inputs
