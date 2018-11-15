@@ -32,7 +32,9 @@ high level summary of the core simulation functions are provided below:
 
 It quickly became clear that most simulations will involve many datasets
 generated with distinct sets of arguments. Functionality to track this extra
-structure was added to yasss.
+structure was added to yasss in a function called `sim_proc_many_pop` that
+calls `sim_pop` in a for loop and that packages up and processes all results
+from the calls to `sim_pop`.
 
 ### `sim_pop`
 
@@ -507,9 +509,13 @@ same as the extra columns added to the `gcol` data structure:
 Each element of a `dsum` must have three core elements that contains the
 summary metrics:
 
-- `perc`: the percentiles of the distribution,
-- `avg_hd`: the average of all the pairwise distances,
-- `dens` : an estimate of the distribution as produced by `density()`
+* `perc`: the percentiles of the distribution,
+* `avg_hd`: the average of all the pairwise distances,
+* `dens` : an estimate of the distribution as produced by `density()`
+* `clara2` : The key summary metrics of the call to clara:
+  - `avg_within_cluster`: The average of all the pairwise distances between all the elements in the same cluster.
+  - `avg_between_cluster`: The average of all the pairwise distances between all the elements not in the same cluster.
+  - `cluste_sizes`: The number of sequences in each cluster.
 
 The root level elements of the `dcollection` list should not be named since the
 identifier elements that match the extra columns of a `gcol` should be used to

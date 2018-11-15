@@ -2,7 +2,7 @@ context('dsum')
 
 if (FALSE){
   yasss:::restart_r()
-  devtools::load_all()
+  devtools::load_all('/home/phillipl/projects/yasss/code/yasss')
   library(testthat)
 }
 
@@ -91,12 +91,6 @@ dsum16$sd_hd <- 'A'
 
 dsum16_1 <- dsum2
 dsum16_1$sd_hd <- 50:51
-
-
-if (FALSE){
-  library(yasss)
-  library(testthat)
-}
 
 test_that('check_dsum passes on correct dsums', {
   result <- check_dsum(dsum1)
@@ -228,6 +222,7 @@ test_that('dcollection_to_df works', {
   expect_true('dmat_metrics' %in% names(x))
   expect_true('dmat_distribution_df' %in% names(x))
   
+  # tests for dmat_metrics
   expect_equal(class(x$dmat_metrics), 'data.frame')
   dmat_metrics_names <- c('sim_id', 'label', 'sampling', 
     'group_label', 'uniq_id', 'metric', 'value')
@@ -235,6 +230,7 @@ test_that('dcollection_to_df works', {
     expect_true(col_name %in% names(x$dmat_metrics))
   }
 
+  # tests for dmat_distribution_df
   expect_equal(class(x$dmat_distribution_df), 'data.frame')
   dmat_distribution_df_names <- c('sim_id', 'label', 'sampling', 
     'group_label', 'uniq_id', 'x', 'y')
@@ -242,6 +238,7 @@ test_that('dcollection_to_df works', {
     expect_true(col_name %in% names(x$dmat_distribution_df))
   }
 
+  # tests for the clara2 metrics
   x <- dcollection_to_df(dcol2)
   expect_true(class(x) == 'list')
   expect_true('dmat_metrics' %in% names(x))
