@@ -224,9 +224,10 @@ test_that('dcollection_to_df works', {
     expect_true(y[[i]], info = i)
   }
 
+  dcollection <- dcol2
   # WITH clara2 metrics
-  x <- dcollection_to_df(dcol2)
-  y <- check_dcollection_df(x)
+  dcollection_df <- dcollection_to_df(dcol2)
+  y <- check_dcollection_df(dcollection_df, dcol2)
   for (i in names(y)){
     expect_true(y[[i]], info = i)
   }

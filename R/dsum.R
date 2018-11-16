@@ -310,6 +310,20 @@ check_dcollection_df <- function(dcollection_df, dcollection = NULL, has_clara2 
     }
   }
 
+  if (!is.null(dcollection)){
+    indx <- 1
+    for (indx in 1:length(dcollection)){
+      c_dsum <- dcollection[[indx]]
+      c_uniq_id <- paste(c_dsum$label, c_dsum$sampling, c_dsum$sim_id, sep = '_')
+
+      df_avg_hd <- dcollection_df$dmat_metrics %>%
+        filter(uniq_id == c_uniq_id, metric == 'avg_hd') %>%
+        select(value)
+      result$avg_hd_only_one <- (nrow(df_avg_hd) == 1) & (ncol(df_avg_hd == 1))
+      result$avg_hd_correct <- c_dsum$avg_hd == df_avg_hd[1,1]
+    }
+  }
+
   return(result)
 }
 
