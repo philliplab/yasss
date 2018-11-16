@@ -210,6 +210,7 @@ test_that('check_dcollection catches issues', {
 })
 
 dsum17 <- dsum2
+dsum17$sim_id <- 17
 dsum17$clara2 <- list(
   avg_within_cluster = 50,
   avg_between_cluster = 100,
