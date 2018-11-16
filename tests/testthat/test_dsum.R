@@ -17,7 +17,7 @@ y <- x %>%
 y <- y$the_seq
 dmat <- stringdistmatrix(y, method = 'hamming')
 z <- quantile(dmat, (0:100)/100)
-names(z) <- NULL
+#names(z) <- NULL
 
 dsum1 <- list(avg_hd = mean(dmat),
               sd_hd = sd(dmat),

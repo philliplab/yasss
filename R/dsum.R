@@ -316,11 +316,26 @@ check_dcollection_df <- function(dcollection_df, dcollection = NULL, has_clara2 
       c_dsum <- dcollection[[indx]]
       c_uniq_id <- paste(c_dsum$label, c_dsum$sampling, c_dsum$sim_id, sep = '_')
 
-      df_avg_hd <- dcollection_df$dmat_metrics %>%
-        filter(uniq_id == c_uniq_id, metric == 'avg_hd') %>%
-        select(value)
-      result$avg_hd_only_one <- (nrow(df_avg_hd) == 1) & (ncol(df_avg_hd == 1))
-      result$avg_hd_correct <- c_dsum$avg_hd == df_avg_hd[1,1]
+      dmat_metrics_metrics <- c("0%", "10%", "100%", "20%", "30%", "40%",
+                                "50%", "60%", "70%", "80%", "90%", "avg_hd",
+                                "sd_hd")
+
+      c_metric <- 'avg_hd'
+      c_metric <- '0%'
+      for (c_metric in dmat_metrics_metrics){
+        df_c_metric <- dcollection_df$dmat_metrics %>%
+          filter(uniq_id == c_uniq_id, metric == c_metric) %>%
+          select(value)
+        result[[paste('dmat_metrics_', c_metric, '_only_one', sep = '')]] <- 
+          (nrow(df_c_metric) == 1) & (ncol(df_c_metric == 1))
+        if (grepl('[0-9]+%', c_metric)){
+          result[[paste('dmat_metrics_', c_metric, '_correct_value', sep = '')]] <- 
+            c_dsum$perc[c_metric] == df_c_metric[1,1]
+        } else {
+          result[[paste('dmat_metrics_', c_metric, '_correct_value', sep = '')]] <- 
+            c_dsum[[c_metric]] == df_c_metric[1,1]
+        }
+      }
     }
   }
 
