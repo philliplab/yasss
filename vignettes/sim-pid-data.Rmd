@@ -105,25 +105,37 @@ pcr_seqs <- sim_pop(ancestors = rt_seqs$the_seq,
 It is important to know for each sequence what was the rt sequence it came from. Thus a function is needed that can traverse up the genealogy to find the ancestor. However, this is likely to be excruciatingly slow due to data.frame indexing issues, so instead, make for each ancestor a list of all sequences that belong to it.
 
 Resolve ancestry
+
+Function to calculate mapping
 ```{r}
-genealogy <- pcr_seqs
 make_ancestor_child_mapping <- function(genealogy){
   full_ancestry <- genealogy %>% filter(gen_num == 1) %>% select(parent_id, id)  
-  names(full_ancestry) <- c('gen_0', 'gen_1')
+  names(full_ancestry) <- c('pcr_0', 'pcr_1')
 
   i <- 2
   while (i <= max(genealogy$gen_num)){
     curr_gen <- genealogy %>% filter(gen_num == i) %>% select(parent_id, id)
     full_ancestry <- merge(full_ancestry, 
                            curr_gen, 
-                           by.x = paste0('gen_', i-1), 
+                           by.x = paste0('pcr_', i-1), 
                            by.y = 'parent_id')
-    names(full_ancestry)[names(full_ancestry) == 'id'] <- paste0('gen_', i)
+    names(full_ancestry)[names(full_ancestry) == 'id'] <- paste0('pcr_', i)
     i <- i + 1
   }
   return(full_ancestry)
 }
 ```
+
+Attach ancestor information to pcr seqs
+```{r}
+full_ancestry <- make_ancestor_child_mapping(pcr_seqs)
+final_pcr_cycle <- max(pcr_seqs$gen_num)
+pcr_seqs <- 
+  merge(pcr_seqs, full_ancestry,
+        by.y = paste0('pcr_', final_pcr_cycle),
+        by.x = 'id')
+```
+
 
 
 
