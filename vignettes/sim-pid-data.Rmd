@@ -53,6 +53,14 @@ x <- sim_pop(ancestors = substr(HXB2, 200, 700),
 ### Generate PIDs
 
 ```{r}
-sample(c('A', 'C', 'G', 'T'), n_rna * pid_length, replace = TRUE)
+pids <-
+apply(matrix(sample(c('A', 'C', 'G', 'T'), 
+                    n_rna * pid_length, 
+                    replace = TRUE),
+             ncol = pid_length,
+             nrow = n_rna),
+      1,
+      paste0, 
+      collapse = '')
 ```
 
