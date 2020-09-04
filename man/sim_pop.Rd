@@ -4,10 +4,16 @@
 \alias{sim_pop}
 \title{Simulates evolution of DNA of a population}
 \usage{
-sim_pop(ancestors, r0 = 2, n_gen = NULL, n_pop = NULL,
+sim_pop(
+  ancestors,
+  r0 = 2,
+  n_gen = NULL,
+  n_pop = NULL,
   mutator = list(fun = "mutator_uniform_fun", args = list(mu = 0.01)),
-  fitness_evaluator = list(fun = "fitness_evaluator_uniform_fun", args =
-  NULL), ps_rate = 0, verbose = FALSE)
+  fitness_evaluator = list(fun = "fitness_evaluator_uniform_fun", args = NULL),
+  ps_rate = 0,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{ancestors}{A list of DNA sequences with which to start the population. Include the same sequence multiple times to achieve a target ratio.}

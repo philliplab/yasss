@@ -7,9 +7,9 @@
 mutator_uniform_fun(parent, mu)
 }
 \arguments{
-\item{mu}{A single number between 0 and 1 specifying the per base mutation rate}
+\item{parent}{A character string containing the DNA sequence of the parent}
 
-\item{patent}{A character string containing the DNA sequence of the parent}
+\item{mu}{A single number between 0 and 1 specifying the per base mutation rate}
 }
 \description{
 Mutates a sequence giving each base an equal chance to experience a random mutation

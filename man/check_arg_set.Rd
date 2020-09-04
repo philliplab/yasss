@@ -4,8 +4,12 @@
 \alias{check_arg_set}
 \title{Checks an arg_set (skeleton only)}
 \usage{
-check_arg_set(arg_set, the_seq = NULL, required_fitness = TRUE,
-  verbose = FALSE)
+check_arg_set(
+  arg_set,
+  the_seq = NULL,
+  required_fitness = TRUE,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{arg_set}{The arg_set to test}

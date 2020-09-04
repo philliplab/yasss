@@ -4,10 +4,16 @@
 \alias{sim_proc_many_pops}
 \title{Simulate and process many populations}
 \usage{
-sim_proc_many_pops(arg_collection, n_sims = 1, output_dmat = FALSE,
-  max_dmat_size = 10000, fitness_processing = "none",
-  n_gen_with_perfect_fitness = 4, output_genealogy = "none",
-  verbose = FALSE)
+sim_proc_many_pops(
+  arg_collection,
+  n_sims = 1,
+  output_dmat = FALSE,
+  max_dmat_size = 10000,
+  fitness_processing = "none",
+  n_gen_with_perfect_fitness = 4,
+  output_genealogy = "none",
+  verbose = FALSE
+)
 }
 \arguments{
 \item{arg_collection}{The collection of argument sets to be used in the

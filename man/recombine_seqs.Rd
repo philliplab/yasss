@@ -4,8 +4,7 @@
 \alias{recombine_seqs}
 \title{Recombines two sequences}
 \usage{
-recombine_seqs(target_seq, recombination_partner_seq,
-  min_dist_to_edge = 5)
+recombine_seqs(target_seq, recombination_partner_seq, min_dist_to_edge = 5)
 }
 \arguments{
 \item{target_seq}{The sequence that will be replaced by the recombination}

@@ -4,8 +4,7 @@
 \alias{check_arg_collection}
 \title{Checks an arg_collection (skeleton only)}
 \usage{
-check_arg_collection(arg_collection, required_fitness = TRUE,
-  verbose = FALSE)
+check_arg_collection(arg_collection, required_fitness = TRUE, verbose = FALSE)
 }
 \arguments{
 \item{arg_collection}{The arg_collection to test}

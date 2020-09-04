@@ -4,8 +4,7 @@
 \alias{check_dcollection_df}
 \title{Checks the result of dcollection_to_df}
 \usage{
-check_dcollection_df(dcollection_df, dcollection = NULL,
-  has_clara2 = TRUE)
+check_dcollection_df(dcollection_df, dcollection = NULL, has_clara2 = TRUE)
 }
 \arguments{
 \item{dcollection_df}{The result returned by dcollection_to_df.}
