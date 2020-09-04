@@ -79,19 +79,44 @@ primed_seqs <- paste0(left_primer_prefix, pids, left_primer_suffix, the_seq, rig
 The RT step
 ```{r}
 rt_seqs <- sim_pop(ancestors = primed_seqs,
-              r0 = 1,
-              n_gen = 1,
-              n_pop = Inf,
-              mutator = list(fun = "mutator_uniform_fun",
-                             args = list(mu = 0.01)),
-              fitness_evaluator = list(fun = "fitness_evaluator_uniform_fun",
-                                       args = NULL))
+                   r0 = 1,
+                   n_gen = 1,
+                   n_pop = Inf,
+                   mutator = list(fun = "mutator_uniform_fun",
+                                  args = list(mu = 0.01)),
+                   fitness_evaluator = list(fun = "fitness_evaluator_uniform_fun",
+                                            args = NULL))
 
 rt_seqs <- rt_seqs %>% filter(gen_num == 1)
 ```
 
+Couple of rounds of PCR
+```{r}
+pcr_seqs <- sim_pop(ancestors = rt_seqs$the_seq,
+                    r0 = 5,
+                    n_gen = 3,
+                    n_pop = Inf,
+                    mutator = list(fun = "mutator_uniform_fun",
+                                   args = list(mu = 0.001)),
+                    fitness_evaluator = list(fun = "fitness_evaluator_uniform_fun",
+                                             args = NULL))
+```
 
+It is important to know for each sequence what was the rt sequence it came from. Thus a function is needed that can traverse up the genealogy to find the ancestor. However, this is likely to be excruciatingly slow due to data.frame indexing issues, so instead, make for each ancestor a list of all sequences that belong to it.
 
+Resolve ancestry
+```{r}
+genealogy <- pcr_seqs
+make_ancestor_child_mapping <- function(genealogy){
+  full_ancestry <- genealogy %>% filter(gen_num == 1) %>% select(parent_id, id)  
+  names(full_ancestry) <- c('gen_0', 'gen_1')
+
+  curr_gen <- genealogy %>% filter(gen_num == 2) %>% select(parent_id, id)
+  full_ancestry <- merge(full_ancestry, curr_gen, by.x = 'gen_1', by.y = 'parent_id')
+  names(full_ancestry)[names(full_ancestry) == 'id'] <- 'gen_2'
+
+}
+```
 
 
 
