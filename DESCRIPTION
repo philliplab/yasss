@@ -7,7 +7,6 @@ Author: Phillip Labuschagne <philliplab@gmail.com>,
 Maintainer: Phillip Labuschagne <philliplab@gmail.com>
 LinkingTo: Rcpp
 Depends:
-    Rcpp,
     stringdist,
     ggplot2,
     dplyr,

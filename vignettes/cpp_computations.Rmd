@@ -15,6 +15,7 @@ knitr::opts_chunk$set(
   comment = "#>",
   echo = FALSE
 )
+library(Rcpp)
 library(yasss)
 
 # toggle the speed_up variable during development.
