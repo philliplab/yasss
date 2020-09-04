@@ -24,7 +24,7 @@ Steps:
 - Simulate quasispecies / population.
 - Generate PIDs.
 - Attach PIDs to quasispecies combined with a sampling procedure.
-- Simulate PCR.
+- Simulate PCR. (RT step and then a few cycles)
 - Sample from PCR product to get bin distribution.
 - Add in a level of recombination.
 
@@ -73,6 +73,26 @@ the_seq <- the_seq[,1,drop=TRUE]
 
 primed_seqs <- paste0(left_primer_prefix, pids, left_primer_suffix, the_seq, right_primer)
 ```
+
+### Simulate PCR
+
+The RT step
+```{r}
+rt_seqs <- sim_pop(ancestors = primed_seqs,
+              r0 = 1,
+              n_gen = 1,
+              n_pop = Inf,
+              mutator = list(fun = "mutator_uniform_fun",
+                             args = list(mu = 0.01)),
+              fitness_evaluator = list(fun = "fitness_evaluator_uniform_fun",
+                                       args = NULL))
+
+rt_seqs <- rt_seqs %>% filter(gen_num == 1)
+```
+
+
+
+
 
 
 
