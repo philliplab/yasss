@@ -107,6 +107,7 @@ It is important to know for each sequence what was the rt sequence it came from.
 Resolve ancestry
 
 Function to calculate mapping
+
 ```{r}
 make_ancestor_child_mapping <- function(genealogy){
   full_ancestry <- genealogy %>% filter(gen_num == 1) %>% select(parent_id, id)  
@@ -127,6 +128,7 @@ make_ancestor_child_mapping <- function(genealogy){
 ```
 
 Attach ancestor information to pcr seqs
+
 ```{r}
 full_ancestry <- make_ancestor_child_mapping(pcr_seqs)
 final_pcr_cycle <- max(pcr_seqs$gen_num)
@@ -136,7 +138,34 @@ pcr_seqs <-
         by.x = 'id')
 ```
 
+Check basics of simulation
 
+The first 5 input seqs
+```{r}
+char <- 'A'
+all_dat <- NULL
+for (i in 1:5){
+  dat <- consensusMatrix_character((pcr_seqs %>% filter(pcr_0 == i & gen_num == final_pcr_cycle))$the_seq)[1:4,]
+  for (char in c('A', 'C', 'G', 'T')){  #inefficient but prevents tidyr dependency
+    new_dat <- data.frame(id = i,
+                          pos = 1:ncol(dat),
+                          name = char,
+                          value = dat[char,])
+    all_dat <- rbind(all_dat, new_dat)
+  }
+}
+```
+
+The whole dataset
+```{r}
+dat <- consensusMatrix_character((pcr_seqs %>% filter(gen_num == final_pcr_cycle))$the_seq)[1:4,]
+print(
+ggplot(all_dat, aes(x = pos, fill = name, y = value)) +
+  geom_bar(position='stack', stat = 'identity') +
+  facet_wrap('id', ncol = 1)
+)
+
+```
 
 
 
