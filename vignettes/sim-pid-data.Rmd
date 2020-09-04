@@ -25,8 +25,11 @@ Steps:
 - Generate PIDs.
 - Attach PIDs to quasispecies combined with a sampling procedure.
 - Simulate PCR. (RT step and then a few cycles)
+- !!TODO Add in a level of recombination.
 - Sample from PCR product to get bin distribution.
-- Add in a level of recombination.
+- Split into left and right reads
+- Compute qualities
+- Write FASTQ
 
 ### Simulate quasispecies
 
@@ -208,6 +211,15 @@ x <- pcr_seqs %>% filter(sampling_id <= draw)
 x <- pcr_seqs %>% group_by(pcr_0) %>% summarize(min_draw = min(draw), max_draw = max(draw))
 ```
 
+### Split into left and right reads
+
+Input read length
+Then chop the sequences so that 300 from left goes to left read and 300 from right goes to right read.
+
+
+### Add quality scores
+
+To make FastQ files - for now just perfect qualities
 
 
 
