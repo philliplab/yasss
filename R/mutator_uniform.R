@@ -2,7 +2,7 @@
 #'
 #' Mutates a sequence giving each base an equal chance to experience a random mutation
 #'
-#' @param patent A character string containing the DNA sequence of the parent
+#' @param parent A character string containing the DNA sequence of the parent
 #' @param mu A single number between 0 and 1 specifying the per base mutation rate
 #' @export
 
