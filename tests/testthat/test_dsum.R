@@ -2,7 +2,7 @@ context('dsum')
 
 if (FALSE){
   yasss:::restart_r()
-  devtools::load_all('/home/phillipl/projects/yasss/code/yasss')
+  devtools::load_all('~/0_para/4_archive/yasss/code/yasss')
   library(testthat)
 }
 
