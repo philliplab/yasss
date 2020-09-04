@@ -140,12 +140,12 @@ pcr_seqs <-
 
 Check basics of simulation
 
-The first 5 input seqs
+The first 5 input seqs - first 100 positions only
 ```{r}
 char <- 'A'
 all_dat <- NULL
 for (i in 1:5){
-  dat <- consensusMatrix_character((pcr_seqs %>% filter(pcr_0 == i & gen_num == final_pcr_cycle))$the_seq)[1:4,]
+  dat <- consensusMatrix_character((pcr_seqs %>% filter(pcr_0 == i & gen_num == final_pcr_cycle))$the_seq)[1:4,1:100]
   for (char in c('A', 'C', 'G', 'T')){  #inefficient but prevents tidyr dependency
     new_dat <- data.frame(id = i,
                           pos = 1:ncol(dat),
@@ -154,17 +154,58 @@ for (i in 1:5){
     all_dat <- rbind(all_dat, new_dat)
   }
 }
-```
-
-The whole dataset
-```{r}
-dat <- consensusMatrix_character((pcr_seqs %>% filter(gen_num == final_pcr_cycle))$the_seq)[1:4,]
 print(
 ggplot(all_dat, aes(x = pos, fill = name, y = value)) +
   geom_bar(position='stack', stat = 'identity') +
   facet_wrap('id', ncol = 1)
 )
 
+```
+
+The whole dataset - first 100 positions only
+```{r}
+all_dat <- NULL
+dat <- consensusMatrix_character((pcr_seqs %>% filter(gen_num == final_pcr_cycle))$the_seq)[1:4,1:100]
+
+for (char in c('A', 'C', 'G', 'T')){  #inefficient but prevents tidyr dependency
+  new_dat <- data.frame(id = i,
+                        pos = 1:ncol(dat),
+                        name = char,
+                        value = dat[char,])
+  all_dat <- rbind(all_dat, new_dat)
+}
+
+print(
+ggplot(all_dat, aes(x = pos, fill = name, y = value)) +
+  geom_bar(position='stack', stat = 'identity') +
+  facet_wrap('id', ncol = 1)
+)
+
+```
+
+### TODO recombination here
+
+### sample from pcr product
+
+```{r}
+bin_size_distribution <- data.frame(
+  pcr_0 = 1:n_rna,
+  draw = ceiling(rexp(n_rna, 1/1e1)))
+pcr_seqs <-
+pcr_seqs %>%
+  filter(gen_num == final_pcr_cycle) %>%
+  group_by(pcr_0) %>%
+  mutate(sampling_id = sample(1:n(), n()))
+pcr_seqs <- merge(pcr_seqs, bin_size_distribution,
+                  by.x = 'pcr_0',
+                  by.y = 'pcr_0')
+
+x <- pcr_seqs %>% filter(sampling_id <= draw)
+```
+
+```{r eval = FALSE}
+#sanity check
+x <- pcr_seqs %>% group_by(pcr_0) %>% summarize(min_draw = min(draw), max_draw = max(draw))
 ```
 
 
