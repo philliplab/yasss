@@ -111,10 +111,17 @@ make_ancestor_child_mapping <- function(genealogy){
   full_ancestry <- genealogy %>% filter(gen_num == 1) %>% select(parent_id, id)  
   names(full_ancestry) <- c('gen_0', 'gen_1')
 
-  curr_gen <- genealogy %>% filter(gen_num == 2) %>% select(parent_id, id)
-  full_ancestry <- merge(full_ancestry, curr_gen, by.x = 'gen_1', by.y = 'parent_id')
-  names(full_ancestry)[names(full_ancestry) == 'id'] <- 'gen_2'
-
+  i <- 2
+  while (i <= max(genealogy$gen_num)){
+    curr_gen <- genealogy %>% filter(gen_num == i) %>% select(parent_id, id)
+    full_ancestry <- merge(full_ancestry, 
+                           curr_gen, 
+                           by.x = paste0('gen_', i-1), 
+                           by.y = 'parent_id')
+    names(full_ancestry)[names(full_ancestry) == 'id'] <- paste0('gen_', i)
+    i <- i + 1
+  }
+  return(full_ancestry)
 }
 ```
 
