@@ -20,7 +20,7 @@ library(yasss)
 
 # toggle the speed_up variable during development.
 speed_up <- 1
-speed_up <- 10
+speed_up <- 100
 speeding_it_up <- speed_up > 1
 ```
 

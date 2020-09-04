@@ -50,6 +50,7 @@ test_that('linkage_diseq checks arguments correctly', {
 })
 
 test_that('linkage_diseq works', {
+  i <- names(link_dat)[1]
   for (i in names(link_dat)){
     c_dat <- link_dat[[i]]
     ld <- linkage_diseq(seqs = c_dat, verbose = FALSE)
@@ -65,7 +66,7 @@ test_that('linkage_diseq works', {
     expect_equal(max_nuc[1:8], rep('A', 8))
 
     jot <- ld$jot
-    expect_equal(class(jot), 'matrix')
+    expect_true('matrix' %in% class(jot))
 
     if (i == 'V1'){
       expect_equal(max_nuc[9], 'A')
