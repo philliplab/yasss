@@ -245,6 +245,13 @@ for (i in 1:nrow(right_seqs)){
 
 Requires the shortreads package. That is a very major dependency - probablly better to write a minimal fastq writer myself.
 
+#### TODO - add in the content into the headers that makes the nice MotifBinner2 plots
+
+https://help.basespace.illumina.com/articles/descriptive/fastq-files/
+
+Also basicQC.R in MotifBinner2
+
+Build ShortReadQ objects
 ```{r, eval = FALSE}
 library(ShortRead)
 left_seqs_f <-
@@ -262,6 +269,20 @@ ShortReadQ(
 )
 ```
 
+Write to file
+```{r, eval = FALSE}
+writeFastq(left_seqs_f, '/tmp/left.fastq')
+writeFastq(right_seqs_f, '/tmp/right.fastq')
+```
 
+MotifBinner2 command
+Currently fails on step 16 : extractPIDs
+Error in `$<-.data.frame`(`*tmp*`, "total_pid_gaps", value = 0) : 
+  replacement has 1 row, data has 0
+Calls: applyOperation -> op -> $<- -> $<-.data.frame
+
+```{sh, eval = FALSE}
+MotifBinner2.R --non_overlapping --fwd_file=/tmp/left.fastq --fwd_primer_seq=GAGGAGATATGNNNNNNNNAGGGACAATTG --fwd_primer_lens=11,8,11 --fwd_primer_min_score=25 --rev_file=/tmp/right.fastq --rev_primer_seq=AGGGACAATTGGAGAAGTGAA --rev_primer_lens=21 --rev_primer_min_score=21 --fwd_pid_in_which_fragment=2 --rev_pid_in_which_fragment=NULL --output_dir=/tmp/mb2_test/ --base_for_names=mb2_test --ncpu=2 --merged_read_length=25
+```
 
 
