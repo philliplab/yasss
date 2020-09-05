@@ -241,6 +241,27 @@ for (i in 1:nrow(right_seqs)){
 }
 ```
 
+### Write to Fastq
+
+Requires the shortreads package. That is a very major dependency - probablly better to write a minimal fastq writer myself.
+
+```{r, eval = FALSE}
+library(ShortRead)
+left_seqs_f <-
+ShortReadQ(
+  sread = DNAStringSet(left_seqs$the_seq),
+  quality = BStringSet(left_seqs$qual),
+  id = BStringSet(paste('seq', left_seqs$pcr_0, left_seqs$id, sep = '_'))
+)
+
+right_seqs_f <-
+ShortReadQ(
+  sread = DNAStringSet(right_seqs$the_seq),
+  quality = BStringSet(right_seqs$qual),
+  id = BStringSet(paste('seq', right_seqs$pcr_0, right_seqs$id, sep = '_'))
+)
+```
+
 
 
 
