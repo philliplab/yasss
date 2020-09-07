@@ -10,6 +10,14 @@ vignette: >
 ---
 
 ```{r setup, include = FALSE}
+rev_string <- function(x){
+  y <- x
+  for (i in 1:length(x)){
+    y[i] <- intToUtf8(rev(utf8ToInt(x[i])))
+  }
+  return(y)
+}
+
 library(yasss)
 rl <- 300 # read length
 n_rna <- 100
@@ -17,6 +25,7 @@ pid_length <- 8
 left_primer_prefix <- 'GAGGAGATATG'
 left_primer_suffix <- 'AGGGACAATTG'
 right_primer <- 'AGGGACAATTGGAGAAGTGAA'
+print(rev_string(right_primer))
 ```
 
 This vignette demonstrates how YASSS can be used to simulate PID data.
@@ -218,11 +227,19 @@ x <- pcr_seqs %>% group_by(pcr_0) %>% summarize(min_draw = min(draw), max_draw =
 Then chop the sequences so that 300 from left goes to left read and 300 from right goes to right read.
 
 ```{r}
+rev_string <- function(x){
+  y <- x
+  for (i in 1:length(x)){
+    y[i] <- intToUtf8(rev(utf8ToInt(x[i])))
+  }
+  return(y)
+}
+
 left_seqs <- pcr_seqs[, c('pcr_0', 'id', 'the_seq')]
 left_seqs$the_seq <- substr(left_seqs$the_seq, 1, rl)
 
 right_seqs <- pcr_seqs[, c('pcr_0', 'id', 'the_seq')]
-right_seqs$the_seq <- substr(right_seqs$the_seq, nchar(right_seqs$the_seq) - rl + 1, nchar(right_seqs$the_seq))
+right_seqs$the_seq <- rev_string(substr(right_seqs$the_seq, nchar(right_seqs$the_seq) - rl + 1, nchar(right_seqs$the_seq)))
 ```
 
 ### Add quality scores
