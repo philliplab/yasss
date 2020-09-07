@@ -250,7 +250,7 @@ To make FastQ files - for now just perfect qualities
 # Really poor implementation. Fix it later
 left_seqs$qual <- ''
 for (i in 1:nrow(left_seqs)){
-  left_seqs$qual <- paste(rep('G', nchar(left_seqs$the_seq[i])), collapse = '')
+  left_seqs$qual <- paste(sample(c('E', 'F', 'G'), nchar(left_seqs$the_seq[i]), replace = TRUE), collapse = '')
 }
 right_seqs$qual <- ''
 for (i in 1:nrow(right_seqs)){
